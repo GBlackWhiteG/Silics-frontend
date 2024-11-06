@@ -1,0 +1,8 @@
+.items {
+    @apply flex flex-col list-none;
+}
+
+.item>a {
+    color: #C4C5CC;
+    @apply text-sm outline-none;
+}

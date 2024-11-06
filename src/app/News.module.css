@@ -1,0 +1,32 @@
+.posts {
+    background-color: #FAFAFA;
+    border-top: solid 1px #EEEEEE;
+    border-bottom: solid 1px #EEEEEE;
+}
+
+.post {
+    max-width: 708px;
+    border-radius: .5rem;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .04);
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin: 2rem;
+}
+
+.post h3 {
+    @apply text-base;
+    margin-bottom: .5rem;
+}
+
+.post p {
+    @apply text-xs;
+    color: #959595;
+    overflow: hidden;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    margin-bottom: 1rem;
+}
