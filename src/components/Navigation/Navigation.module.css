@@ -1,11 +1,14 @@
 .navigation {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.navigationContentWrapper {
     @apply flex flex-row justify-between;
-    border-left: solid 1px #EEEEEE;
-    border-right: solid 1px #EEEEEE;
     padding: 0.75rem 2.25rem;
 }
 
-.navigation>input {
+.navigationContentWrapper>input {
     @apply text-sm;
     max-width: 708px;
     width: 100%;

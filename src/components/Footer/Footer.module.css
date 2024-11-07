@@ -1,4 +1,8 @@
-.wrapper__footer {
+.footer {
+    background-color: #ffffff;
+}
+
+.wrapperFooter {
     @apply flex p-10;
     justify-content: center;
 }
