@@ -4,38 +4,48 @@
 
 :root {
   --primary: #577CD2;
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAFA;
+  --foreground: #FFFFFF;
+  --elements-bg: rgba(216, 216, 216, .25);
+  
+  --shadow: rgba(0, 0, 0, .04);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #FAFAFA;
+    --foreground: #FFFFFF;
   }
 }
 
 body {
-  background-color: #FAFAFA;
+  background-color: var(--background);
+}
+
+input {
+  border: solid 1px var(--primary);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
 }
 
 .container { 
-  max-width: 1440px;
+  max-width: 1380px;
+  padding: 0 1rem;
   margin: 0 auto;
 }
 
 .wrapper__content {
   @apply grid;
   grid-template-columns: 1fr 3.5fr 1fr;
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.sidebars {
+.sidebar-items {
   width: 100%;
   align-self: start;
   border-radius: .5rem;
-  background-color: #ffffff;
-  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .04);
-  padding: 1.5rem 2rem 2rem;
+  background-color: var(--foreground);
+  box-shadow: 0 4px 20px 0 var(--shadow);
+  padding: 1rem 1.5rem 1.5rem;
 }

@@ -1,0 +1,10 @@
+.button {
+    @apply text-sm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    border-radius: .5rem;
+    background-color: var(--primary);
+    padding: .3rem 1rem;
+}

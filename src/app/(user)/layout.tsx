@@ -3,7 +3,7 @@ import { Navigation } from '@/components/Navigation';
 import { Sidebar } from "@/components/Sidebar";
 import { RightColumn } from '@/components/RightColumn';
 import { Footer } from '@/components/Footer';
-import './globals.css';
+import '@/app/globals.css'
 
 const inter = Inter({ subsets: ['cyrillic']});
 

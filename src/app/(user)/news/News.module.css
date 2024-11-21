@@ -7,7 +7,7 @@
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .04);
     background-color: #ffffff;
     padding: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .post h3 {
@@ -16,7 +16,7 @@
 }
 
 .post p {
-    @apply text-xs;
+    @apply text-sm;
     color: #959595;
     overflow: hidden;
     display: -moz-box;

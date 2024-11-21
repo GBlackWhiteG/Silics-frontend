@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import styles from './News.module.css';
-import { ubuntu } from "./fonts/fonts";
+import { ubuntu } from "../../fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Новости",

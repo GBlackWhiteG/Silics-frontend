@@ -2,8 +2,8 @@ import styles from './RightColumn.module.css';
 
 export function RightColumn() {
     return (
-        <article className={`${styles.rightColumn} sidebars`}>
-            <h2>Возможные друзья</h2>
+        <article className={`${styles.rightColumn} sidebar-items`}>
+            <h2>Сообщения</h2>
             <ul>
                 <li></li>
             </ul>

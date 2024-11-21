@@ -5,7 +5,11 @@
 
 .navigationContentWrapper {
     @apply flex flex-row justify-between;
-    padding: 0.75rem 2.25rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.navigationContentWrapper>article>div {
+    align-self: start;
 }
 
 .navigationContentWrapper>input {
@@ -14,7 +18,7 @@
     width: 100%;
     border-radius: .5rem;
     box-sizing: border-box;
-    background-color: rgba(216, 216, 216, .25);
+    background-color: var(--elements-bg);
     padding: .4rem .5rem .4rem 2.5rem;
 }
 
@@ -27,7 +31,7 @@
     display: block;
     color: #ffffff;
     font-size: 10px;
-    background-color: #577CD2;
+    background-color: var(--primary);
     border-radius: 3px;
     padding: 1px 5px;
     rotate: 12deg;
