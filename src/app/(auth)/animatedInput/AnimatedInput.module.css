@@ -1,0 +1,27 @@
+.inputWrapper {
+	@apply flex flex-col;
+	gap: 0.25rem;
+	transition: 0.4s;
+	position: relative;
+}
+
+.inputActive {
+	margin-top: 0.5rem;
+}
+
+.label {
+	color: rgba(0, 0, 0, 0.4);
+	transform: translateY(-50%);
+	pointer-events: none;
+	position: absolute;
+	top: 50%;
+	left: 0.75rem;
+	transition: 0.3s;
+}
+
+.labelActive {
+	@apply text-sm;
+	color: #000000;
+	top: -0.75rem;
+	left: 0.25rem;
+}

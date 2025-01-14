@@ -3,49 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --primary: #577CD2;
-  --background: #FAFAFA;
-  --foreground: #FFFFFF;
-  --elements-bg: rgba(216, 216, 216, .25);
-  
-  --shadow: rgba(0, 0, 0, .04);
+	--primary: #577cd2;
+	--background: #fafafa;
+	--foreground: #ffffff;
+	--elements-bg: rgba(216, 216, 216, 0.25);
+	--title-color: #232020;
+	--text-color: #959595;
+
+	--shadow: rgba(0, 0, 0, 0.04);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #FAFAFA;
-    --foreground: #FFFFFF;
-  }
+	:root {
+		--background: #fafafa;
+		--foreground: #ffffff;
+	}
+}
+
+html {
+	height: 100%;
 }
 
 body {
-  background-color: var(--background);
+	min-height: 100%;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	background-color: var(--background);
 }
 
 input {
-  border: solid 1px var(--primary);
-  border-radius: 0.5rem;
-  padding: 0.25rem 0.75rem;
+	border-radius: 0.5rem;
+	padding: 0.25rem 0.75rem;
 }
 
-.container { 
-  max-width: 1380px;
-  padding: 0 1rem;
-  margin: 0 auto;
+.container {
+	max-width: 1380px;
+	padding: 0 1rem;
+	margin: 0 auto;
 }
 
 .wrapper__content {
-  @apply grid;
-  grid-template-columns: 1fr 3.5fr 1fr;
-  gap: 1rem;
-  margin-top: 1rem;
+	@apply grid;
+	grid-template-columns: 1fr 3.5fr 1fr;
+	gap: 1rem;
+	margin-top: 1rem;
 }
 
 .sidebar-items {
-  width: 100%;
-  align-self: start;
-  border-radius: .5rem;
-  background-color: var(--foreground);
-  box-shadow: 0 4px 20px 0 var(--shadow);
-  padding: 1rem 1.5rem 1.5rem;
+	width: 100%;
+	align-self: start;
+	border-radius: 0.5rem;
+	background-color: var(--foreground);
+	box-shadow: 0 4px 20px 0 var(--shadow);
+	padding: 1rem;
 }

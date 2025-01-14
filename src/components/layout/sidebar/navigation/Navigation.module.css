@@ -1,0 +1,43 @@
+.items {
+	@apply flex flex-col list-none;
+}
+
+.wrapperItem {
+	padding: 1rem 0;
+}
+
+.wrapperItem:first-child {
+	padding-top: 0;
+}
+
+.wrapperItem:last-child {
+	padding-bottom: 0;
+}
+
+.wrapperItem:not(:last-child) {
+	border-bottom: solid 2px var(--elements-bg);
+}
+
+.item {
+	overflow: hidden;
+}
+
+.link {
+	@apply flex gap-5 items-center;
+	color: #c4c5cc;
+	font-weight: 400;
+	border-radius: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	transition: 0.1s;
+	position: relative;
+}
+
+.link:not(.active):hover {
+	background-color: rgba(216, 216, 216, 0.25);
+}
+
+.active {
+	color: #ffffff;
+	background-color: #577cd2;
+	cursor: default;
+}

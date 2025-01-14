@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { EnumTokens } from "./enums/auth.enums";
 
 export async function middleware(request: NextRequest) {
-    const token = request.cookies.get('token')?.value;
+    const token = request.cookies.get(EnumTokens.ACCESS_TOKEN)?.value;
 
     if (request.nextUrl.pathname === '/news') {
         if (!token) {
