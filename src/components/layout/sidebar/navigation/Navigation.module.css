@@ -23,7 +23,7 @@
 }
 
 .link {
-	@apply flex gap-5 items-center;
+	@apply flex gap-4 items-center;
 	color: #c4c5cc;
 	font-weight: 400;
 	border-radius: 0.5rem;

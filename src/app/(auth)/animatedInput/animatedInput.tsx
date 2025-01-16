@@ -33,6 +33,7 @@ export const AnimateInput: React.FC<InputProps> = ({
 				{inputText}
 			</label>
 			<input
+				className='border-[1px] border-gray-100'
 				name={inputName}
 				type={inputType}
 				onFocus={handleFocus}

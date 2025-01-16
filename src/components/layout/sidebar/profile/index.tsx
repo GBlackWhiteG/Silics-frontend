@@ -43,9 +43,12 @@ export function Profile() {
 						width={40}
 						height={40}
 						alt='user-avatar'
-					></Image>
+					/>
 				</div>
-				<span>{userData?.name}</span>
+				<div className='flex flex-col'>
+					<span>{userData?.name}</span>
+					<span className='text-sm text-gray-500'>@{userData?.nickname}</span>
+				</div>
 			</div>
 		</Link>
 	);
