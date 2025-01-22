@@ -9,10 +9,11 @@ import { getTimeString } from '@/utils/transform-datetime';
 import styles from './News.module.css';
 import { ubuntu } from '@/app/fonts/fonts';
 import { postsService } from '@/services/post.services';
-import type { Post } from '@/types/post.types';
+import type { IPost } from '@/types/post.types';
+import { Heart, MessageSquare } from 'lucide-react';
 
 export const Posts = () => {
-	const [posts, setPosts] = useState<Post[]>([]);
+	const [posts, setPosts] = useState<IPost[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isError, setIsError] = useState(false);
 
@@ -65,6 +66,16 @@ export const Posts = () => {
 					<h3 className={ubuntu.className}>{post.title}</h3>
 					<p>{post.description}</p>
 					{/* <img src={post.image} alt={post.title} /> */}
+					<div className='flex gap-5'>
+						<div className='flex gap-2'>
+							<MessageSquare />
+							<span>{post.comments.length}</span>
+						</div>
+						<div className='flex gap-2'>
+							<Heart />
+							<span>{post.likes}</span>
+						</div>
+					</div>
 				</div>
 			))}
 		</>
