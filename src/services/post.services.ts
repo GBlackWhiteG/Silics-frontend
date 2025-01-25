@@ -1,15 +1,15 @@
 import { axiosClassic, instance } from '@/api/axios';
 
-import type { IPost } from '@/types/post.types';
+import type { IPost, IPostFull } from '@/types/post.types';
 
 class PostsService {
 	private _POSTS = '/posts';
 
 	async getPosts() {
-		return axiosClassic.get<IPost[]>(this._POSTS);
+		return axiosClassic.get<IPostFull[]>(this._POSTS);
 	}
 
-	async addPost(data: { title?: string; description?: string, files?: File[] }) {
+	async addPost(data: FormData) {
 		return instance.post<IPost>(this._POSTS, data);
 	}
 }

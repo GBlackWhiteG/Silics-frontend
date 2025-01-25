@@ -50,13 +50,14 @@
 .post p {
     @apply text-sm;
     color: var(--text-color);
-    overflow: hidden;
+    /* overflow: hidden;
     display: -moz-box;
     -moz-box-orient: vertical;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    line-clamp: 3;
+    line-clamp: 3; */
+    white-space: pre-line;
     margin-bottom: 1rem;
 }
 

@@ -7,11 +7,12 @@ import { Button } from '../../../../components/ui/buttons';
 
 import styles from './PostInput.module.css';
 import { postsService } from '@/services/post.services';
+import { ImagePlus } from 'lucide-react';
 
 export const AutoResizeTextArea: React.FC<{
 	inputName: string;
 	inputPlaceholder: string;
-	inputState: Dispatch<SetStateAction<string>>;
+	inputState: (value: string) => void;
 }> = ({ inputName, inputPlaceholder, inputState }) => {
 	const [isActive, setIsActive] = useState(false);
 	const [content, setContent] = useState('');
@@ -44,15 +45,38 @@ export const AutoResizeTextArea: React.FC<{
 };
 
 export function PostInput() {
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
-	const [files, setFiles] = useState<FileList | null>(null);
+	const [formData, setFormData] = useState({
+		title: '',
+		description: '',
+		files: null as FileList | null,
+	});
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		const { name, value } = e.target;
+ 		setFormData(prev => ({ ...prev, [name]: value }));
+	};
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFormData(prev => ({ ...prev, files: e.target.files }));
+	};
 
 	const handleSubmit = (e: React.FormEvent) => {
-		try {
-			e.preventDefault();
+		e.preventDefault();
 
-			postsService.addPost({ title, description });
+		const { title, description, files } = formData;
+		const formDataToSend = new FormData();
+
+		formDataToSend.append('title', title);
+		formDataToSend.append('description', description);
+
+		if (files) {
+			Array.from(files).forEach(file => {
+				formDataToSend.append('files[]', file);
+			});
+		}
+
+		try {
+			postsService.addPost(formDataToSend);
 		} catch (err) {
 			console.log(err);
 		}
@@ -75,19 +99,23 @@ export function PostInput() {
 				<input
 					type='text'
 					name='title'
-					placeholder='Заголовок записи (необязательно)'
-					onChange={e => setTitle(e.target.value)}
+					placeholder='Заголовок'
+					onChange={handleChange}
 				/>
 				<AutoResizeTextArea
 					inputName={'description'}
-					inputPlaceholder={'Напиши что-нибудь...'}
-					inputState={setDescription}
+					inputPlaceholder={'Как ваши дела?'}
+					inputState={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
 				/>
 				<div className={styles.inputButtons}>
 					<input
+						id='images'
 						type='file'
 						multiple
+						onChange={handleFileChange}
+						className='hidden'
 					/>
+					<label htmlFor="images" className='cursor-pointer flex gap-1'><ImagePlus className='text-blue-500' /><span >Изображения/!Видео {formData.files && `(${formData.files.length})`}</span></label>
 				</div>
 			</div>
 			<Button
