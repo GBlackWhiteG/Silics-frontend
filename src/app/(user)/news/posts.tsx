@@ -4,7 +4,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { getTimeString } from '@/utils/transform-datetime';
+import { getTimeString } from '@/utils/transform-words';
 
 import styles from './News.module.css';
 import { ubuntu } from '@/app/fonts/fonts';

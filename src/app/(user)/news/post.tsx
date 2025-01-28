@@ -4,16 +4,17 @@ import 'highlight.js/styles/stackoverflow-light.css';
 import { Heart, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 
-import { getTimeString } from '@/utils/transform-datetime';
+import { getTimeString } from '@/utils/transform-words';
 
 import styles from './News.module.css';
 import { ubuntu } from '@/app/fonts/fonts';
 import type { IPostFull } from '@/types/post.types';
+import { transformCreateDate } from '@/utils/transform-create-date';
 
 hljs.registerLanguage('javascript', javascript);
 
 export const Post = (post: IPostFull) => {
-	const highlightedDescription = post.description ? hljs.highlightAuto(post.description).value : '';
+	const highlightedCode = post.code ? hljs.highlightAuto(post.code).value : '';
 
 	return (
 		<div
@@ -32,22 +33,15 @@ export const Post = (post: IPostFull) => {
 				<div className={styles.infoWrapper}>
 					<span>{post.user_name}</span>
 					<span>
-						{post.posted_ago >= 60
-							? `${Math.floor(post.posted_ago / 60)}
-                  ${getTimeString(Math.floor(post.posted_ago / 60), ['час', 'часа', 'часов'])}
-                  назад`
-							: `${
-									post.posted_ago === 0
-										? `Только что`
-										: `${post.posted_ago} ${getTimeString(post.posted_ago, ['минуту', 'минуты', 'минут'])} назад`
-								}`}
+						{transformCreateDate(post.posted_ago)}
 					</span>
 				</div>
 			</div>
 			<h3 className={ubuntu.className}>{post.title}</h3>
-			{post.description && (
+			<p>{post.description}</p>
+			{post.code && (
 				<p
-					dangerouslySetInnerHTML={{ __html: highlightedDescription }}
+					dangerouslySetInnerHTML={{ __html: highlightedCode }}
 					className='hljs p-4'
 				/>
 			)}
@@ -66,7 +60,7 @@ export const Post = (post: IPostFull) => {
 			)}
 			<div className='flex gap-5'>
 				<div className='flex gap-2'>
-					<Heart />
+					<Heart className={`${post.liked_by_user ? 'fill-red-500' : ''}`} />
 					<span>{post.likes}</span>
 				</div>
 				<div className='flex gap-2'>

@@ -6,7 +6,7 @@ class PostsService {
 	private _POSTS = '/posts';
 
 	async getPosts() {
-		return axiosClassic.get<IPostFull[]>(this._POSTS);
+		return instance.get<IPostFull[]>(this._POSTS);
 	}
 
 	async addPost(data: FormData) {

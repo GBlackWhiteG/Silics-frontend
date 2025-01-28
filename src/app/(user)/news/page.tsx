@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import styles from './News.module.css';
 import { Posts } from './posts';
-import { PostInput } from '@/app/(user)/news/postInput';
+import { PostInput } from '@/components/ui/postInput';
 
 export const metadata: Metadata = {
 	title: 'Новости',
