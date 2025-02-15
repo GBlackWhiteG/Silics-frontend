@@ -1,19 +1,61 @@
+'use client';
+
+// @ts-ignore
 import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
-import 'highlight.js/styles/stackoverflow-light.css';
-import { Heart, MessageSquare } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-import { getTimeString } from '@/utils/transform-words';
+import { publicPage } from '@/config/public-page.config';
 
-import styles from './News.module.css';
-import { ubuntu } from '@/app/fonts/fonts';
-import type { IPostFull } from '@/types/post.types';
 import { transformCreateDate } from '@/utils/transform-create-date';
 
-hljs.registerLanguage('javascript', javascript);
+import styles from './News.module.css';
+import { Like } from './like';
+import { ubuntu } from '@/app/fonts/fonts';
+import type { IPostFull } from '@/types/post.types';
 
-export const Post = (post: IPostFull) => {
+interface Props extends IPostFull {
+	isFull?: boolean;
+}
+
+const loadedLanguages = new Set<string>();
+
+export const Post = (post: Props) => {
+	const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
+
+	useEffect(() => {
+		if (post.code && post.prog_language) {
+			const language = post.prog_language;
+			import(`highlight.js/lib/languages/${language}`)
+				.then(module => {
+					hljs.registerLanguage(language, module.default);
+					loadedLanguages.add(language);
+					setIsLanguageLoaded(true);
+				})
+				.catch(error => {
+					console.log(`Не удалось загрузить язык: ${error}`);
+				});
+		} else if (post.prog_language && loadedLanguages.has(post.prog_language)) {
+			setIsLanguageLoaded(true);
+		}
+	}, [post.prog_language, post.code]);
+
+	// const loadLanguage = async (lang: string) => {
+	// 	try {
+	// 		console.log(lang);
+	// 		const module = await import(
+	// 			`https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/${lang}.min.js`
+	// 		);
+	// 		hljs.registerLanguage(lang, module.default);
+	// 	} catch (error) {
+	// 		console.error(`Ошибка загрузки языка ${lang}:`, error);
+	// 	}
+	// };
+
+	// if (post.prog_language) loadLanguage(post.prog_language);
+
 	const highlightedCode = post.code ? hljs.highlightAuto(post.code).value : '';
 
 	return (
@@ -32,41 +74,48 @@ export const Post = (post: IPostFull) => {
 				</div>
 				<div className={styles.infoWrapper}>
 					<span>{post.user_name}</span>
-					<span>
-						{transformCreateDate(post.posted_ago)}
-					</span>
+					<span>{transformCreateDate(post.posted_ago)}</span>
 				</div>
 			</div>
-			<h3 className={ubuntu.className}>{post.title}</h3>
-			<p>{post.description}</p>
-			{post.code && (
-				<p
-					dangerouslySetInnerHTML={{ __html: highlightedCode }}
-					className='hljs p-4'
+			<div className='flex flex-col gap-2'>
+				{post.title && <h3 className={ubuntu.className}>{post.title}</h3>}
+				{post.description && (
+					<p className={`${styles.description} ${post.isFull ? '' : styles.shortDescription}`}>
+						{post.description}
+					</p>
+				)}
+				{post.code && (
+					<p
+						dangerouslySetInnerHTML={{ __html: highlightedCode }}
+						className='hljs p-4'
+					/>
+				)}
+				{post.files && post.files?.length > 0 && (
+					<div className='flex flex-wrap'>
+						{post.files.map(file => (
+							<Image
+								key={file.id}
+								src={file.file_url}
+								width={250}
+								height={250}
+								alt={file.file_url}
+							/>
+						))}
+					</div>
+				)}
+			</div>
+			<div className='flex gap-5 mt-4'>
+				<Like
+					postId={post.id}
+					initialIsActive={post.liked_by_user}
+					initialLikesCount={post.likes}
 				/>
-			)}
-			{post.files && (
-				<div className='flex flex-wrap'>
-					{post.files.map(file => (
-						<Image
-							key={file.id}
-							src={file.file_url}
-							width={250}
-							height={250}
-							alt={file.file_url}
-						/>
-					))}
-				</div>
-			)}
-			<div className='flex gap-5'>
-				<div className='flex gap-2'>
-					<Heart className={`${post.liked_by_user ? 'fill-red-500' : ''}`} />
-					<span>{post.likes}</span>
-				</div>
-				<div className='flex gap-2'>
-					<MessageSquare />
-					<span>{post.comments.length}</span>
-				</div>
+				<Link href={`${publicPage.NEWS}/${post.id}`}>
+					<div className='flex gap-2'>
+						<MessageSquare />
+						<span>{post.comments_count}</span>
+					</div>
+				</Link>
 			</div>
 		</div>
 	);

@@ -1,10 +1,14 @@
 'use client';
 
+import type { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/buttons';
+
+import { publicPage } from '@/config/public-page.config';
 
 import styles from './Auth.module.css';
 import { AnimateInput } from './animatedInput/animatedInput';
@@ -23,10 +27,16 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			await authServices.main('login', { email, password });
-			router.push('/news');
+			const response = await toast.promise(authServices.login({ email, password }), {
+				loading: 'Пожалуйста подождите',
+				success: 'Успешно',
+				error: 'Неправильный логин или пароль',
+			});
+			if (response.status === 200) {
+				router.push(publicPage.EMAIL_2FA);
+			}
 		} catch (error) {
-			console.log(error);
+			toast.error('Неправильный логин или пароль');
 		}
 	};
 
@@ -38,15 +48,15 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 				className={styles.loginForm}
 			>
 				<AnimateInput
-					inputName='email'
 					inputText='Эл.почта/номер тел.'
-					inputType='text'
+					name='email'
+					type='text'
 					inputState={setEmail}
 				/>
 				<AnimateInput
-					inputName='password'
 					inputText='Пароль'
-					inputType='password'
+					name='password'
+					type='password'
 					inputState={setPassword}
 				/>
 				<Button
@@ -65,17 +75,32 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 	const [password, setPassword] = useState('');
 	const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-	const handleSignup = (e: React.FormEvent) => {
+	const router = useRouter();
+
+	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			authServices.main('register', {
-				email,
-				name,
-				password,
-				password_confirmation: passwordConfirmation,
+			const response = await toast.promise(
+				authServices.register({
+					email,
+					name,
+					password,
+					password_confirmation: passwordConfirmation,
+				}),
+				{
+					loading: 'Пожалуйста подождите',
+					success: 'Успешно',
+				},
+			);
+
+			if (response.status === 200) {
+				router.push(publicPage.NOT_VERIFIED_EMAIL);
+			}
+		} catch (error: AxiosError | any) {
+			const errors = JSON.parse(error.response.data);
+			Object.keys(errors).forEach((key: string) => {
+				toast.error(errors[key][0]);
 			});
-		} catch (error) {
-			console.log(error);
 		}
 	};
 
@@ -88,33 +113,33 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 			>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
-						inputName='email'
 						inputText='Эл.почта/номер тел.'
-						inputType='text'
+						name='email'
+						type='text'
 						inputState={setEmail}
 					/>
 				</div>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
-						inputName='name'
 						inputText='Имя'
-						inputType='text'
+						name='name'
+						type='text'
 						inputState={setName}
 					/>
 				</div>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
-						inputName='password'
 						inputText='Пароль'
-						inputType='password'
+						name='password'
+						type='password'
 						inputState={setPassword}
 					/>
 				</div>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
-						inputName='password_confirmation'
 						inputText='Подтвердить пароль'
-						inputType='password'
+						name='password_confirmation'
+						type='password'
 						inputState={setPasswordConfirmation}
 					/>
 				</div>

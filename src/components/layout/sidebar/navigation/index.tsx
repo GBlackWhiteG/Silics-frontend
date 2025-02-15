@@ -1,5 +1,4 @@
 import { usePathname } from 'next/navigation';
-import { match } from 'path-to-regexp';
 
 import styles from './Navigation.module.css';
 import { NavigationItem } from './NavigationItem';
@@ -15,13 +14,17 @@ export function Navigation({ menu }: Props) {
 	return (
 		<div>
 			<ul className={`${styles.items} sidebar-items`}>
-				{menu.map(item => (
-					<NavigationItem
-						key={item.link}
-						item={item}
-						isActive={!!match(item.link)(pathname)}
-					/>
-				))}
+				{menu.map(item => {
+					const isMatch = new RegExp(`^${item.link}(/\\d+)?$`).test(pathname);
+
+					return (
+						<NavigationItem
+							key={item.link}
+							item={item}
+							isActive={isMatch}
+						/>
+					);
+				})}
 			</ul>
 		</div>
 	);

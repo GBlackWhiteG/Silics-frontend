@@ -36,6 +36,11 @@ input {
 	padding: 0.25rem 0.75rem;
 }
 
+input,
+textarea {
+	background-color: var(--elements-bg);
+}
+
 .container {
 	max-width: 1380px;
 	padding: 0 1rem;
@@ -56,4 +61,11 @@ input {
 	background-color: var(--foreground);
 	box-shadow: 0 4px 20px 0 var(--shadow);
 	padding: 1rem;
+}
+
+.items {
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.04);
+	background-color: #ffffff;
+	padding: 1.5rem;
 }

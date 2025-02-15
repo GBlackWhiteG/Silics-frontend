@@ -3,27 +3,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { publicPage } from '@/config/public-page.config';
 
+import { setAuthAction } from '@/store/authReducer';
+
 import styles from './Profile.module.css';
 import { userServices } from '@/services/user.services';
-import type { IUser } from '@/types/user.types';
+import type { RootState } from '@/store';
 
 export function Profile() {
-	const [userData, setUserData] = useState<IUser>();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isError, setIsError] = useState(false);
 
-	const printMe = async () => {
-		const response = await userServices.getProfile();
-	};
+	const dispatch = useDispatch();
+	const userData = useSelector((state: RootState) => state.auth.auth);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
 				const response = await userServices.getProfile();
-				setUserData(response.data);
+				dispatch(setAuthAction(response.data));
 			} catch (error) {
 				setIsError(true);
 			} finally {
@@ -31,7 +32,7 @@ export function Profile() {
 			}
 		};
 
-		fetchUserData();
+		if (Object.keys(userData).length === 0) fetchUserData();
 	}, []);
 
 	return (

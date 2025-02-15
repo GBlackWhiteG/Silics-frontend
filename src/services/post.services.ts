@@ -1,4 +1,4 @@
-import { axiosClassic, instance } from '@/api/axios';
+import { instance } from '@/api/axios';
 
 import type { IPost, IPostFull } from '@/types/post.types';
 
@@ -11,6 +11,10 @@ class PostsService {
 
 	async addPost(data: FormData) {
 		return instance.post<IPost>(this._POSTS, data);
+	}
+
+	async getPost(id: number) {
+		return instance.get<IPostFull>(`${this._POSTS}/${id}`);
 	}
 }
 

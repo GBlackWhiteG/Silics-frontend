@@ -8,18 +8,12 @@ import type { IAuth, IRegister } from '@/types/auth.types';
 class AuthServices {
 	private _AUTH = '/auth';
 
-	async register() {}
+	async register(data: IRegister) {
+		return await axiosClassic.post(`${this._AUTH}/register`, data);
+	}
 
-	async login() {}
-
-	async main(type: 'login' | 'register', data: IAuth | IRegister) {
-		const response = await axiosClassic.post(`${this._AUTH}/${type}`, data);
-
-		if (response.data) {
-			this._saveTokenStorage(response.data.access_token);
-		}
-
-		return response;
+	async login(data: IAuth) {
+		return await axiosClassic.post(`${this._AUTH}/login`, data);
 	}
 
 	async logout() {
@@ -32,11 +26,11 @@ class AuthServices {
 		return response;
 	}
 
-	private _saveTokenStorage(accessToken: string) {
+	saveTokenStorage(accessToken: string) {
 		Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
 			domain: 'localhost',
 			sameSite: 'strict',
-			expires: 1 / 24,
+			expires: 1,
 			secure: true,
 		});
 	}

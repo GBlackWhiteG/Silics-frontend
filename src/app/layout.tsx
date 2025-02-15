@@ -1,5 +1,4 @@
-import styles from './Auth.module.css';
-import '@/app/globals.css';
+import { Providers } from '@/providers/Providers';
 
 export const metadata = {
 	title: 'Next.js',
@@ -8,8 +7,10 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<div className='container'>
-			<div className={styles.authFormsWrapper}>{children}</div>
-		</div>
+		<html lang='ru'>
+			<body>
+				<Providers>{children}</Providers>
+			</body>
+		</html>
 	);
 }

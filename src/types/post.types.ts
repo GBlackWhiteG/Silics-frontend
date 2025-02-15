@@ -5,6 +5,7 @@ export interface IPost {
 	title?: string;
 	description?: string;
 	code?: string;
+	prog_language?: string;
 	files?: IFile[];
 }
 
@@ -14,5 +15,6 @@ export interface IPostFull extends IPost {
 	user_name: string;
 	likes: number;
 	liked_by_user: boolean;
-	comments: IComment[];
+	comments_count: number;
+	comments?: IComment[];
 }

@@ -1,8 +1,9 @@
 .footer {
-    background-color: var(--foreground);
+	@apply mt-6;
+	background-color: var(--foreground);
 }
 
 .wrapperFooter {
-    @apply flex p-10;
-    justify-content: center;
+	@apply flex p-10;
+	justify-content: center;
 }

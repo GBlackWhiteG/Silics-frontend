@@ -2,15 +2,21 @@
 
 import { ChevronDown, ImagePlus, Paperclip } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/buttons';
 
-import styles from './PostInput.module.css';
-import { AutoResizeTextArea } from './autoResizeTextarea';
-import { postsService } from '@/services/post.services';
+import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
 
-export function PostInput() {
+import styles from './PostInput.module.css';
+import { postsService } from '@/services/post.services';
+import type { IPost } from '@/types/post.types';
+
+interface Props {
+	stateNewPost?: (post: IPost) => void;
+}
+
+export function PostInput(props: Props) {
 	const [isOptionsOpen, setOptionsOpen] = useState(false);
 
 	const [formOptions, setFormOptions] = useState({
@@ -23,14 +29,19 @@ export function PostInput() {
 		setFormOptions(prev => ({ ...prev, [id]: checked }));
 	};
 
+	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
 		code: '',
+		prog_language: 'php',
 		files: null as FileList | null,
 	});
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+	) => {
 		const { name, value } = e.target;
 		setFormData(prev => ({ ...prev, [name]: value }));
 	};
@@ -39,15 +50,16 @@ export function PostInput() {
 		setFormData(prev => ({ ...prev, files: e.target.files }));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const { title, description, code, files } = formData;
+		const { title, description, code, prog_language, files } = formData;
 		const formDataToSend = new FormData();
 
 		formDataToSend.append('title', title);
 		formDataToSend.append('description', description);
-		formDataToSend.append('code', code)
+		formDataToSend.append('code', code);
+		formDataToSend.append('prog_language', prog_language);
 
 		if (files) {
 			Array.from(files).forEach(file => {
@@ -56,7 +68,20 @@ export function PostInput() {
 		}
 
 		try {
-			postsService.addPost(formDataToSend);
+			const response = await postsService.addPost(formDataToSend);
+			if (response.status === 200 && props.stateNewPost) {
+				props.stateNewPost(response.data);
+				setFormData({
+					title: '',
+					description: '',
+					code: '',
+					prog_language: 'php',
+					files: null,
+				});
+				if (fileInputRef.current) {
+					fileInputRef.current.value = '';
+				}
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -81,22 +106,37 @@ export function PostInput() {
 						<input
 							type='text'
 							name='title'
+							value={formData.title}
 							placeholder='Заголовок'
-							className='bg-background'
 							onChange={handleChange}
 						/>
 					)}
 					<AutoResizeTextArea
 						inputName={'description'}
 						inputPlaceholder={'Как у вас дела?'}
+						value={formData.description}
 						inputState={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
 					/>
 					{formOptions.code && (
-						<AutoResizeTextArea
-							inputName={'code'}
-							inputPlaceholder={'Код'}
-							inputState={(value: string) => setFormData(prev => ({ ...prev, code: value }))}
-						/>
+						<div className='relative'>
+							<AutoResizeTextArea
+								inputName={'code'}
+								inputPlaceholder={'Код'}
+								value={formData.code}
+								inputState={(value: string) => setFormData(prev => ({ ...prev, code: value }))}
+							/>
+							<select
+								name='code_language'
+								id='code_language_select'
+								className={styles.select}
+								value={formData.prog_language}
+								onChange={handleChange}
+							>
+								<option value='php'>PHP</option>
+								<option value='python3'>Python3</option>
+								<option value='js'>JavaScript</option>
+							</select>
+						</div>
 					)}
 				</div>
 				<Button
@@ -110,6 +150,7 @@ export function PostInput() {
 					id='images'
 					type='file'
 					multiple
+					ref={fileInputRef}
 					onChange={handleFileChange}
 					className='hidden'
 				/>
@@ -134,7 +175,10 @@ export function PostInput() {
 					<Paperclip className='text-green-500' />
 					<span>Вложения {formData.files && `(${formData.files.length})`}</span>
 				</label>
-				<span className={`${isOptionsOpen ? 'rotate-180' : ''} ml-auto cursor-pointer`} onClick={() => setOptionsOpen(prev => !prev)}>
+				<span
+					className={`${isOptionsOpen ? 'rotate-180' : ''} ml-auto cursor-pointer`}
+					onClick={() => setOptionsOpen(prev => !prev)}
+				>
 					<ChevronDown />
 				</span>
 			</div>

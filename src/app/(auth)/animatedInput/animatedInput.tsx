@@ -1,20 +1,13 @@
-import { type Dispatch, type SetStateAction, useState } from 'react';
+import { type Dispatch, type InputHTMLAttributes, type SetStateAction, useState } from 'react';
 
 import styles from './AnimatedInput.module.css';
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	inputText: string;
-	inputType: string;
-	inputName: string;
 	inputState: Dispatch<SetStateAction<string>>;
 }
 
-export const AnimateInput: React.FC<InputProps> = ({
-	inputText,
-	inputType,
-	inputName,
-	inputState,
-}) => {
+export function AnimateInput({ inputText, inputState, ...props }: InputProps) {
 	const [isAnimated, setAnimated] = useState(false);
 
 	const handleFocus = () => {
@@ -34,8 +27,7 @@ export const AnimateInput: React.FC<InputProps> = ({
 			</label>
 			<input
 				className='border-[1px] border-gray-100'
-				name={inputName}
-				type={inputType}
+				{...props}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 				onChange={e => {
@@ -45,4 +37,4 @@ export const AnimateInput: React.FC<InputProps> = ({
 			/>
 		</div>
 	);
-};
+}

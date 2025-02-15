@@ -1,16 +1,15 @@
-.inputs>textarea {
-    width: 100%;
-    resize: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 0.75rem;
-}
-
 .inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
-.inputs>input[type='text'] {
-    padding: 0.5rem 0.75rem;
+.inputs > input[type='text'] {
+	padding: 0.5rem 0.75rem;
+}
+
+.select {
+	position: absolute;
+	top: 9px;
+	right: 10px;
 }
