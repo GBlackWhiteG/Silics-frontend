@@ -1,7 +1,11 @@
+import { CodeField } from './codeField';
+import { Terminal } from './terminal';
+
 export default function Code() {
-    return (
-        <section>
-            <h2>Код</h2>
-        </section>
-    );
+	return (
+		<section className='grid grid-cols-2 mb-2'>
+			<CodeField />
+			<Terminal />
+		</section>
+	);
 }

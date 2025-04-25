@@ -19,11 +19,11 @@ export default function Layout({
 			<Navigation />
 			<main className={inter.className}>
 				<div className='container'>
-					<section className='wrapper__content'>
+					<div className='wrapper__content'>
 						<Sidebar />
 						{children}
 						<RightColumn />
-					</section>
+					</div>
 				</div>
 			</main>
 			<Footer />

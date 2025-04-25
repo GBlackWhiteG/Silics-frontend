@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-import { axiosClassic } from '@/api/axios';
+import { axiosClassic, instance } from '@/api/axios';
 
 import { EnumTokens } from '@/enums/auth.enums';
 import type { IAuth, IRegister } from '@/types/auth.types';
@@ -24,6 +24,10 @@ class AuthServices {
 		}
 
 		return response;
+	}
+
+	async refresh() {
+		return await instance.post(`${this._AUTH}/refresh`);
 	}
 
 	saveTokenStorage(accessToken: string) {

@@ -2,12 +2,16 @@
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
-import { MessageSquare } from 'lucide-react';
+import { Check, Copy, MessageSquare, Play } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { publicPage } from '@/config/public-page.config';
+
+import { setCodeAction } from '@/store/codeReducer';
 
 import { transformCreateDate } from '@/utils/transform-create-date';
 
@@ -23,7 +27,23 @@ interface Props extends IPostFull {
 const loadedLanguages = new Set<string>();
 
 export const Post = (post: Props) => {
+	const router = useRouter();
+	const dispatch = useDispatch();
 	const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
+	const [isCopied, setIsCopied] = useState(false);
+
+	const copyToClipboard = () => {
+		navigator.clipboard.writeText(post.code || '');
+		setIsCopied(true);
+		setTimeout(() => setIsCopied(false), 2000);
+	};
+
+	const runCopiedCode = () => {
+		if (post.code) {
+			dispatch(setCodeAction(post.code));
+			router.push(publicPage.CODE);
+		}
+	};
 
 	useEffect(() => {
 		if (post.code && post.prog_language) {
@@ -41,20 +61,6 @@ export const Post = (post: Props) => {
 			setIsLanguageLoaded(true);
 		}
 	}, [post.prog_language, post.code]);
-
-	// const loadLanguage = async (lang: string) => {
-	// 	try {
-	// 		console.log(lang);
-	// 		const module = await import(
-	// 			`https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/${lang}.min.js`
-	// 		);
-	// 		hljs.registerLanguage(lang, module.default);
-	// 	} catch (error) {
-	// 		console.error(`Ошибка загрузки языка ${lang}:`, error);
-	// 	}
-	// };
-
-	// if (post.prog_language) loadLanguage(post.prog_language);
 
 	const highlightedCode = post.code ? hljs.highlightAuto(post.code).value : '';
 
@@ -85,10 +91,30 @@ export const Post = (post: Props) => {
 					</p>
 				)}
 				{post.code && (
-					<p
-						dangerouslySetInnerHTML={{ __html: highlightedCode }}
-						className='hljs p-4'
-					/>
+					<div className='relative group'>
+						<p
+							dangerouslySetInnerHTML={{ __html: highlightedCode }}
+							className='hljs p-4 whitespace-pre-wrap break-words'
+						/>
+						<div className='flex gap-2 absolute text-sm top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100'>
+							<div className='relative'>
+								<Copy
+									onClick={copyToClipboard}
+									size={22}
+									className={`cursor-pointer text-gray-400 ${!isCopied ? 'opacity-100' : 'opacity-0'} absolute top-0 left-0 z-10`}
+								/>
+								<Check
+									size={22}
+									className={`text-gray-400 ${isCopied ? 'opacity-100' : 'opacity-0'}`}
+								/>
+							</div>
+							<Play
+								onClick={runCopiedCode}
+								size={22}
+								className='cursor-pointer text-gray-400'
+							/>
+						</div>
+					</div>
 				)}
 				{post.files && post.files?.length > 0 && (
 					<div className='flex flex-wrap'>

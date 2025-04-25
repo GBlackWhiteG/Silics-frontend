@@ -126,7 +126,7 @@ export function PostInput(props: Props) {
 								inputState={(value: string) => setFormData(prev => ({ ...prev, code: value }))}
 							/>
 							<select
-								name='code_language'
+								name='prog_language'
 								id='code_language_select'
 								className={styles.select}
 								value={formData.prog_language}

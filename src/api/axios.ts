@@ -3,7 +3,10 @@ import Cookies from 'js-cookie';
 
 import { API_URL } from '@/constants/constants';
 
+import { publicPage } from '@/config/public-page.config';
+
 import { EnumTokens } from '@/enums/auth.enums';
+import { authServices } from '@/services/auth.services';
 
 const options: CreateAxiosDefaults = {
 	baseURL: API_URL,
@@ -22,3 +25,22 @@ instance.interceptors.request.use(config => {
 
 	return config;
 });
+
+instance.interceptors.response.use(
+	response => response,
+	async error => {
+		if (error.response && error.response.status === 401) {
+			try {
+				const response = await authServices.refresh().then(res => res);
+				authServices.saveTokenStorage(response.data.accessToken);
+				return instance(error.response.request);
+			} catch (error) {
+				authServices.removeFromStorage();
+				import('next/router').then(router => {
+					router.default.push(publicPage.AUTH);
+				});
+				return Promise.reject(error);
+			}
+		}
+	},
+);

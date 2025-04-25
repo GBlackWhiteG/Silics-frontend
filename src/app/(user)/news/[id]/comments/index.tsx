@@ -7,7 +7,7 @@ export function Comments({ comments }: { comments: IComment[] }) {
 	return (
 		<div className={styles.comments}>
 			{comments.map(comment => (
-				<div>
+				<div key={comment.id}>
 					<div className='flex gap-2 items-center'>
 						<Image
 							src={comment.user.avatar_url || '/anonymous.jpg'}
