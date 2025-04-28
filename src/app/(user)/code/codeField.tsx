@@ -2,7 +2,7 @@
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
-import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, type SelectHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
@@ -10,20 +10,21 @@ import { Button } from '@/components/ui/buttons';
 import { clearCodeAction } from '@/store/codeReducer';
 import { setExecutedCodeAction } from '@/store/executerReducer';
 
+import { laguagesInitalCodeData } from './languagesInitalCode.data';
 import { executionService } from '@/services/execution.services';
 import type { RootState } from '@/store';
 
 export function CodeField() {
 	const dispatch = useDispatch();
 
-	const [code, setCode] = useState('<?php\n');
+	const codeRef = useRef<HTMLElement | null>(null);
+	const [code, setCode] = useState('');
 	const copiedCode = useSelector((state: RootState) => state.copiedCode.code);
-	const [codeRowsLenght, setCodeRowsLenght] = useState(code.split('\n').length);
+	const [codeRowsLenght, setCodeRowsLenght] = useState(1);
 	const [activeLine, setActiveLine] = useState<number | null>(null);
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
 	const [language, setLanguage] = useState('php');
-
-	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
 	useEffect(() => {
 		if (copiedCode) {
@@ -33,27 +34,32 @@ export function CodeField() {
 		}
 	}, [copiedCode, dispatch]);
 
-	const buttonHandler = async () => {
-		const response = await executionService.sendCodeToQueue({ code, language });
-		if (response) {
-			dispatch(setExecutedCodeAction(response.data.result));
+	useEffect(() => {
+		if (!copiedCode && laguagesInitalCodeData[language]) {
+			const code = laguagesInitalCodeData[language];
+			setCode(code);
+			setCodeRowsLenght(code.split('\n').length);
 		}
-	};
+	}, [language]);
 
-	const textareaHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		const value = e.target.value;
-		setCode(value);
-		setCodeRowsLenght(value.split('\n').length);
-	};
+	const [languageLoaded, setLanguageLoaded] = useState(false);
 
 	useEffect(() => {
-		import(`highlight.js/lib/languages/${language}`)
-			.then(module => {
-				hljs.registerLanguage(language, module.default);
-			})
-			.catch(error => {
-				console.log(`Не удалось загрузить язык: ${error}`);
-			});
+		const loadLanguageAndHighlight = async () => {
+			setLanguageLoaded(false);
+			if (!hljs.getLanguage(language)) {
+				try {
+					const module = await import(`highlight.js/lib/languages/${language}`);
+					hljs.registerLanguage(language, module.default);
+				} catch (error) {
+					console.log(`Не удалось загрузить язык: ${error}`);
+					return;
+				}
+			}
+			setLanguageLoaded(true);
+		};
+
+		loadLanguageAndHighlight();
 	}, [language]);
 
 	const getCaretLine = () => {
@@ -79,13 +85,41 @@ export function CodeField() {
 		}
 	};
 
+	const buttonHandler = async () => {
+		const response = await executionService.sendCodeToQueue({ code, language });
+		if (response) {
+			dispatch(setExecutedCodeAction(response.data.result));
+		}
+	};
+
+	const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const { name, value } = e.target;
+		setLanguage(name);
+	};
+
+	const textareaHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		const value = e.target.value;
+		setCode(value);
+		setCodeRowsLenght(value.split('\n').length);
+	};
+
 	return (
 		<div className='grid grid-rows-[auto_1fr]'>
-			<Button
-				text={'Запуск'}
-				onClick={buttonHandler}
-				className='mb-2 justify-self-start'
-			></Button>
+			<div className='flex gap-2 items-center'>
+				<Button
+					text={'Запуск'}
+					onClick={buttonHandler}
+					className='mb-2 justify-self-start'
+				></Button>
+				<select
+					value={language}
+					onChange={handleChangeLanguage}
+				>
+					<option value='php'>PHP</option>
+					<option value='javascript'>JS</option>
+					<option value='python'>Python</option>
+				</select>
+			</div>
 			<div className='flex font-mono'>
 				<ul className='w-[50px] text-right bg-[#F1F1F1]'>
 					{Array.from({ length: codeRowsLenght }, (_, i) => i + 1).map(num => (
@@ -100,13 +134,14 @@ export function CodeField() {
 				<div className='w-full h-full flex relative'>
 					<pre className='whitespace-pre-wrap break-words'>
 						<code
+							ref={codeRef}
 							className='block'
-							dangerouslySetInnerHTML={{ __html: hljs.highlightAuto(code).value }}
-						/>
+							dangerouslySetInnerHTML={{
+								__html: languageLoaded ? hljs.highlight(code, { language }).value : '',
+							}}
+						></code>
 					</pre>
 					<textarea
-						name=''
-						id=''
 						value={code}
 						ref={textareaRef}
 						onFocus={getCaretLine}

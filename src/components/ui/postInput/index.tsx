@@ -133,8 +133,8 @@ export function PostInput(props: Props) {
 								onChange={handleChange}
 							>
 								<option value='php'>PHP</option>
-								<option value='python3'>Python3</option>
-								<option value='js'>JavaScript</option>
+								<option value='python'>Python3</option>
+								<option value='javascript'>JavaScript</option>
 							</select>
 						</div>
 					)}

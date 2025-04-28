@@ -27,7 +27,7 @@
 }
 
 .wrapperLogo::after {
-	content: 'v0.1';
+	content: 'v0.2';
 	display: block;
 	color: #ffffff;
 	font-size: 10px;

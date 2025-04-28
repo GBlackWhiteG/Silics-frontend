@@ -1,5 +1,6 @@
 import axios, { type CreateAxiosDefaults } from 'axios';
 import Cookies from 'js-cookie';
+import { cookies } from 'next/headers';
 
 import { API_URL } from '@/constants/constants';
 
@@ -33,6 +34,15 @@ instance.interceptors.response.use(
 			try {
 				const response = await authServices.refresh().then(res => res);
 				authServices.saveTokenStorage(response.data.accessToken);
+
+				await fetch('/api/set-token', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ token: response.data.accessToken }),
+				});
+
 				return instance(error.response.request);
 			} catch (error) {
 				authServices.removeFromStorage();
@@ -42,5 +52,7 @@ instance.interceptors.response.use(
 				return Promise.reject(error);
 			}
 		}
+
+		return Promise.reject(error);
 	},
 );
