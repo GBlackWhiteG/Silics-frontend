@@ -14,6 +14,9 @@ import { laguagesInitalCodeData } from './languagesInitalCode.data';
 import { executionService } from '@/services/execution.services';
 import type { RootState } from '@/store';
 
+// TODO: запуск кода на python
+// TODO: поделиться с кодом
+
 export function CodeField() {
 	const dispatch = useDispatch();
 

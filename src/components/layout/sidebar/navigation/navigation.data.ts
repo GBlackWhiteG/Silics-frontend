@@ -16,14 +16,14 @@ export const SIDEBAR_NAVIGATION_DATA: ISideBarNavigationItem[] = [
 		link: publicPage.NEWS,
 		isBottomBorder: true,
 	},
-	{
-		icon: MessageCircle,
-		label: 'Сообщения',
-		link: publicPage.MESSAGES,
-	},
+	// {
+	// 	icon: MessageCircle,
+	// 	label: 'Сообщения',
+	// 	link: publicPage.MESSAGES,
+	// },
 	{
 		icon: Contact,
-		label: 'Друзья',
+		label: 'Подписки',
 		link: publicPage.FRIENDS,
 		isBottomBorder: true,
 	},

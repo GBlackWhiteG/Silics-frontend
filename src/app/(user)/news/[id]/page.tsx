@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: Promise<{ id: number }> }) {
 	const slug = (await params).id;
 
+	//TODO: изображения в комментариях
+
 	const post = await postsService.getPost(slug);
 
 	return (

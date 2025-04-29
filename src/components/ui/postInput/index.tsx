@@ -16,6 +16,8 @@ interface Props {
 	stateNewPost?: (post: IPost) => void;
 }
 
+// TODO: переделать чекбоксы
+
 export function PostInput(props: Props) {
 	const [isOptionsOpen, setOptionsOpen] = useState(false);
 

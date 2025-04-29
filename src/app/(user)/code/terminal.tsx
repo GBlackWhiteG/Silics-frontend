@@ -8,6 +8,8 @@ import { clearExecutedCodeAction } from '@/store/executerReducer';
 
 import type { RootState } from '@/store';
 
+// TODO: отобразить время работы
+
 export function Terminal() {
 	const executedCode = useSelector((state: RootState) => state.code.result);
 

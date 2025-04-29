@@ -45,6 +45,8 @@ export function Navigation() {
 						type='search'
 						placeholder='Поиск'
 					/>
+					{/* TODO: поиск по заголовкам */}
+					{/* TODO: фильтрация по новые и лучшие (по лайкам) */}
 					{isAuthenticated ? (
 						<LogOut
 							onClick={logoutHandle}
