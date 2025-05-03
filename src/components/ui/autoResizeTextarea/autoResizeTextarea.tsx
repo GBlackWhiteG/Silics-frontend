@@ -1,6 +1,6 @@
 'use client';
 
-import { type TextareaHTMLAttributes, useRef, useState } from 'react';
+import { type TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 
 import styles from './AutoResizeTextarea.module.css';
 
@@ -20,15 +20,25 @@ export const AutoResizeTextArea = ({
 	const [content, setContent] = useState('');
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	const resizeTextarea = () => {
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto';
+			const minRows = isActive ? 2 : 1;
+			const lineHeight = parseFloat(getComputedStyle(textareaRef.current).lineHeight);
+			const minHeight = lineHeight * minRows;
+			textareaRef.current.style.height = `${Math.max(textareaRef.current.scrollHeight, minHeight)}px`;
+		}
+	};
+
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		inputState(event.target.value);
 		setContent(event.target.value);
-
-		if (textareaRef.current) {
-			textareaRef.current.style.height = 'auto';
-			textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-		}
+		resizeTextarea();
 	};
+
+	useEffect(() => {
+		resizeTextarea();
+	}, [content, isActive]);
 
 	return (
 		<textarea

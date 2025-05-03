@@ -1,5 +1,5 @@
 .items {
-	@apply flex flex-col list-none;
+	@apply flex flex-col list-none gap-1;
 }
 
 .wrapperItem {

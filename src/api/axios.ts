@@ -1,6 +1,5 @@
 import axios, { type CreateAxiosDefaults } from 'axios';
 import Cookies from 'js-cookie';
-import { cookies } from 'next/headers';
 
 import { API_URL } from '@/constants/constants';
 
@@ -45,10 +44,14 @@ instance.interceptors.response.use(
 
 				return instance(error.response.request);
 			} catch (error) {
-				authServices.removeFromStorage();
-				import('next/router').then(router => {
-					router.default.push(publicPage.AUTH);
-				});
+				if (typeof window !== undefined) {
+					authServices.removeFromStorage();
+					import('next/router').then(router => {
+						router.default.push(publicPage.AUTH);
+					});
+				} else {
+					throw new Error(`Redirect:${publicPage.AUTH}`);
+				}
 				return Promise.reject(error);
 			}
 		}

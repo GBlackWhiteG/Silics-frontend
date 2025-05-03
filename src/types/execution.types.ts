@@ -10,5 +10,5 @@ export interface IExecutionQueue {
 
 export interface IExecutedCode {
 	code_result: string;
-	executed_time?: number;
+	execution_time?: number;
 }

@@ -1,7 +1,5 @@
 'use client';
 
-import 'highlight.js/styles/stackoverflow-light.css';
-
 import { Post } from './post';
 import type { IPostFull } from '@/types/post.types';
 

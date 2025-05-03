@@ -2,23 +2,33 @@
 
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import php from 'highlight.js/lib/languages/php';
+import python from 'highlight.js/lib/languages/python';
+import 'highlight.js/styles/xcode.css';
+import { useRouter } from 'next/navigation';
 import { type ChangeEvent, type SelectHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
 
+import { publicPage } from '@/config/public-page.config';
+
 import { clearCodeAction } from '@/store/codeReducer';
+import { setCodeShareAction } from '@/store/codeShareReducer';
 import { setExecutedCodeAction } from '@/store/executerReducer';
 
 import { laguagesInitalCodeData } from './languagesInitalCode.data';
 import { executionService } from '@/services/execution.services';
 import type { RootState } from '@/store';
 
-// TODO: запуск кода на python
-// TODO: поделиться с кодом
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('php', php);
 
 export function CodeField() {
 	const dispatch = useDispatch();
+	const router = useRouter();
 
 	const codeRef = useRef<HTMLElement | null>(null);
 	const [code, setCode] = useState('');
@@ -27,7 +37,7 @@ export function CodeField() {
 	const [activeLine, setActiveLine] = useState<number | null>(null);
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-	const [language, setLanguage] = useState('php');
+	const [language, setLanguage] = useState<string>('php');
 
 	useEffect(() => {
 		if (copiedCode) {
@@ -45,25 +55,17 @@ export function CodeField() {
 		}
 	}, [language]);
 
-	const [languageLoaded, setLanguageLoaded] = useState(false);
-
 	useEffect(() => {
-		const loadLanguageAndHighlight = async () => {
-			setLanguageLoaded(false);
-			if (!hljs.getLanguage(language)) {
-				try {
-					const module = await import(`highlight.js/lib/languages/${language}`);
-					hljs.registerLanguage(language, module.default);
-				} catch (error) {
-					console.log(`Не удалось загрузить язык: ${error}`);
-					return;
-				}
+		if (codeRef.current) {
+			try {
+				delete codeRef.current.dataset.highlighted;
+				//@ts-ignore
+				hljs.highlightElement(codeRef.current);
+			} catch (error) {
+				console.error(`Ошибка подсветки кода для языка ${language}:`, error);
 			}
-			setLanguageLoaded(true);
-		};
-
-		loadLanguageAndHighlight();
-	}, [language]);
+		}
+	}, [language, code]);
 
 	const getCaretLine = () => {
 		const textarea = textareaRef.current;
@@ -88,16 +90,22 @@ export function CodeField() {
 		}
 	};
 
-	const buttonHandler = async () => {
+	const runButtonHandler = async () => {
 		const response = await executionService.sendCodeToQueue({ code, language });
 		if (response) {
 			dispatch(setExecutedCodeAction(response.data.result));
 		}
 	};
 
+	const shareButtonHandler = () => {
+		const data = { code, language };
+		dispatch(setCodeShareAction(data));
+		router.push(publicPage.NEWS);
+	};
+
 	const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const { name, value } = e.target;
-		setLanguage(name);
+		const value = e.target.value;
+		setLanguage(value);
 	};
 
 	const textareaHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,15 +116,20 @@ export function CodeField() {
 
 	return (
 		<div className='grid grid-rows-[auto_1fr]'>
-			<div className='flex gap-2 items-center'>
+			<div className='flex gap-2 items-center mb-2'>
 				<Button
 					text={'Запуск'}
-					onClick={buttonHandler}
-					className='mb-2 justify-self-start'
+					onClick={runButtonHandler}
+					className='justify-self-start'
 				></Button>
+				<Button
+					text={'Поделиться'}
+					onClick={shareButtonHandler}
+				/>
 				<select
 					value={language}
-					onChange={handleChangeLanguage}
+					onChange={e => handleChangeLanguage(e)}
+					className='h-full'
 				>
 					<option value='php'>PHP</option>
 					<option value='javascript'>JS</option>
@@ -138,11 +151,11 @@ export function CodeField() {
 					<pre className='whitespace-pre-wrap break-words'>
 						<code
 							ref={codeRef}
-							className='block'
-							dangerouslySetInnerHTML={{
-								__html: languageLoaded ? hljs.highlight(code, { language }).value : '',
-							}}
-						></code>
+							className={`language-${language} !p-0 !bg-transparent`}
+							data-lang={language}
+						>
+							{code}
+						</code>
 					</pre>
 					<textarea
 						value={code}

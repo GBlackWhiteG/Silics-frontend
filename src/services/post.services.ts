@@ -6,8 +6,8 @@ import type { IPost, IPostFull } from '@/types/post.types';
 class PostsService {
 	private _POSTS = '/posts';
 
-	async getPosts() {
-		return instance.get<IPostFull[]>(this._POSTS);
+	async getPosts(orderBy: string = 'created_at') {
+		return instance.get<IPostFull[]>(`${this._POSTS}?order_by=${orderBy}`);
 	}
 
 	async addPost(data: FormData) {

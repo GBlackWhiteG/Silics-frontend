@@ -8,8 +8,6 @@ import { clearExecutedCodeAction } from '@/store/executerReducer';
 
 import type { RootState } from '@/store';
 
-// TODO: отобразить время работы
-
 export function Terminal() {
 	const executedCode = useSelector((state: RootState) => state.code.result);
 
@@ -33,7 +31,11 @@ export function Terminal() {
 				name=''
 				id=''
 				className='w-full p-2 resize-none font-mono'
-				value={executedCode ? executedCode.code_result : ''}
+				value={
+					executedCode
+						? `${executedCode.code_result}\n\n${executedCode.execution_time ? `Время исполнения: ${executedCode.execution_time}` : ''}`
+						: ''
+				}
 				readOnly
 			></textarea>
 		</div>

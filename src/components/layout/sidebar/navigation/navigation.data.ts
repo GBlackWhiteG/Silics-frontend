@@ -12,9 +12,9 @@ export const SIDEBAR_NAVIGATION_DATA: ISideBarNavigationItem[] = [
 	},
 	{
 		icon: Newspaper,
-		label: 'Новости',
+		label: 'Лента',
 		link: publicPage.NEWS,
-		isBottomBorder: true,
+		// isBottomBorder: true,
 	},
 	// {
 	// 	icon: MessageCircle,
@@ -29,7 +29,7 @@ export const SIDEBAR_NAVIGATION_DATA: ISideBarNavigationItem[] = [
 	},
 	{
 		icon: Code,
-		label: 'Код',
+		label: 'Песочница',
 		link: publicPage.CODE,
 		isBottomBorder: true,
 	},

@@ -1,35 +1,34 @@
 'use client';
 
-import { ChevronDown, ImagePlus, Paperclip } from 'lucide-react';
+import { Code, Heading, ImagePlus, Paperclip } from 'lucide-react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
+
+import { clearCodeShareAction } from '@/store/codeShareReducer';
 
 import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
 
 import styles from './PostInput.module.css';
 import { postsService } from '@/services/post.services';
+import type { RootState } from '@/store';
 import type { IPost } from '@/types/post.types';
 
 interface Props {
 	stateNewPost?: (post: IPost) => void;
 }
 
-// TODO: переделать чекбоксы
-
 export function PostInput(props: Props) {
-	const [isOptionsOpen, setOptionsOpen] = useState(false);
+	const dispatch = useDispatch();
+	const sharedCodeData = useSelector((state: RootState) => state.sharedCode.codeData);
+	const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
 	const [formOptions, setFormOptions] = useState({
 		header: false,
 		code: false,
 	});
-
-	const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, checked } = e.target;
-		setFormOptions(prev => ({ ...prev, [id]: checked }));
-	};
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -40,6 +39,18 @@ export function PostInput(props: Props) {
 		prog_language: 'php',
 		files: null as FileList | null,
 	});
+
+	useEffect(() => {
+		if (sharedCodeData.code) {
+			setFormData(prev => ({
+				...prev,
+				code: sharedCodeData.code,
+				prog_language: sharedCodeData.language,
+			}));
+			setFormOptions(prev => ({ ...prev, code: true }));
+			dispatch(clearCodeShareAction());
+		}
+	}, [sharedCodeData, dispatch]);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -113,12 +124,30 @@ export function PostInput(props: Props) {
 							onChange={handleChange}
 						/>
 					)}
-					<AutoResizeTextArea
-						inputName={'description'}
-						inputPlaceholder={'Как у вас дела?'}
-						value={formData.description}
-						inputState={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
-					/>
+					<div className='relative'>
+						<AutoResizeTextArea
+							inputName={'description'}
+							inputPlaceholder={'Как у вас дела?'}
+							value={formData.description}
+							inputState={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
+							// onFocus={() => setIsInputFocused(true)}
+							// onBlur={() => setIsInputFocused(false)}
+						/>
+						<div
+							className={`flex gap-2 absolute top-2 right-2 transition-opacity duration-100 ${isInputFocused ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+						>
+							<Heading
+								className='cursor-pointer text-gray-400'
+								onClick={() => setFormOptions(prev => ({ ...prev, header: !prev.header }))}
+								size={22}
+							/>
+							<Code
+								className='cursor-pointer text-gray-400'
+								onClick={() => setFormOptions(prev => ({ ...prev, code: !prev.code }))}
+								size={22}
+							/>
+						</div>
+					</div>
 					{formOptions.code && (
 						<div className='relative'>
 							<AutoResizeTextArea
@@ -161,7 +190,7 @@ export function PostInput(props: Props) {
 					className='cursor-pointer flex gap-1'
 				>
 					<ImagePlus className='text-blue-500' />
-					<span>Изображения/!Видео {formData.files && `(${formData.files.length})`}</span>
+					<span>Изображения {formData.files && `(${formData.files.length})`}</span>
 				</label>
 				<input
 					id='files'
@@ -177,33 +206,7 @@ export function PostInput(props: Props) {
 					<Paperclip className='text-green-500' />
 					<span>Вложения {formData.files && `(${formData.files.length})`}</span>
 				</label>
-				<span
-					className={`${isOptionsOpen ? 'rotate-180' : ''} ml-auto cursor-pointer`}
-					onClick={() => setOptionsOpen(prev => !prev)}
-				>
-					<ChevronDown />
-				</span>
 			</div>
-			{isOptionsOpen && (
-				<div className='flex gap-4 border-t border-gray-200 pt-3'>
-					<div className='flex gap-1'>
-						<input
-							id='header'
-							type='checkbox'
-							onChange={handleCheckboxChange}
-						/>
-						<label htmlFor='header'>Заголовок</label>
-					</div>
-					<div className='flex gap-1'>
-						<input
-							id='code'
-							type='checkbox'
-							onChange={handleCheckboxChange}
-						/>
-						<label htmlFor='code'>Код</label>
-					</div>
-				</div>
-			)}
 		</form>
 	);
 }

@@ -15,12 +15,14 @@ export function News() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isError, setIsError] = useState(false);
 
+	const [sortedBy, setSortedBy] = useState('created_at');
+
 	const [newPost, setNewPost] = useState<IPost | null>(null);
 
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
-				const response = await postsService.getPosts();
+				const response = await postsService.getPosts(sortedBy);
 				setPosts(response.data);
 			} catch (error) {
 				setIsError(true);
@@ -31,11 +33,22 @@ export function News() {
 		};
 
 		fetchPosts();
-	}, [newPost]);
+	}, [newPost, sortedBy]);
 
 	return (
 		<section className={styles.news}>
 			<PostInput stateNewPost={(post: IPost) => setNewPost(post)} />
+			<div className='flex justify-end gap-1 text-sm'>
+				<span>Сортировка по:</span>
+				<select
+					className='bg-transparent cursor-pointer'
+					value={sortedBy}
+					onChange={e => setSortedBy(e.target.value)}
+				>
+					<option value='created_at'>новым</option>
+					<option value='likes'>лучшим</option>
+				</select>
+			</div>
 			<div className={styles.posts}>
 				<Posts posts={posts} />
 			</div>
