@@ -16,7 +16,6 @@ export interface IPostFull extends IPost {
 	likes: number;
 	liked_by_user: boolean;
 	comments_count: number;
-	comments?: IComment[];
 }
 
 export interface PaginateLinks {

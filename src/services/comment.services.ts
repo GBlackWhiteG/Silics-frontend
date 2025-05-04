@@ -1,7 +1,13 @@
 import { instance } from '@/api/axios';
 
+import type { IComment } from '@/types/comment.types';
+
 class CommentServices {
 	private _COMMENTS = '/auth/comments';
+
+	async getComments(postId: number) {
+		return instance.get<{ data: IComment[] }>(`${this._COMMENTS}/${postId}`);
+	}
 
 	async addComment(data: FormData) {
 		return instance.post(this._COMMENTS, data);

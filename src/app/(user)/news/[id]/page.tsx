@@ -26,11 +26,7 @@ export default async function Page({ params }: { params: Promise<{ id: number }>
 			<div className='sidebar-items'>
 				<CommentInput postId={slug} />
 			</div>
-			{post.data.comments && post.data.comments?.length > 0 ? (
-				<Comments comments={post.data.comments} />
-			) : (
-				<p className='text-center'>Комментариев нет</p>
-			)}
+			<Comments postId={slug} />
 		</div>
 	);
 }

@@ -1,13 +1,28 @@
+'use client';
+
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import { HighlightedCode } from '@/components/ui/highlightedCode';
 
 import { transformCreateDate } from '@/utils/transform-create-date';
 
 import styles from './Comments.module.css';
+import { commentServices } from '@/services/comment.services';
 import type { IComment } from '@/types/comment.types';
 
-export function Comments({ comments }: { comments: IComment[] }) {
+export function Comments({ postId }: { postId: number }) {
+	const [comments, setComments] = useState<IComment[]>([]);
+
+	const getPostComments = async () => {
+		const response = (await commentServices.getComments(postId)).data;
+		setComments(response.data);
+	};
+
+	useEffect(() => {
+		getPostComments();
+	}, []);
+
 	return (
 		<div className={styles.comments}>
 			{comments.map(comment => (
