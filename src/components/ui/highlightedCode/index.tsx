@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 
 import { publicPage } from '@/config/public-page.config';
 
-import { setCodeAction } from '@/store/codeReducer';
+import { setCodeRunAction } from '@/store/codeRunReducer';
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('python', python);
@@ -37,8 +37,8 @@ export function HighlightedCode({ code, language }: Props) {
 	};
 
 	const runCopiedCode = () => {
-		// const data = { code, language };
-		dispatch(setCodeAction(code));
+		const data = { code, language };
+		dispatch(setCodeRunAction(data));
 		router.push(publicPage.CODE);
 	};
 

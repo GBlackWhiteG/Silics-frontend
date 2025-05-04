@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 
 import { authReducer } from './authReducer';
-import { codeReducer } from './codeReducer';
+import { codeReducer } from './codeRunReducer';
 import { codeShareReducer } from './codeShareReducer';
 import { executorReducer } from './executerReducer';
 import { searchRecucer } from './searchResultsReducer';

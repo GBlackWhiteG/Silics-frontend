@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/buttons';
 
 import { publicPage } from '@/config/public-page.config';
 
-import { clearCodeAction } from '@/store/codeReducer';
+import { clearCodeRunAction } from '@/store/codeRunReducer';
 import { setCodeShareAction } from '@/store/codeShareReducer';
 import { setExecutedCodeAction } from '@/store/executerReducer';
 
@@ -32,7 +32,7 @@ export function CodeField() {
 
 	const codeRef = useRef<HTMLElement | null>(null);
 	const [code, setCode] = useState('');
-	const copiedCode = useSelector((state: RootState) => state.copiedCode.code);
+	const copiedCode = useSelector((state: RootState) => state.copiedCode.codeData);
 	const [codeRowsLenght, setCodeRowsLenght] = useState(1);
 	const [activeLine, setActiveLine] = useState<number | null>(null);
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -40,12 +40,12 @@ export function CodeField() {
 	const [language, setLanguage] = useState<string>('php');
 
 	useEffect(() => {
-		if (copiedCode) {
-			// const { code, language } = copiedCode;
-			setCode(copiedCode);
-			// setLanguage(language);
-			setCodeRowsLenght(copiedCode.split('\n').length);
-			dispatch(clearCodeAction());
+		if (copiedCode.code) {
+			const { code, language } = copiedCode;
+			setCode(code);
+			setLanguage(language);
+			setCodeRowsLenght(code.split('\n').length);
+			dispatch(clearCodeRunAction());
 		}
 	}, [copiedCode]);
 

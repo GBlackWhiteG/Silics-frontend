@@ -38,6 +38,7 @@ export function Navigation() {
 	};
 
 	const searchPosts = async () => {
+		if (!searchQuery) return;
 		const response = await searchService.search(searchQuery);
 		dispatch(setSearchResultsAction(response.data));
 		router.push(`${publicPage.NEWS}/search`);

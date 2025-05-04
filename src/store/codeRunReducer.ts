@@ -13,19 +13,19 @@ interface CodeAction {
 	payload: ICode;
 }
 
-const SET_CODE = 'SET_CODE';
-const CLEAR_CODE = 'CLEAR_CODE';
+const SET_RUN_CODE = 'SET_RUN_CODE';
+const CLEAR_RUN_CODE = 'CLEAR_RUN_CODE';
 
-export const codeShareReducer = (state: CodeState = defaultState, action: CodeAction) => {
+export const codeReducer = (state: CodeState = defaultState, action: CodeAction) => {
 	switch (action.type) {
-		case SET_CODE:
+		case SET_RUN_CODE:
 			return { codeData: action.payload };
-		case CLEAR_CODE:
+		case CLEAR_RUN_CODE:
 			return { codeData: { code: '', language: '' } };
 		default:
 			return state;
 	}
 };
 
-export const setCodeShareAction = (payload: ICode) => ({ type: SET_CODE, payload });
-export const clearCodeShareAction = () => ({ type: CLEAR_CODE });
+export const setCodeRunAction = (payload: ICode) => ({ type: SET_RUN_CODE, payload });
+export const clearCodeRunAction = () => ({ type: CLEAR_RUN_CODE });
