@@ -56,10 +56,12 @@ export const Post = (post: Props) => {
 						{post.description}
 					</p>
 				)}
-				<HighlightedCode
-					code={post.code}
-					language={post.prog_language}
-				/>
+				{post.code && post.prog_language && (
+					<HighlightedCode
+						code={post.code}
+						language={post.prog_language}
+					/>
+				)}
 				{post.files && post.files?.length > 0 && (
 					<div className='flex flex-wrap'>
 						{post.files.map(file => (

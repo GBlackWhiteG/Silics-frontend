@@ -19,8 +19,10 @@ const CLEAR_CODE = 'CLEAR_CODE';
 export const codeShareReducer = (state: CodeState = defaultState, action: CodeAction) => {
 	switch (action.type) {
 		case SET_CODE:
+			console.log('share');
 			return { codeData: action.payload };
 		case CLEAR_CODE:
+			console.log('clear');
 			return { codeData: { code: '', language: '' } };
 		default:
 			return state;

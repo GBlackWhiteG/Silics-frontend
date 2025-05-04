@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { PostInput } from '@/components/ui/postInput';
@@ -12,28 +12,60 @@ import type { IPost, IPostFull } from '@/types/post.types';
 
 export function News() {
 	const [posts, setPosts] = useState<IPostFull[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isError, setIsError] = useState(false);
+	const [page, setPage] = useState(1);
+	const [hasMore, setHasMore] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [sortedBy, setSortedBy] = useState('created_at');
 
 	const [newPost, setNewPost] = useState<IPost | null>(null);
+	const loader = useRef<HTMLDivElement | null>(null);
+	const isFetching = useRef(false);
+
+	// TODO: поменять логику добавления нового поста
+	useEffect(() => {
+		setPage(1);
+		setPosts([]);
+		setHasMore(true);
+	}, [newPost, sortedBy]);
 
 	useEffect(() => {
-		const fetchPosts = async () => {
+		const load = async () => {
+			if (isLoading || !hasMore) return;
+			setIsLoading(true);
+
 			try {
-				const response = await postsService.getPosts(sortedBy);
-				setPosts(response.data);
-			} catch (error) {
-				setIsError(true);
-				toast.error('Ошибка загрузки постов');
+				const res = (await postsService.getPosts(page, sortedBy)).data;
+				setPosts(prev => [...prev, ...res.data]);
+				setHasMore(res.meta.current_page < res.meta.last_page);
+			} catch (err) {
+				console.log(err);
 			} finally {
 				setIsLoading(false);
+				isFetching.current = false;
 			}
 		};
 
-		fetchPosts();
-	}, [newPost, sortedBy]);
+		load();
+	}, [page]);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+			const entry = entries[0];
+			if (entry.isIntersecting && hasMore && !isLoading && !isFetching.current) {
+				isFetching.current = true;
+				setPage(prev => prev + 1);
+			}
+		});
+
+		if (loader.current) {
+			observer.observe(loader.current);
+		}
+
+		return () => {
+			if (loader.current) observer.unobserve(loader.current);
+		};
+	}, [hasMore, isLoading]);
 
 	return (
 		<section className={styles.news}>
@@ -52,6 +84,7 @@ export function News() {
 			<div className={styles.posts}>
 				<Posts posts={posts} />
 			</div>
+			<div ref={loader}></div>
 		</section>
 	);
 }

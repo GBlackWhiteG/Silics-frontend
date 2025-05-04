@@ -20,8 +20,8 @@ hljs.registerLanguage('python', python);
 hljs.registerLanguage('php', php);
 
 interface Props {
-	code?: string;
-	language?: string;
+	code: string;
+	language: string;
 }
 
 export function HighlightedCode({ code, language }: Props) {
@@ -37,10 +37,9 @@ export function HighlightedCode({ code, language }: Props) {
 	};
 
 	const runCopiedCode = () => {
-		if (code) {
-			dispatch(setCodeAction(code));
-			router.push(publicPage.CODE);
-		}
+		// const data = { code, language };
+		dispatch(setCodeAction(code));
+		router.push(publicPage.CODE);
 	};
 
 	useEffect(() => {
@@ -57,37 +56,35 @@ export function HighlightedCode({ code, language }: Props) {
 
 	return (
 		<>
-			{code && (
-				<div className='relative group'>
-					<pre className='whitespace-pre-wrap break-words bg-[#F5F5F5] p-2'>
-						<code
-							ref={codeRef}
-							className={`language-${language} !bg-transparent !p-0`}
-							data-lang={language}
-						>
-							{code}
-						</code>
-					</pre>
-					<div className='flex gap-2 absolute text-sm top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100'>
-						<div className='relative'>
-							<Copy
-								onClick={copyToClipboard}
-								size={22}
-								className={`cursor-pointer text-gray-400 ${!isCopied ? 'opacity-100' : 'opacity-0'} absolute top-0 left-0 z-10`}
-							/>
-							<Check
-								size={22}
-								className={`text-gray-400 ${isCopied ? 'opacity-100' : 'opacity-0'}`}
-							/>
-						</div>
-						<Play
-							onClick={runCopiedCode}
+			<div className='relative group'>
+				<pre className='whitespace-pre-wrap break-words bg-[#F5F5F5] p-2'>
+					<code
+						ref={codeRef}
+						className={`language-${language} !bg-transparent !p-0`}
+						data-lang={language}
+					>
+						{code}
+					</code>
+				</pre>
+				<div className='flex gap-2 absolute text-sm top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100'>
+					<div className='relative'>
+						<Copy
+							onClick={copyToClipboard}
 							size={22}
-							className='cursor-pointer text-gray-400'
+							className={`cursor-pointer text-gray-400 ${!isCopied ? 'opacity-100' : 'opacity-0'} absolute top-0 left-0 z-10`}
+						/>
+						<Check
+							size={22}
+							className={`text-gray-400 ${isCopied ? 'opacity-100' : 'opacity-0'}`}
 						/>
 					</div>
+					<Play
+						onClick={runCopiedCode}
+						size={22}
+						className='cursor-pointer text-gray-400'
+					/>
 				</div>
-			)}
+			</div>
 		</>
 	);
 }

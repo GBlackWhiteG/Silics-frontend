@@ -7,7 +7,7 @@ import php from 'highlight.js/lib/languages/php';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/xcode.css';
 import { useRouter } from 'next/navigation';
-import { type ChangeEvent, type SelectHTMLAttributes, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
@@ -41,11 +41,13 @@ export function CodeField() {
 
 	useEffect(() => {
 		if (copiedCode) {
+			// const { code, language } = copiedCode;
 			setCode(copiedCode);
-			dispatch(clearCodeAction());
+			// setLanguage(language);
 			setCodeRowsLenght(copiedCode.split('\n').length);
+			dispatch(clearCodeAction());
 		}
-	}, [copiedCode, dispatch]);
+	}, [copiedCode]);
 
 	useEffect(() => {
 		if (!copiedCode && laguagesInitalCodeData[language]) {
@@ -53,7 +55,7 @@ export function CodeField() {
 			setCode(code);
 			setCodeRowsLenght(code.split('\n').length);
 		}
-	}, [language]);
+	}, [language, dispatch]);
 
 	useEffect(() => {
 		if (codeRef.current) {
@@ -132,8 +134,8 @@ export function CodeField() {
 					className='h-full'
 				>
 					<option value='php'>PHP</option>
-					<option value='javascript'>JS</option>
 					<option value='python'>Python</option>
+					<option value='javascript'>JavaScript</option>
 				</select>
 			</div>
 			<div className='flex font-mono'>

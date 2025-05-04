@@ -1,13 +1,13 @@
 import { instance } from '@/api/axios';
 import { instanceServer } from '@/api/axios-server';
 
-import type { IPost, IPostFull } from '@/types/post.types';
+import type { IPost, IPostFull, IPosts } from '@/types/post.types';
 
 class PostsService {
 	private _POSTS = '/posts';
 
-	async getPosts(orderBy: string = 'created_at') {
-		return instance.get<IPostFull[]>(`${this._POSTS}?order_by=${orderBy}`);
+	async getPosts(page = 1, orderBy: string = 'created_at') {
+		return instance.get<IPosts>(`${this._POSTS}?page=${page}&order_by=${orderBy}`);
 	}
 
 	async addPost(data: FormData) {
