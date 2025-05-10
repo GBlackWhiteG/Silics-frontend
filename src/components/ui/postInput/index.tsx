@@ -14,10 +14,10 @@ import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
 import styles from './PostInput.module.css';
 import { postsService } from '@/services/post.services';
 import type { RootState } from '@/store';
-import type { IPost } from '@/types/post.types';
+import type { IPostFull } from '@/types/post.types';
 
 interface Props {
-	stateNewPost?: (post: IPost) => void;
+	stateNewPost?: (post: IPostFull) => void;
 }
 
 export function PostInput(props: Props) {
@@ -82,8 +82,9 @@ export function PostInput(props: Props) {
 
 		try {
 			const response = await postsService.addPost(formDataToSend);
-			if (response.status === 200 && props.stateNewPost) {
+			if (response.status === 201 && props.stateNewPost) {
 				props.stateNewPost(response.data);
+				console.log(response.data);
 				setFormData({
 					title: '',
 					description: '',

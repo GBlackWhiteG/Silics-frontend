@@ -16,6 +16,7 @@ import { transformCreateDate } from '@/utils/transform-create-date';
 
 import styles from './News.module.css';
 import { Like } from './like';
+import { PostFunctions } from './postFunctions';
 import { ubuntu } from '@/app/fonts/fonts';
 import type { IPostFull } from '@/types/post.types';
 
@@ -26,8 +27,6 @@ hljs.registerLanguage('php', php);
 interface Props extends IPostFull {
 	isFull?: boolean;
 }
-
-const loadedLanguages = new Set<string>();
 
 export const Post = (post: Props) => {
 	return (
@@ -48,6 +47,10 @@ export const Post = (post: Props) => {
 					<span>{post.user_name}</span>
 					<span>{transformCreateDate(post.posted_ago)}</span>
 				</div>
+				<PostFunctions
+					post_id={post.id}
+					user_id={post.user_id}
+				/>
 			</div>
 			<div className='flex flex-col gap-2'>
 				{post.title && <h3 className={ubuntu.className}>{post.title}</h3>}

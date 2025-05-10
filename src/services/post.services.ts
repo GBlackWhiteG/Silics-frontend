@@ -11,11 +11,15 @@ class PostsService {
 	}
 
 	async addPost(data: FormData) {
-		return instance.post<IPost>(this._POSTS, data);
+		return instance.post<IPostFull>(this._POSTS, data);
 	}
 
 	async getPost(id: number) {
 		return instanceServer.get<IPostFull>(`${this._POSTS}/${id}`);
+	}
+
+	async deletePost(id: number) {
+		return instance.delete<{ message: string }>(`${this._POSTS}/${id}`);
 	}
 }
 
