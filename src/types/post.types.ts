@@ -1,4 +1,5 @@
 import type { IFile } from './file.types';
+import type { IMeta, IPaginateLinks } from './pagination.types';
 
 export interface IPost {
 	title?: string;
@@ -18,20 +19,8 @@ export interface IPostFull extends IPost {
 	comments_count: number;
 }
 
-export interface PaginateLinks {
-	first: string;
-	last?: string;
-	prev?: string;
-	next: string;
-}
-
-export interface IMeta {
-	current_page: number;
-	last_page: number;
-}
-
 export interface IPosts {
 	data: IPostFull[];
-	links: PaginateLinks;
+	links: IPaginateLinks;
 	meta: IMeta;
 }

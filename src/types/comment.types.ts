@@ -1,4 +1,5 @@
 import type { IFile } from './file.types';
+import type { IMeta, IPaginateLinks } from './pagination.types';
 import type { IUser } from './user.types';
 
 export interface IComment {
@@ -13,4 +14,10 @@ export interface IComment {
 	created_at: string;
 	updated_at: string;
 	user: IUser;
+}
+
+export interface IComments {
+	data: IComment[];
+	links: IPaginateLinks;
+	meta: IMeta;
 }

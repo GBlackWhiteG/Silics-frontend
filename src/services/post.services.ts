@@ -1,7 +1,7 @@
 import { instance } from '@/api/axios';
 import { instanceServer } from '@/api/axios-server';
 
-import type { IPost, IPostFull, IPosts } from '@/types/post.types';
+import type { IPostFull, IPosts } from '@/types/post.types';
 
 class PostsService {
 	private _POSTS = '/posts';

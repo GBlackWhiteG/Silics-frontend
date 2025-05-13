@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { HighlightedCode } from '@/components/ui/highlightedCode';
 
@@ -13,15 +14,24 @@ import type { IComment } from '@/types/comment.types';
 
 export function Comments({ postId }: { postId: number }) {
 	const [comments, setComments] = useState<IComment[]>([]);
+	const [page, setPage] = useState(1);
+	const [hasMore, setHasMore] = useState(true);
+	const { ref, inView } = useInView();
 
-	const getPostComments = async () => {
-		const response = (await commentServices.getComments(postId)).data;
-		setComments(response.data);
+	const loadMoreComments = async () => {
+		if (hasMore) {
+			const response = (await commentServices.getComments(postId, page)).data;
+			setComments(prev => [...prev, ...response.data]);
+			setPage(prev => prev + 1);
+			setHasMore(response.meta.current_page < response.meta.last_page);
+		}
 	};
 
 	useEffect(() => {
-		getPostComments();
-	}, []);
+		if (inView) {
+			loadMoreComments();
+		}
+	}, [inView]);
 
 	return (
 		<div className={styles.comments}>
@@ -66,6 +76,7 @@ export function Comments({ postId }: { postId: number }) {
 					</div>
 				</div>
 			))}
+			<div ref={ref}></div>
 		</div>
 	);
 }
