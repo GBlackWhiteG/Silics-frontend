@@ -48,8 +48,8 @@ export const Post = (post: Props) => {
 					<span>{transformCreateDate(post.posted_ago)}</span>
 				</div>
 				<PostFunctions
-					post_id={post.id}
 					user_id={post.user_id}
+					item_id={post.id}
 				/>
 			</div>
 			<div className='flex flex-col gap-2'>

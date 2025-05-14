@@ -28,7 +28,7 @@ export function Like({ postId, initialLikesCount, initialIsActive }: Props) {
 	return (
 		<div className='flex gap-2'>
 			<Heart
-				className={`${isActive ? 'fill-red-500' : ''} cursor-pointer`}
+				className={`${isActive ? 'fill-red-500 stroke-red-700' : ''} cursor-pointer`}
 				onClick={handleLike}
 			/>
 			<span>{likesCount}</span>

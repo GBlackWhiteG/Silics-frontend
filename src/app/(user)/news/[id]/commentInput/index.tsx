@@ -3,13 +3,17 @@
 import { Code, ImagePlus, Paperclip } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { AutoResizeTextArea } from '@/components/ui/autoResizeTextarea/autoResizeTextarea';
 import { Button } from '@/components/ui/buttons';
 
+import { addNewCommentAction } from '@/store/newCommentReducer';
+
 import { commentServices } from '@/services/comment.services';
 
 export function CommentInput({ postId }: { postId: number }) {
+	const dispatch = useDispatch();
 	const [isCodeOpen, setCodeOpen] = useState(false);
 
 	const [formData, setFormData] = useState({
@@ -23,7 +27,7 @@ export function CommentInput({ postId }: { postId: number }) {
 		setFormData(prev => ({ ...prev, files: e.target.files }));
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const { content, code, language, files } = formData;
@@ -41,7 +45,9 @@ export function CommentInput({ postId }: { postId: number }) {
 		}
 
 		try {
-			commentServices.addComment(formDataToSend);
+			const response = await commentServices.addComment(formDataToSend);
+			dispatch(addNewCommentAction(response));
+			setFormData({ content: '', code: '', language: 'php', files: null });
 		} catch (err) {
 			console.log(err);
 		}
@@ -63,6 +69,7 @@ export function CommentInput({ postId }: { postId: number }) {
 					<AutoResizeTextArea
 						inputName='content'
 						inputPlaceholder='Ваш комментарий'
+						value={formData.content}
 						inputState={(value: string) => setFormData(prev => ({ ...prev, content: value }))}
 					/>
 					<Code
@@ -95,6 +102,7 @@ export function CommentInput({ postId }: { postId: number }) {
 			<div className='flex gap-3'>
 				<label className='h-[40px] flex items-center justify-center cursor-pointer'>
 					<ImagePlus className='text-blue-500' />
+					{formData.files && formData.files?.length > 0 ? formData.files.length : null}
 					<input
 						type='file'
 						className='hidden'

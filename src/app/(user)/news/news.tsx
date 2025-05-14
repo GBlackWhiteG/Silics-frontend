@@ -18,6 +18,7 @@ export function News() {
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
 	const { ref, inView } = useInView();
+	const ids = useRef(new Set<number>());
 
 	const [sortedBy, setSortedBy] = useState('created_at');
 
@@ -32,12 +33,14 @@ export function News() {
 		} as IPostFull;
 		if (post) {
 			setPosts(prev => [post, ...prev]);
+			ids.current.add(post.id);
 		}
 	}, [newPost]);
 
 	useEffect(() => {
 		if (deletedPostId) {
 			setPosts(prev => prev.filter(post => post.id !== deletedPostId));
+			ids.current.delete(deletedPostId);
 		}
 	}, [deletedPostId]);
 
@@ -45,14 +48,20 @@ export function News() {
 		setPosts([]);
 		setPage(1);
 		setHasMore(true);
+		ids.current.clear();
 	}, [sortedBy]);
 
 	const loadMorePosts = async () => {
 		if (hasMore) {
 			const response = (await postsService.getPosts(page, sortedBy)).data;
-			setPosts(prev => [...prev, ...response.data]);
+			const newPosts = response.data.filter(post => !ids.current.has(post.id));
+			setPosts(prev => [...prev, ...newPosts]);
 			setPage(prev => prev + 1);
 			setHasMore(response.meta.current_page < response.meta.last_page);
+
+			newPosts.forEach(post => {
+				ids.current.add(post.id);
+			});
 		}
 	};
 

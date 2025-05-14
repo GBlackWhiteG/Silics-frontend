@@ -50,7 +50,7 @@ export function CodeField() {
 	}, [copiedCode]);
 
 	useEffect(() => {
-		if (!copiedCode && laguagesInitalCodeData[language]) {
+		if (!copiedCode.code && laguagesInitalCodeData[language]) {
 			const code = laguagesInitalCodeData[language];
 			setCode(code);
 			setCodeRowsLenght(code.split('\n').length);

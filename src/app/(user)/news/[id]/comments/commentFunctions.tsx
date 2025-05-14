@@ -4,17 +4,17 @@ import { useDispatch } from 'react-redux';
 
 import { ItemFunctions } from '@/components/ui/itemFunctions/itemFunctions';
 
-import { setDeletedPostIdAction } from '@/store/deletedPostIdReducer';
+import { setDeletedCommentIdAction } from '@/store/deletedCommentIdReducer';
 
-import { postsService } from '@/services/post.services';
+import { commentServices } from '@/services/comment.services';
 
-export function PostFunctions({ user_id, item_id }: { user_id: number; item_id: number }) {
+export function CommentFunctions({ user_id, item_id }: { user_id: number; item_id: number }) {
 	const dispatch = useDispatch();
 
 	const buttonDeleteHandler = {
 		func: () => {
-			const response = postsService.deletePost(item_id);
-			dispatch(setDeletedPostIdAction(item_id));
+			const response = commentServices.deleteComment(item_id);
+			dispatch(setDeletedCommentIdAction(item_id));
 		},
 		buttonText: 'Удалить',
 	};
