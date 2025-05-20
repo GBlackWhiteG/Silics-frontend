@@ -1,3 +1,5 @@
+import type { IMeta, IPaginateLinks } from './pagination.types';
+
 export interface IUser {
 	id: number;
 	name: string;
@@ -7,4 +9,17 @@ export interface IUser {
 	email_verified_at: string;
 	created_at: string;
 	updated_at: string;
+}
+
+export interface IFullUser extends IUser {
+	biography: string;
+	subscribers_count: number;
+	subscriptions_count: number;
+	is_subscribed: boolean;
+}
+
+export interface IUsers {
+	data: IFullUser[];
+	links: IPaginateLinks;
+	meta: IMeta;
 }

@@ -1,3 +1,4 @@
+import type { IAttachment } from './attachment.types';
 import type { IFile } from './file.types';
 import type { IMeta, IPaginateLinks } from './pagination.types';
 import type { IUser } from './user.types';
@@ -9,6 +10,7 @@ export interface IComment {
 	code: string;
 	prog_language: string;
 	files: IFile[];
+	attachments: IAttachment[];
 	posted_ago: number;
 	created_at: string;
 	updated_at: string;

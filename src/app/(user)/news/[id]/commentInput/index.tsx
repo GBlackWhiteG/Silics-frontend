@@ -3,17 +3,20 @@
 import { Code, ImagePlus, Paperclip } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AutoResizeTextArea } from '@/components/ui/autoResizeTextarea/autoResizeTextarea';
 import { Button } from '@/components/ui/buttons';
+import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { addNewCommentAction } from '@/store/newCommentReducer';
 
 import { commentServices } from '@/services/comment.services';
+import type { RootState } from '@/store';
 
 export function CommentInput({ postId }: { postId: number }) {
 	const dispatch = useDispatch();
+	const userAvatar = useSelector((state: RootState) => state.auth.auth.avatar_url);
 	const [isCodeOpen, setCodeOpen] = useState(false);
 
 	const [formData, setFormData] = useState({
@@ -21,16 +24,18 @@ export function CommentInput({ postId }: { postId: number }) {
 		code: '',
 		language: 'php',
 		files: null as FileList | null,
+		attachments: null as FileList | null,
 	});
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData(prev => ({ ...prev, files: e.target.files }));
+		const { name } = e.target;
+		setFormData(prev => ({ ...prev, [name]: e.target.files }));
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { content, code, language, files } = formData;
+		const { content, code, language, files, attachments } = formData;
 
 		const formDataToSend = new FormData(e.currentTarget);
 		formDataToSend.append('post_id', postId.toString());
@@ -44,10 +49,16 @@ export function CommentInput({ postId }: { postId: number }) {
 			});
 		}
 
+		if (attachments) {
+			Array.from(attachments).forEach(attachment => {
+				formDataToSend.append('attachments[]', attachment);
+			});
+		}
+
 		try {
 			const response = await commentServices.addComment(formDataToSend);
 			dispatch(addNewCommentAction(response));
-			setFormData({ content: '', code: '', language: 'php', files: null });
+			setFormData({ content: '', code: '', language: 'php', files: null, attachments: null });
 		} catch (err) {
 			console.log(err);
 		}
@@ -58,12 +69,11 @@ export function CommentInput({ postId }: { postId: number }) {
 			onSubmit={handleSubmit}
 			className='grid grid-cols-[auto_1fr_auto_auto] gap-4'
 		>
-			<Image
-				src='/anonymous.jpg'
-				width={40}
-				height={40}
-				alt=''
-			></Image>
+			<UserAvatar
+				userAvatarUrl={userAvatar}
+				userName='avatar'
+				avatarWidth={40}
+			/>
 			<div>
 				<div className='relative'>
 					<AutoResizeTextArea
@@ -106,14 +116,22 @@ export function CommentInput({ postId }: { postId: number }) {
 					<input
 						type='file'
 						className='hidden'
+						name='files'
+						multiple
 						onChange={handleFileChange}
 					/>
 				</label>
 				<label className='h-[40px] flex items-center justify-center cursor-pointer'>
 					<Paperclip className='text-green-500' />
+					{formData.attachments && formData.attachments?.length > 0
+						? formData.attachments.length
+						: null}
 					<input
 						type='file'
 						className='hidden'
+						name='attachments'
+						multiple
+						onChange={handleFileChange}
 					/>
 				</label>
 			</div>

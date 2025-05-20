@@ -4,6 +4,7 @@ import { axiosClassic, instance } from '@/api/axios';
 
 import { EnumTokens } from '@/enums/auth.enums';
 import type { IAuth, IRegister } from '@/types/auth.types';
+import type { IUser } from '@/types/user.types';
 
 class AuthServices {
 	private _AUTH = '/auth';
@@ -16,11 +17,21 @@ class AuthServices {
 		return await axiosClassic.post(`${this._AUTH}/login`, data);
 	}
 
+	async getMe() {
+		const response = instance.post<IUser>(`${this._AUTH}/me`);
+
+		return response;
+	}
+
 	async logout() {
 		const response = await axiosClassic.post<{ message: string }>(`${this._AUTH}/logout`);
 
 		if (response.data) {
 			this.removeFromStorage();
+
+			await fetch('/api/remove-token', {
+				method: 'POST',
+			});
 		}
 
 		return response;

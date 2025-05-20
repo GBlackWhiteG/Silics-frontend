@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 	description: '',
 };
 
-export default async function Page({ params }: { params: Promise<{ id: number }> }) {
-	const slug = (await params).id;
+export default async function Page({ params }: { params: { id: number } }) {
+	const slug = params.id;
 
 	const post = await postsService.getPost(slug);
 

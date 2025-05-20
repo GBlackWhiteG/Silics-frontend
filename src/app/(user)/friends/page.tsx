@@ -1,10 +1,15 @@
-import { FriendsList } from "./friendsList";
+import type { Metadata } from 'next';
+
+import { FriendsList } from './friendsList';
+
+export const metadata: Metadata = {
+	title: 'Подиски',
+};
 
 export default function Friends() {
-    return (
-        <section>
-            <h2>Возможные друзья</h2>
-            <FriendsList />
-        </section>
-    );
+	return (
+		<section>
+			<FriendsList />
+		</section>
+	);
 }

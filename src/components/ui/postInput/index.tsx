@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/buttons';
 import { clearCodeShareAction } from '@/store/codeShareReducer';
 
 import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
+import { UserAvatar } from '../userAvatar';
 
 import styles from './PostInput.module.css';
 import { postsService } from '@/services/post.services';
@@ -22,6 +23,7 @@ interface Props {
 
 export function PostInput(props: Props) {
 	const dispatch = useDispatch();
+	const userAvatar = useSelector((state: RootState) => state.auth.auth.avatar_url);
 	const sharedCodeData = useSelector((state: RootState) => state.sharedCode.codeData);
 	const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
@@ -38,6 +40,7 @@ export function PostInput(props: Props) {
 		code: '',
 		prog_language: 'php',
 		files: null as FileList | null,
+		attachments: null as FileList | null,
 	});
 
 	useEffect(() => {
@@ -60,13 +63,14 @@ export function PostInput(props: Props) {
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData(prev => ({ ...prev, files: e.target.files }));
+		const { name } = e.target;
+		setFormData(prev => ({ ...prev, [name]: e.target.files }));
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const { title, description, code, prog_language, files } = formData;
+		const { title, description, code, prog_language, files, attachments } = formData;
 		const formDataToSend = new FormData();
 
 		formDataToSend.append('title', title);
@@ -80,17 +84,23 @@ export function PostInput(props: Props) {
 			});
 		}
 
+		if (attachments) {
+			Array.from(attachments).forEach(attachment => {
+				formDataToSend.append('attachments[]', attachment);
+			});
+		}
+
 		try {
 			const response = await postsService.addPost(formDataToSend);
 			if (response.status === 201 && props.stateNewPost) {
 				props.stateNewPost(response.data);
-				console.log(response.data);
 				setFormData({
 					title: '',
 					description: '',
 					code: '',
 					prog_language: 'php',
 					files: null,
+					attachments: null,
 				});
 				if (fileInputRef.current) {
 					fileInputRef.current.value = '';
@@ -108,12 +118,11 @@ export function PostInput(props: Props) {
 		>
 			<div className='grid grid-cols-[auto_1fr_auto] gap-4'>
 				<div className={styles.wrapperImage}>
-					<Image
-						src='/anonymous.jpg'
-						width={40}
-						height={40}
-						alt='user-avatar'
-					></Image>
+					<UserAvatar
+						userAvatarUrl={userAvatar}
+						userName='user-avatar'
+						avatarWidth={40}
+					/>
 				</div>
 				<div className={styles.inputs}>
 					{formOptions.header && (
@@ -181,6 +190,7 @@ export function PostInput(props: Props) {
 				<input
 					id='images'
 					type='file'
+					name='files'
 					multiple
 					ref={fileInputRef}
 					onChange={handleFileChange}
@@ -196,6 +206,7 @@ export function PostInput(props: Props) {
 				<input
 					id='files'
 					type='file'
+					name='attachments'
 					multiple
 					onChange={handleFileChange}
 					className='hidden'
@@ -205,7 +216,7 @@ export function PostInput(props: Props) {
 					className='cursor-pointer flex gap-1'
 				>
 					<Paperclip className='text-green-500' />
-					<span>Вложения {formData.files && `(${formData.files.length})`}</span>
+					<span>Вложения {formData.attachments && `(${formData.attachments.length})`}</span>
 				</label>
 			</div>
 		</form>

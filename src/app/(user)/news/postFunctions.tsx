@@ -1,15 +1,17 @@
 'use client';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ItemFunctions } from '@/components/ui/itemFunctions/itemFunctions';
 
 import { setDeletedPostIdAction } from '@/store/deletedPostIdReducer';
 
 import { postsService } from '@/services/post.services';
+import type { RootState } from '@/store';
 
 export function PostFunctions({ user_id, item_id }: { user_id: number; item_id: number }) {
 	const dispatch = useDispatch();
+	const userId = useSelector((state: RootState) => state.auth.auth.id);
 
 	const buttonDeleteHandler = {
 		func: () => {
@@ -26,10 +28,5 @@ export function PostFunctions({ user_id, item_id }: { user_id: number; item_id: 
 		buttonText: 'Изменить',
 	};
 
-	return (
-		<ItemFunctions
-			user_id={user_id}
-			funcs={[buttonDeleteHandler, buttonChangeHandler]}
-		/>
-	);
+	return userId === user_id && <ItemFunctions funcs={[buttonDeleteHandler, buttonChangeHandler]} />;
 }

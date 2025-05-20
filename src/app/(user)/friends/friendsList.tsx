@@ -1,13 +1,14 @@
-import { friendsService } from "@/services/friends.services";
+import { FriendCard } from './friendCard';
+import { friendsService } from '@/services/friends.services';
 
 export async function FriendsList() {
-  const friends = await friendsService.getFriends();
+	const friends = await friendsService.getFriends();
 
 	return (
-    <ul>
-      {friends.data.map(friend => (
-        <li key={friend.id}>{friend.name}</li>
-      ))}
-    </ul>
-  );
+		<ul className='items flex flex-col gap-1'>
+			{friends.data.data.map(friend => (
+				<FriendCard user={friend} />
+			))}
+		</ul>
+	);
 }

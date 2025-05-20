@@ -1,11 +1,16 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 
+import { FileIcon } from '@/components/ui/FileIcon';
 import { HighlightedCode } from '@/components/ui/highlightedCode';
+import { UserAvatar } from '@/components/ui/userAvatar';
+
+import { publicPage } from '@/config/public-page.config';
 
 import { transformCreateDate } from '@/utils/transform-create-date';
 
@@ -68,12 +73,13 @@ export function Comments({ postId }: { postId: number }) {
 						className='flex flex-col gap-2'
 					>
 						<div className='flex gap-2 items-center'>
-							<Image
-								src={comment.user.avatar_url || '/anonymous.jpg'}
-								width={40}
-								height={40}
-								alt={comment.user.nickname}
-							/>
+							<Link href={`${publicPage.PROFILE}/${comment.user.id}`}>
+								<UserAvatar
+									userAvatarUrl={comment.user.avatar_url}
+									userName={comment.user.name}
+									avatarWidth={40}
+								/>
+							</Link>
 							<div className='flex flex-col gap-0.5'>
 								<span className='text-sm text-[#232020] font-semibold'>{comment.user.name}</span>
 								<span className='text-sm text-[#d8d8d8]'>
@@ -103,6 +109,20 @@ export function Comments({ postId }: { postId: number }) {
 											height={250}
 											alt={file.file_url}
 										/>
+									))}
+								</div>
+							)}
+							{comment.attachments && comment.attachments?.length > 0 && (
+								<div>
+									{comment.attachments.map(attachment => (
+										<Link
+											href={attachment.attachment_url}
+											key={attachment.id}
+											className='flex gap-1'
+										>
+											<FileIcon mime={attachment.mime_type} />
+											<span>{attachment.original_filename}</span>
+										</Link>
 									))}
 								</div>
 							)}

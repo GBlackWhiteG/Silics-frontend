@@ -10,7 +10,7 @@ import { publicPage } from '@/config/public-page.config';
 import { setAuthAction } from '@/store/authReducer';
 
 import styles from './Profile.module.css';
-import { userServices } from '@/services/user.services';
+import { authServices } from '@/services/auth.services';
 import type { RootState } from '@/store';
 
 export function Profile() {
@@ -23,7 +23,7 @@ export function Profile() {
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				const response = await userServices.getProfile();
+				const response = await authServices.getMe();
 				dispatch(setAuthAction(response.data));
 			} catch (error) {
 				setIsError(true);
@@ -36,15 +36,17 @@ export function Profile() {
 	}, []);
 
 	return (
-		<Link href={publicPage.PROFILE}>
+		<Link href={`${publicPage.PROFILE}/${userData.id}`}>
 			<div className={`${styles.profileBlock} sidebar-items`}>
 				<div className={styles.wrapperImage}>
-					<Image
-						src='/anonymous.jpg'
-						width={40}
-						height={40}
-						alt='user-avatar'
-					/>
+					<div className='w-[40px] rounded-full aspect-square overflow-hidden relative'>
+						<Image
+							src={userData.avatar_url || '/anonymous.jpg'}
+							fill
+							alt='user-avatar'
+							className='object-cover'
+						/>
+					</div>
 				</div>
 				<div className='flex flex-col'>
 					<span>{userData?.name}</span>

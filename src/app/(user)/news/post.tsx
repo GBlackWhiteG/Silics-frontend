@@ -4,11 +4,13 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import php from 'highlight.js/lib/languages/php';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/xcode.css';
-import { MessageSquare } from 'lucide-react';
+import { File, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { FileIcon } from '@/components/ui/FileIcon';
 import { HighlightedCode } from '@/components/ui/highlightedCode';
+import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { publicPage } from '@/config/public-page.config';
 
@@ -36,12 +38,13 @@ export const Post = (post: Props) => {
 		>
 			<div className={styles.userInfo}>
 				<div className={styles.imageWrapper}>
-					<Image
-						src='/anonymous.jpg'
-						width={40}
-						height={40}
-						alt='user-avatar'
-					></Image>
+					<Link href={`${publicPage.PROFILE}/${post.user_id}`}>
+						<UserAvatar
+							userAvatarUrl={post.user_avatar}
+							userName={post.user_name}
+							avatarWidth={40}
+						/>
+					</Link>
 				</div>
 				<div className={styles.infoWrapper}>
 					<span>{post.user_name}</span>
@@ -75,6 +78,20 @@ export const Post = (post: Props) => {
 								height={250}
 								alt={file.file_url}
 							/>
+						))}
+					</div>
+				)}
+				{post.attachments && post.attachments?.length > 0 && (
+					<div>
+						{post.attachments.map(attachment => (
+							<Link
+								href={attachment.attachment_url}
+								key={attachment.id}
+								className='flex gap-1'
+							>
+								<FileIcon mime={attachment.mime_type} />
+								<span>{attachment.original_filename}</span>
+							</Link>
 						))}
 					</div>
 				)}

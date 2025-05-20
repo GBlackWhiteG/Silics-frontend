@@ -1,5 +1,5 @@
 class PublicPage {
-	AUTH = '/auth';
+	AUTH = '/';
 	NOT_VERIFIED_EMAIL = '/not-verified-email';
 	EMAIL_2FA = '/email-2fa';
 

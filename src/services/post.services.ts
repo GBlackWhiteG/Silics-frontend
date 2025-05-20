@@ -10,6 +10,10 @@ class PostsService {
 		return instance.get<IPosts>(`${this._POSTS}?page=${page}&order_by=${orderBy}`);
 	}
 
+	async getUserPosts(id: number) {
+		return instance.get<IPosts>(`${this._POSTS}/user/${id}`);
+	}
+
 	async addPost(data: FormData) {
 		return instance.post<IPostFull>(this._POSTS, data);
 	}

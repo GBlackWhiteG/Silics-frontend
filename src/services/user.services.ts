@@ -1,12 +1,25 @@
 import { instance } from '@/api/axios';
+import { instanceServer } from '@/api/axios-server';
 
-import type { IUser } from '@/types/user.types';
+import type { IFullUser } from '@/types/user.types';
 
 class UserServices {
-	private _AUTH = '/auth';
+	private _USERS = '/users';
 
-	async getProfile() {
-		const response = instance.post<IUser>(`${this._AUTH}/me`);
+	async getProfile({ id }: { id: number }) {
+		const response = instance.get<IFullUser>(`${this._USERS}/${id}`);
+
+		return response;
+	}
+
+	async getProfileServer({ id }: { id: number }) {
+		const response = instanceServer.get<IFullUser>(`${this._USERS}/${id}`);
+
+		return response;
+	}
+
+	async changeProfile(id: number, data: FormData) {
+		const response = instance.post(`${this._USERS}/${id}`, data);
 
 		return response;
 	}

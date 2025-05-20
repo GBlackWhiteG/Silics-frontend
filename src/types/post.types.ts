@@ -1,3 +1,4 @@
+import type { IAttachment } from './attachment.types';
 import type { IFile } from './file.types';
 import type { IMeta, IPaginateLinks } from './pagination.types';
 
@@ -7,6 +8,7 @@ export interface IPost {
 	code?: string;
 	prog_language?: string;
 	files?: IFile[];
+	attachments?: IAttachment[];
 }
 
 export interface IPostFull extends IPost {
@@ -14,6 +16,7 @@ export interface IPostFull extends IPost {
 	posted_ago: number;
 	user_id: number;
 	user_name: string;
+	user_avatar: string;
 	likes: number;
 	liked_by_user: boolean;
 	comments_count: number;
