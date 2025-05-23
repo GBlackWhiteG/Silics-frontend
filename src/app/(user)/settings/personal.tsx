@@ -96,7 +96,7 @@ export function Personal() {
 									src={'/image-input-mask.png'}
 									alt='image-input-mask'
 									fill
-									className='opacity-30'
+									className='opacity-30 pointer-events-none'
 								/>
 							)}
 						</div>

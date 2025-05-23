@@ -11,7 +11,6 @@ export interface IComment {
 	prog_language: string;
 	files: IFile[];
 	attachments: IAttachment[];
-	posted_ago: number;
 	created_at: string;
 	updated_at: string;
 	user: IUser;

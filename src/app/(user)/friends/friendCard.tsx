@@ -9,7 +9,10 @@ import type { IFullUser } from '@/types/user.types';
 
 export function FriendCard({ user }: { user: IFullUser }) {
 	return (
-		<li className='w-full flex justify-between rounded-[0.5rem] p-2 hover:bg-gray-100'>
+		<li
+			className='w-full flex justify-between rounded-[0.5rem] p-2 hover:bg-gray-100'
+			key={user.id}
+		>
 			<Link
 				href={`${publicPage.PROFILE}/${user.id}`}
 				className='flex gap-2'

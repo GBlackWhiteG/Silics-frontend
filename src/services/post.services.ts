@@ -1,3 +1,5 @@
+import type { AxiosError } from 'axios';
+
 import { instance } from '@/api/axios';
 import { instanceServer } from '@/api/axios-server';
 
@@ -14,8 +16,19 @@ class PostsService {
 		return instance.get<IPosts>(`${this._POSTS}/user/${id}`);
 	}
 
+	// async addPost(data: FormData) {
+	// 	return instance
+	// 		.post<IPostFull>(this._POSTS, data)
+	// 		.then(res => res)
+	// 		.catch(err => err);
+	// }
+
 	async addPost(data: FormData) {
-		return instance.post<IPostFull>(this._POSTS, data);
+		try {
+			return instance.post<IPostFull>(this._POSTS, data);
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	async getPost(id: number) {

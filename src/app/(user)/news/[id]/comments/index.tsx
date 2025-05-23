@@ -21,6 +21,7 @@ import type { RootState } from '@/store';
 import type { IComment } from '@/types/comment.types';
 
 export function Comments({ postId }: { postId: number }) {
+	const userId = useSelector((state: RootState) => state.auth.auth.id);
 	const [comments, setComments] = useState<IComment[]>([]);
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
@@ -83,13 +84,15 @@ export function Comments({ postId }: { postId: number }) {
 							<div className='flex flex-col gap-0.5'>
 								<span className='text-sm text-[#232020] font-semibold'>{comment.user.name}</span>
 								<span className='text-sm text-[#d8d8d8]'>
-									{transformCreateDate(comment.posted_ago)}
+									{transformCreateDate(comment.created_at)}
 								</span>
 							</div>
-							<CommentFunctions
-								user_id={comment.user.id}
-								item_id={comment.id}
-							/>
+							{userId === comment.user.id && (
+								<CommentFunctions
+									user_id={comment.user.id}
+									item_id={comment.id}
+								/>
+							)}
 						</div>
 						<div className='flex flex-col gap-2'>
 							<p>{comment.content}</p>

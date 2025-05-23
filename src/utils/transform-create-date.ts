@@ -1,7 +1,10 @@
-import { EnumTimes } from '@/enums/time.enums';
 import { getTimeString } from './transform-words';
+import { EnumTimes } from '@/enums/time.enums';
 
-export const transformCreateDate = (postedAgo: number) => {
+export const transformCreateDate = (created_at: string) => {
+	const date = new Date(created_at);
+	const postedAgo = Math.floor((new Date().getTime() - date.getTime()) / 1000 / 60);
+
 	const times: { [key: string]: [string, string, string] } = {
 		minutes: ['минуту', 'минуты', 'минут'],
 		hours: ['час', 'часа', 'часов'],
@@ -17,6 +20,6 @@ export const transformCreateDate = (postedAgo: number) => {
 	} else if (postedAgo < EnumTimes.DAYS) {
 		return `${Math.floor(postedAgo / 1440)} ${getTimeString(Math.floor(postedAgo / 1440), times['days'])} назад`;
 	} else {
-		return 'Давненько';
+		return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 	}
 };

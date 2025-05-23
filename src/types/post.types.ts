@@ -13,7 +13,7 @@ export interface IPost {
 
 export interface IPostFull extends IPost {
 	id: number;
-	posted_ago: number;
+	created_at: string;
 	user_id: number;
 	user_name: string;
 	user_avatar: string;

@@ -10,7 +10,10 @@ export function UserAvatar({
 	avatarWidth: number;
 }) {
 	return (
-		<div className={`w-[${avatarWidth}px] rounded-full aspect-square overflow-hidden relative`}>
+		<div
+			className={`rounded-full aspect-square overflow-hidden relative`}
+			style={{ width: avatarWidth }}
+		>
 			<Image
 				className='object-cover'
 				src={userAvatarUrl || '/anonymous.jpg'}

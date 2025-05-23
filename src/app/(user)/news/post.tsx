@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 import { FileIcon } from '@/components/ui/FileIcon';
 import { HighlightedCode } from '@/components/ui/highlightedCode';
+import { ImageSlider } from '@/components/ui/imageSlider';
 import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { publicPage } from '@/config/public-page.config';
@@ -48,53 +49,56 @@ export const Post = (post: Props) => {
 				</div>
 				<div className={styles.infoWrapper}>
 					<span>{post.user_name}</span>
-					<span>{transformCreateDate(post.posted_ago)}</span>
+					<span>{transformCreateDate(post.created_at)}</span>
 				</div>
 				<PostFunctions
 					user_id={post.user_id}
 					item_id={post.id}
 				/>
 			</div>
-			<div className='flex flex-col gap-2'>
-				{post.title && <h3 className={ubuntu.className}>{post.title}</h3>}
-				{post.description && (
-					<p className={`${styles.description} ${post.isFull ? '' : styles.shortDescription}`}>
-						{post.description}
-					</p>
-				)}
-				{post.code && post.prog_language && (
-					<HighlightedCode
-						code={post.code}
-						language={post.prog_language}
-					/>
-				)}
-				{post.files && post.files?.length > 0 && (
-					<div className='flex flex-wrap'>
-						{post.files.map(file => (
-							<Image
-								key={file.id}
-								src={file.file_url}
-								width={250}
-								height={250}
-								alt={file.file_url}
-							/>
-						))}
-					</div>
-				)}
-				{post.attachments && post.attachments?.length > 0 && (
-					<div>
-						{post.attachments.map(attachment => (
-							<Link
-								href={attachment.attachment_url}
-								key={attachment.id}
-								className='flex gap-1'
-							>
-								<FileIcon mime={attachment.mime_type} />
-								<span>{attachment.original_filename}</span>
-							</Link>
-						))}
-					</div>
-				)}
+			<div>
+				<div className='flex flex-col gap-2'>
+					{post.title && <h3 className={ubuntu.className}>{post.title}</h3>}
+					{post.description && (
+						<p className={`${styles.description} ${post.isFull ? '' : styles.shortDescription}`}>
+							{post.description}
+						</p>
+					)}
+					{post.code && post.prog_language && (
+						<HighlightedCode
+							code={post.code}
+							language={post.prog_language}
+						/>
+					)}
+					{post.files && post.files?.length > 0 && (
+						// <ImageSlider images={post.files} />
+						<div className='flex flex-wrap'>
+							{post.files.map(file => (
+								<Image
+									key={file.id}
+									src={file.file_url}
+									width={250}
+									height={250}
+									alt={file.file_url}
+								/>
+							))}
+						</div>
+					)}
+					{post.attachments && post.attachments?.length > 0 && (
+						<div>
+							{post.attachments.map(attachment => (
+								<Link
+									href={attachment.attachment_url}
+									key={attachment.id}
+									className='flex gap-1'
+								>
+									<FileIcon mime={attachment.mime_type} />
+									<span>{attachment.original_filename}</span>
+								</Link>
+							))}
+						</div>
+					)}
+				</div>
 			</div>
 			<div className='flex gap-5 mt-4'>
 				<Like

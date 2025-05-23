@@ -1,6 +1,11 @@
 import clsx from 'clsx';
 import Link from 'next/link';
-import type { ButtonHTMLAttributes, FormEventHandler, MouseEventHandler } from 'react';
+import type {
+	ButtonHTMLAttributes,
+	FormEventHandler,
+	MouseEventHandler,
+	MutableRefObject,
+} from 'react';
 
 import styles from './Buttons.module.css';
 
@@ -8,6 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	text: string;
 	isSubmit?: boolean;
 	click?: MouseEventHandler | FormEventHandler | undefined;
+	ref?: MutableRefObject<HTMLButtonElement | null>;
 }
 
 interface ButtonLinkProps {

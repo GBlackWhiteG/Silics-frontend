@@ -1,8 +1,9 @@
 'use client';
 
+import type { AxiosError } from 'axios';
 import { Code, Heading, ImagePlus, Paperclip } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
@@ -92,7 +93,7 @@ export function PostInput(props: Props) {
 
 		try {
 			const response = await postsService.addPost(formDataToSend);
-			if (response.status === 201 && props.stateNewPost) {
+			if (response && response.status === 201 && props.stateNewPost) {
 				props.stateNewPost(response.data);
 				setFormData({
 					title: '',
@@ -106,8 +107,21 @@ export function PostInput(props: Props) {
 					fileInputRef.current.value = '';
 				}
 			}
-		} catch (err) {
-			console.log(err);
+		} catch (err: AxiosError | any) {
+			const errorMessage = err?.response.data?.errors || err?.message;
+
+			let message = '';
+			if (errorMessage) {
+				for (const [key, value] of Object.entries(errorMessage)) {
+					if (value instanceof Array) {
+						message += `${key}: ${value[0]}\n`;
+					} else {
+						message += `${key}: ${value}\n`;
+					}
+				}
+			}
+
+			toast.error(message);
 		}
 	};
 

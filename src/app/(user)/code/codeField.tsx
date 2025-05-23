@@ -29,9 +29,10 @@ hljs.registerLanguage('php', php);
 export function CodeField() {
 	const dispatch = useDispatch();
 	const router = useRouter();
-
+	const runCodeButton = useRef<HTMLButtonElement | null>(null);
 	const codeRef = useRef<HTMLElement | null>(null);
 	const [code, setCode] = useState('');
+	const [isCodeExecuting, setIsCodeExecuting] = useState(false);
 	const copiedCode = useSelector((state: RootState) => state.copiedCode.codeData);
 	const [codeRowsLenght, setCodeRowsLenght] = useState(1);
 	const [activeLine, setActiveLine] = useState<number | null>(null);
@@ -56,6 +57,12 @@ export function CodeField() {
 			setCodeRowsLenght(code.split('\n').length);
 		}
 	}, [language, dispatch]);
+
+	useEffect(() => {
+		if (runCodeButton.current) {
+			runCodeButton.current.disabled = isCodeExecuting;
+		}
+	}, [isCodeExecuting]);
 
 	useEffect(() => {
 		if (codeRef.current) {
@@ -93,7 +100,10 @@ export function CodeField() {
 	};
 
 	const runButtonHandler = async () => {
-		const response = await executionService.sendCodeToQueue({ code, language });
+		setIsCodeExecuting(true);
+		const response = await executionService.sendCodeToQueue({ code, language }).finally(() => {
+			setIsCodeExecuting(false);
+		});
 		if (response) {
 			dispatch(setExecutedCodeAction(response.data.result));
 		}
@@ -121,6 +131,7 @@ export function CodeField() {
 			<div className='flex gap-2 items-center mb-2'>
 				<Button
 					text={'Запуск'}
+					ref={runCodeButton}
 					onClick={runButtonHandler}
 					className='justify-self-start'
 				></Button>
