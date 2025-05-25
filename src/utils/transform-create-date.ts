@@ -1,4 +1,4 @@
-import { getTimeString } from './transform-words';
+import { getTransformedWord } from './transform-words';
 import { EnumTimes } from '@/enums/time.enums';
 
 export const transformCreateDate = (created_at: string) => {
@@ -14,12 +14,12 @@ export const transformCreateDate = (created_at: string) => {
 	if (postedAgo == 0) {
 		return 'Только что';
 	} else if (postedAgo < EnumTimes.MINUTUS) {
-		return `${postedAgo} ${getTimeString(postedAgo, times['minutes'])} назад`;
+		return `${postedAgo} ${getTransformedWord(postedAgo, times['minutes'])} назад`;
 	} else if (postedAgo < EnumTimes.HOURS) {
-		return `${Math.floor(postedAgo / 60)} ${getTimeString(Math.floor(postedAgo / 60), times['hours'])} назад`;
+		return `${Math.floor(postedAgo / 60)} ${getTransformedWord(Math.floor(postedAgo / 60), times['hours'])} назад`;
 	} else if (postedAgo < EnumTimes.DAYS) {
-		return `${Math.floor(postedAgo / 1440)} ${getTimeString(Math.floor(postedAgo / 1440), times['days'])} назад`;
+		return `${Math.floor(postedAgo / 1440)} ${getTransformedWord(Math.floor(postedAgo / 1440), times['days'])} назад`;
 	} else {
-		return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+		return `${date.toLocaleDateString()}`;
 	}
 };

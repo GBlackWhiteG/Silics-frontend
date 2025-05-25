@@ -24,6 +24,7 @@ export function News() {
 
 	const [newPost, setNewPost] = useState<IPostFull | null>(null);
 
+	const changedPostData = useSelector((state: RootState) => state.changedPost.post);
 	const deletedPostId = useSelector((state: RootState) => state.deletedPostId.id);
 
 	useEffect(() => {
@@ -36,6 +37,12 @@ export function News() {
 			ids.current.add(post.id);
 		}
 	}, [newPost]);
+
+	useEffect(() => {
+		if (changedPostData) {
+			setPosts(prev => prev.map(post => (post.id === changedPostData.id ? changedPostData : post)));
+		}
+	}, [changedPostData]);
 
 	useEffect(() => {
 		if (deletedPostId) {

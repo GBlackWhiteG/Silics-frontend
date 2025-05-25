@@ -4,7 +4,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import php from 'highlight.js/lib/languages/php';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/xcode.css';
-import { File, MessageSquare } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -54,6 +54,7 @@ export const Post = (post: Props) => {
 				<PostFunctions
 					user_id={post.user_id}
 					item_id={post.id}
+					post={post}
 				/>
 			</div>
 			<div>

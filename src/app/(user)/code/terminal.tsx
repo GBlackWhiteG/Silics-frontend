@@ -24,6 +24,7 @@ export function Terminal() {
 				<Button
 					text={'Очистить'}
 					className='mb-2 justify-self-end'
+					isInverted={true}
 					onClick={buttonHandler}
 				></Button>
 			</div>

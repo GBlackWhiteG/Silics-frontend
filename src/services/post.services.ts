@@ -16,16 +16,17 @@ class PostsService {
 		return instance.get<IPosts>(`${this._POSTS}/user/${id}`);
 	}
 
-	// async addPost(data: FormData) {
-	// 	return instance
-	// 		.post<IPostFull>(this._POSTS, data)
-	// 		.then(res => res)
-	// 		.catch(err => err);
-	// }
-
 	async addPost(data: FormData) {
 		try {
 			return instance.post<IPostFull>(this._POSTS, data);
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	async changePost(data: FormData, id: number) {
+		try {
+			return instance.post<IPostFull>(`${this._POSTS}/${id}`, data);
 		} catch (err) {
 			throw err;
 		}

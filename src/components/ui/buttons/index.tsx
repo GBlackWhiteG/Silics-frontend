@@ -12,6 +12,7 @@ import styles from './Buttons.module.css';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	text: string;
 	isSubmit?: boolean;
+	isInverted?: boolean;
 	click?: MouseEventHandler | FormEventHandler | undefined;
 	ref?: MutableRefObject<HTMLButtonElement | null>;
 }
@@ -25,13 +26,14 @@ interface ButtonLinkProps {
 export const Button: React.FC<ButtonProps> = ({
 	text,
 	isSubmit = false,
+	isInverted = false,
 	click = undefined,
 	className,
 	...props
 }) => {
 	return (
 		<button
-			className={clsx(styles.button, className)}
+			className={clsx(isInverted ? styles.invertedButton : styles.button, className)}
 			type={isSubmit ? 'submit' : 'button'}
 			onClick={click}
 			{...props}
