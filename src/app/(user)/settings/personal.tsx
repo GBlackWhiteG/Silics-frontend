@@ -35,6 +35,7 @@ export function Personal() {
 				setPersonalData(prev => ({ ...prev, ['biography']: data.biography }));
 				setAvatarUrl(data.avatar_url);
 			}
+			console.log(response);
 		};
 
 		if (userId) getProfileData();

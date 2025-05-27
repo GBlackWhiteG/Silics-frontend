@@ -10,7 +10,12 @@ export function FileIcon({ mime }: { mime: string }) {
 		mime.includes('word')
 	)
 		return <FileText />;
-	if (mime.includes('javascript') || mime.includes('x-python') || mime.includes('x-c'))
+	if (
+		mime.includes('javascript') ||
+		mime.includes('x-python') ||
+		mime.includes('x-c') ||
+		mime.includes('x-httpd-php')
+	)
 		return <FileCode />;
 	return <FileQuestion />;
 }

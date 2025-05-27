@@ -33,10 +33,7 @@ interface Props extends IPostFull {
 
 export const Post = (post: Props) => {
 	return (
-		<div
-			key={post.id}
-			className={styles.post}
-		>
+		<div className={styles.post}>
 			<div className={styles.userInfo}>
 				<div className={styles.imageWrapper}>
 					<Link href={`${publicPage.PROFILE}/${post.user_id}`}>

@@ -12,8 +12,8 @@ class PostsService {
 		return instance.get<IPosts>(`${this._POSTS}?page=${page}&order_by=${orderBy}`);
 	}
 
-	async getUserPosts(id: number) {
-		return instance.get<IPosts>(`${this._POSTS}/user/${id}`);
+	async getUserPosts(id: number, page = 1) {
+		return instance.get<IPosts>(`${this._POSTS}/user/${id}?page=${page}`);
 	}
 
 	async addPost(data: FormData) {

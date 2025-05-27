@@ -29,6 +29,7 @@ export async function Profile({ id }: { id: number }) {
 							<b className='text-[--primary]'>{profileData.subscriptions_count || 0}</b> подписок
 						</span>
 					</div>
+					<p className='text-gray-500'>{profileData.biography}</p>
 				</div>
 				<div>
 					<ProfileButtons

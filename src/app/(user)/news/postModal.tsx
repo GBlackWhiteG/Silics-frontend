@@ -1,11 +1,11 @@
 'use client';
 
 import type { AxiosError } from 'axios';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Undo2, X } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
 import { FileIcon } from '@/components/ui/FileIcon';
@@ -38,6 +38,8 @@ export function PostModal({
 		prog_language: post.prog_language,
 		files: null as FileList | null,
 		attachments: null as FileList | null,
+		deleteFiles: new Set<number>(),
+		deleteAttachments: new Set<number>(),
 	});
 
 	const handleChange = (
@@ -55,13 +57,28 @@ export function PostModal({
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const { title, description, code, prog_language, files, attachments } = formData;
+		const {
+			title,
+			description,
+			code,
+			prog_language,
+			files,
+			attachments,
+			deleteFiles,
+			deleteAttachments,
+		} = formData;
 		const formDataToSend = new FormData();
 
 		formDataToSend.append('title', title || '');
 		formDataToSend.append('description', description || '');
 		formDataToSend.append('code', code || '');
 		formDataToSend.append('prog_language', prog_language || '');
+		Array.from(deleteFiles).forEach(num => [
+			formDataToSend.append('delete_files[]', num.toString()),
+		]);
+		Array.from(deleteAttachments).forEach(num => [
+			formDataToSend.append('delete_attachments[]', num.toString()),
+		]);
 
 		if (files) {
 			Array.from(files).forEach(file => {
@@ -84,7 +101,22 @@ export function PostModal({
 				dispatch(setChangedPostAction(response.data));
 			}
 		} catch (err: AxiosError | any) {
-			console.log(err);
+			const errorMessage = err?.response.data?.errors || err?.response.data.error;
+
+			let message = '';
+			if (errorMessage && typeof errorMessage === 'object') {
+				for (const [key, value] of Object.entries(errorMessage)) {
+					if (value instanceof Array) {
+						message += `${key}: ${value[0]}\n`;
+					} else {
+						message += `${key}: ${value}\n`;
+					}
+				}
+			} else {
+				message = errorMessage;
+			}
+
+			toast.error(message);
 		}
 	};
 
@@ -135,15 +167,51 @@ export function PostModal({
 					<span>Изображения:</span>
 					<div className='flex items-center gap-1'>
 						{post.files && post.files?.length > 0 && (
-							<div className='flex flex-wrap gap-2'>
+							<div className='flex flex-wrap items-center gap-2'>
 								{post.files.map(file => (
-									<Image
+									<div
 										key={file.id}
-										src={file.file_url}
-										width={50}
-										height={50}
-										alt={file.file_url}
-									/>
+										className='cursor-pointer relative group'
+									>
+										<Image
+											key={file.id}
+											src={file.file_url}
+											width={50}
+											height={50}
+											alt={file.file_url}
+											className={`${formData.deleteFiles.has(file.id) && 'opacity-40'}`}
+										/>
+										{!formData.deleteFiles.has(file.id) && (
+											<div
+												className='w-full h-full flex justify-center items-center opacity-0 bg-red-500 bg-opacity-50 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition group-hover:opacity-100'
+												onClick={() =>
+													setFormData(prev => ({
+														...prev,
+														deleteFiles: new Set(prev.deleteFiles).add(file.id),
+													}))
+												}
+											>
+												<X />
+											</div>
+										)}
+										{formData.deleteFiles.has(file.id) && (
+											<div
+												className='w-full h-full flex justify-center items-center opacity-0 bg-green-500 bg-opacity-50 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition group-hover:opacity-100'
+												onClick={() =>
+													setFormData(prev => {
+														const updatedSet = new Set(prev.deleteFiles);
+														updatedSet.delete(file.id);
+														return {
+															...prev,
+															deleteFiles: updatedSet,
+														};
+													})
+												}
+											>
+												<Undo2 />
+											</div>
+										)}
+									</div>
 								))}
 							</div>
 						)}
@@ -180,14 +248,45 @@ export function PostModal({
 						{post.attachments && post.attachments?.length > 0 && (
 							<div>
 								{post.attachments.map(attachment => (
-									<Link
-										href={attachment.attachment_url}
+									<div
 										key={attachment.id}
-										className='flex gap-1'
+										className='rounded-md overflow-hidden cursor-pointer relative group'
 									>
-										<FileIcon mime={attachment.mime_type} />
-										<span>{attachment.original_filename}</span>
-									</Link>
+										<div className='flex gap-1 p-1'>
+											<FileIcon mime={attachment.mime_type} />
+											<span>{attachment.original_filename}</span>
+										</div>
+										{!formData.deleteAttachments.has(attachment.id) && (
+											<div
+												className='w-full h-full flex justify-center items-center opacity-0 bg-red-500 bg-opacity-50 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition group-hover:opacity-100'
+												onClick={() =>
+													setFormData(prev => ({
+														...prev,
+														deleteAttachments: new Set(prev.deleteAttachments).add(attachment.id),
+													}))
+												}
+											>
+												<X />
+											</div>
+										)}
+										{formData.deleteAttachments.has(attachment.id) && (
+											<div
+												className='w-full h-full flex justify-center items-center opacity-0 bg-green-500 bg-opacity-50 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition group-hover:opacity-100'
+												onClick={() =>
+													setFormData(prev => {
+														const updatedSet = new Set(prev.deleteAttachments);
+														updatedSet.delete(attachment.id);
+														return {
+															...prev,
+															deleteAttachments: updatedSet,
+														};
+													})
+												}
+											>
+												<Undo2 />
+											</div>
+										)}
+									</div>
 								))}
 							</div>
 						)}
