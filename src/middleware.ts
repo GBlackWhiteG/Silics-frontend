@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { publicPage } from './config/public-page.config';
 import { EnumTokens } from './enums/auth.enums';
 
 export async function middleware(request: NextRequest) {
@@ -21,5 +22,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/news'],
+	matcher: ['/', publicPage.NEWS],
 };

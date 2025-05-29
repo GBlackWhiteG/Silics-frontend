@@ -6,6 +6,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import php from 'highlight.js/lib/languages/php';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/xcode.css';
+import { BookMarked, Check, CopyIcon, Share } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,8 +38,12 @@ export function CodeField() {
 	const [codeRowsLenght, setCodeRowsLenght] = useState(1);
 	const [activeLine, setActiveLine] = useState<number | null>(null);
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+	const [isCopied, setIsCopied] = useState(false);
 
 	const [language, setLanguage] = useState<string>('php');
+
+	const savedCode = JSON.parse(localStorage.getItem('saved_code') || '{}');
+	const savedLang = savedCode.language;
 
 	useEffect(() => {
 		if (copiedCode.code) {
@@ -47,16 +52,28 @@ export function CodeField() {
 			setLanguage(language);
 			setCodeRowsLenght(code.split('\n').length);
 			dispatch(clearCodeRunAction());
-		}
-	}, [copiedCode]);
-
-	useEffect(() => {
-		if (!copiedCode.code && laguagesInitalCodeData[language]) {
+		} else if (savedCode.code) {
+			const { code, language } = savedCode;
+			setCode(code);
+			setLanguage(language);
+			setCodeRowsLenght(code.split('\n').length);
+		} else {
 			const code = laguagesInitalCodeData[language];
 			setCode(code);
 			setCodeRowsLenght(code.split('\n').length);
 		}
-	}, [language, dispatch]);
+	}, []);
+
+	useEffect(() => {
+		let langCode = '';
+		if (savedLang === language) {
+			langCode = savedCode.code;
+		} else if (!copiedCode.code && laguagesInitalCodeData[language]) {
+			langCode = laguagesInitalCodeData[language];
+		}
+		setCode(langCode);
+		setCodeRowsLenght(langCode.split('\n').length);
+	}, [language]);
 
 	useEffect(() => {
 		if (runCodeButton.current) {
@@ -68,7 +85,6 @@ export function CodeField() {
 		if (codeRef.current) {
 			try {
 				delete codeRef.current.dataset.highlighted;
-				//@ts-ignore
 				hljs.highlightElement(codeRef.current);
 			} catch (error) {
 				console.error(`Ошибка подсветки кода для языка ${language}:`, error);
@@ -96,6 +112,11 @@ export function CodeField() {
 
 			textarea.value = value.slice(0, start) + '\t' + value.slice(end);
 			textarea.selectionStart = textarea.selectionEnd = start + 1;
+		}
+
+		if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+			e.preventDefault();
+			localStorage.setItem('saved_code', JSON.stringify({ language, code }));
 		}
 	};
 
@@ -126,23 +147,56 @@ export function CodeField() {
 		setCodeRowsLenght(value.split('\n').length);
 	};
 
+	const copyToClipboard = () => {
+		navigator.clipboard.writeText(code || '');
+		setIsCopied(true);
+		setTimeout(() => setIsCopied(false), 2000);
+	};
+
 	return (
 		<div className='grid grid-rows-[auto_1fr]'>
-			<div className='flex gap-2 items-center mb-2'>
+			<div className='flex gap-2 mb-2'>
 				<Button
 					text={'Запуск'}
 					ref={runCodeButton}
 					onClick={runButtonHandler}
 					className='justify-self-start'
 				></Button>
-				<Button
-					text={'Поделиться'}
+				<div
+					className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer ml-auto'
 					onClick={shareButtonHandler}
-				/>
+				>
+					<Share
+						size={16}
+						className='text-white font-bold'
+					/>
+				</div>
+				<div
+					className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer'
+					onClick={copyToClipboard}
+				>
+					{isCopied ? (
+						<Check
+							size={16}
+							className='text-white'
+						/>
+					) : (
+						<CopyIcon
+							size={16}
+							className='text-white'
+						/>
+					)}
+				</div>
+				<div className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer'>
+					<BookMarked
+						size={16}
+						className='text-white'
+					/>
+				</div>
 				<select
 					value={language}
 					onChange={e => handleChangeLanguage(e)}
-					className='h-full'
+					className='h-full justify-self-end border-solid border-2 border-[--primary] rounded-md mr-2'
 				>
 					<option value='php'>PHP</option>
 					<option value='python'>Python</option>

@@ -87,12 +87,10 @@ export function Comments({ postId }: { postId: number }) {
 									{transformCreateDate(comment.created_at)}
 								</span>
 							</div>
-							{userId === comment.user.id && (
-								<CommentFunctions
-									user_id={comment.user.id}
-									item_id={comment.id}
-								/>
-							)}
+							<CommentFunctions
+								user_id={comment.user.id}
+								item_id={comment.id}
+							/>
 						</div>
 						<div className='flex flex-col gap-2'>
 							<p>{comment.content}</p>

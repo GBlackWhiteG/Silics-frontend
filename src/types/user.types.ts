@@ -6,6 +6,8 @@ export interface IUser {
 	nickname: string;
 	email: string;
 	avatar_url: string;
+	role: string;
+	is_blocked: boolean;
 	email_verified_at: string;
 	created_at: string;
 	updated_at: string;

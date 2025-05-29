@@ -1,6 +1,7 @@
 'use client';
 
 import { CircleUserRound, Code, Contact, MessageCircle, Newspaper, Settings } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import type { ISideBarNavigationItem } from '@/components/layout/sidebar/navigation/navigation.types';
@@ -13,6 +14,7 @@ import { Profile } from './profile';
 import type { RootState } from '@/store';
 
 export function Sidebar() {
+	const pathname = usePathname();
 	const userData = useSelector((state: RootState) => state.auth.auth);
 
 	const SIDEBAR_NAVIGATION_DATA: ISideBarNavigationItem[] = [
@@ -52,7 +54,7 @@ export function Sidebar() {
 	];
 
 	return (
-		<article className={`${styles.sidebar}`}>
+		<article className={`${styles.sidebar} ${pathname == publicPage.CODE && styles.miniSidebar}`}>
 			<Profile />
 			<Navigation menu={SIDEBAR_NAVIGATION_DATA} />
 		</article>

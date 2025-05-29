@@ -20,6 +20,6 @@ export const transformCreateDate = (created_at: string) => {
 	} else if (postedAgo < EnumTimes.DAYS) {
 		return `${Math.floor(postedAgo / 1440)} ${getTransformedWord(Math.floor(postedAgo / 1440), times['days'])} назад`;
 	} else {
-		return `${date.toLocaleDateString()}`;
+		return `${date.toLocaleDateString('ru-RU')}`;
 	}
 };

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { LogIn, LogOut, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -20,6 +20,7 @@ export function Navigation() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 	const router = useRouter();
+	const pathname = usePathname();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -38,7 +39,11 @@ export function Navigation() {
 	};
 
 	const searchPosts = async () => {
-		if (!searchQuery) return;
+		if (!searchQuery) {
+			if (pathname === publicPage.NEWS) return;
+			router.push(publicPage.NEWS);
+			return;
+		}
 		const response = await searchService.search(searchQuery);
 		dispatch(setSearchResultsAction(response.data));
 		router.push(`${publicPage.NEWS}/search`);
@@ -55,12 +60,14 @@ export function Navigation() {
 			<div className='container'>
 				<section className={styles.navigationContentWrapper}>
 					<div className={styles.wrapperLogo}>
-						<Image
-							src='/logo.svg'
-							alt='logo'
-							width={80}
-							height={32}
-						/>
+						<Link href={publicPage.NEWS}>
+							<Image
+								src='/logo.svg'
+								alt='logo'
+								width={80}
+								height={32}
+							/>
+						</Link>
 					</div>
 					<div className={styles.searchInput}>
 						<Search

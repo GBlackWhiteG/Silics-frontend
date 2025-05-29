@@ -34,7 +34,8 @@ export async function Profile({ id }: { id: number }) {
 				<div>
 					<ProfileButtons
 						id={profileData.id}
-						isSub={profileData.is_subscribed}
+						isSubscribed={profileData.is_subscribed}
+						isBlocked={profileData.is_blocked}
 					/>
 				</div>
 			</div>

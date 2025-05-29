@@ -17,16 +17,24 @@ export default async function Page({ params }: { params: { id: number } }) {
 	const post = await postsService.getPost(slug);
 
 	return (
-		<div className='flex flex-col gap-4'>
-			<Post
-				{...post.data}
-				isFull={true}
-			/>
+		<section className='grid grid-cols-[1fr_250px] gap-4'>
+			<div className='flex flex-col gap-4'>
+				<Post
+					{...post.data}
+					isFull={true}
+				/>
 
-			<div className='sidebar-items'>
-				<CommentInput postId={slug} />
+				<div className='sidebar-items'>
+					<CommentInput postId={slug} />
+				</div>
+				<Comments postId={slug} />
 			</div>
-			<Comments postId={slug} />
-		</div>
+			<article className={`sidebar-items`}>
+				<h2>Уведомления</h2>
+				<ul>
+					<li></li>
+				</ul>
+			</article>
+		</section>
 	);
 }

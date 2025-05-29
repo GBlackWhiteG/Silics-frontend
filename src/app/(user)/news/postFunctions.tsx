@@ -28,6 +28,7 @@ export function PostFunctions({
 	const pathname = usePathname();
 	const dispatch = useDispatch();
 	const userId = useSelector((state: RootState) => state.auth.auth.id);
+	const userRole = useSelector((state: RootState) => state.auth.auth.role);
 
 	const isDetailPage = pathname === `${publicPage.NEWS}/${post.id}`;
 
@@ -55,7 +56,11 @@ export function PostFunctions({
 
 	return (
 		<>
-			{userId === user_id && <ItemFunctions funcs={[buttonChangeHandler, buttonDeleteHandler]} />}
+			{userId === user_id ? (
+				<ItemFunctions funcs={[buttonChangeHandler, buttonDeleteHandler]} />
+			) : (
+				userRole === 'admin' && <ItemFunctions funcs={[buttonDeleteHandler]} />
+			)}
 
 			{isPostModalOpen && (
 				<PostModal

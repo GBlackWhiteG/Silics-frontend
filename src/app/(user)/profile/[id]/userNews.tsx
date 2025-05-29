@@ -13,6 +13,7 @@ import type { RootState } from '@/store';
 import type { IPostFull } from '@/types/post.types';
 
 export function UserPosts({ id }: { id: number }) {
+	const authId = useSelector((state: RootState) => state.auth.auth.id);
 	const changedPostData = useSelector((state: RootState) => state.changedPost.post);
 	const deletedPostId = useSelector((state: RootState) => state.deletedPostId.id);
 
@@ -70,7 +71,7 @@ export function UserPosts({ id }: { id: number }) {
 
 	return (
 		<>
-			<PostInput stateNewPost={(post: IPostFull) => setNewPost(post)} />
+			{authId == id && <PostInput stateNewPost={(post: IPostFull) => setNewPost(post)} />}
 			<Posts posts={posts} />
 			<div ref={ref}></div>
 		</>

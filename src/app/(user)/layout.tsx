@@ -2,7 +2,6 @@ import { Inter } from 'next/font/google';
 
 import { Footer } from '@/components/layout/footer';
 import { Navigation } from '@/components/layout/navigation';
-import { RightColumn } from '@/components/layout/rightColumn';
 import { Sidebar } from '@/components/layout/sidebar';
 
 import '@/app/globals.css';
@@ -22,7 +21,6 @@ export default function Layout({
 					<div className='wrapper__content'>
 						<Sidebar />
 						{children}
-						<RightColumn />
 					</div>
 				</div>
 			</main>
