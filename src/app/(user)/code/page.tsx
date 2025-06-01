@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { CodeField } from './codeField';
 import { Drafts } from './drafts';
+import { Sandbox } from './sandbox';
 import { Terminal } from './terminal';
 
 export const metadata: Metadata = {
@@ -11,12 +12,8 @@ export const metadata: Metadata = {
 
 export default function Code() {
 	return (
-		<section className='w-full grid grid-cols-[1fr_80px] gap-4'>
-			<div className='grid grid-cols-2 mb-2'>
-				<CodeField />
-				<Terminal />
-			</div>
-			<Drafts />
+		<section className='w-full grid grid-cols-[1fr_120px] gap-4'>
+			<Sandbox />
 		</section>
 	);
 }
