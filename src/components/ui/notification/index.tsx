@@ -7,8 +7,6 @@ import Pusher from 'pusher-js';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { API_URL } from '@/constants/constants';
-
 import { publicPage } from '@/config/public-page.config';
 
 import { UserAvatar } from '../userAvatar';
@@ -34,7 +32,7 @@ window.Echo = new Echo({
 	forceTLS: false,
 	disableStats: true,
 	encrypted: false,
-	authEndpoint: API_URL + '/broadcasting/auth',
+	authEndpoint: 'http://82.202.131.212:8080/api' + '/broadcasting/auth',
 	auth: {
 		headers: {
 			Authorization: 'Bearer ' + Cookies.get(EnumTokens.ACCESS_TOKEN),
@@ -72,7 +70,6 @@ export function Notification() {
 		window.Echo.private(`notification.${userId}`).listen(
 			'AddCommentEvent',
 			(notif: IPostNotification) => {
-				console.log(notif);
 				setNotifications(prev => [notif, ...prev]);
 			},
 		);

@@ -1,6 +1,5 @@
 'use client';
 
-// @ts-ignore
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import php from 'highlight.js/lib/languages/php';
@@ -46,7 +45,6 @@ export function HighlightedCode({ code, language }: Props) {
 		if (codeRef.current) {
 			try {
 				delete codeRef.current.dataset.highlighted;
-				//@ts-ignore
 				hljs.highlightElement(codeRef.current);
 			} catch (error) {
 				console.error(`Ошибка подсветки кода для языка ${language}:`, error);

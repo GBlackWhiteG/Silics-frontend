@@ -26,7 +26,7 @@ export function PostInput(props: Props) {
 	const dispatch = useDispatch();
 	const userAvatar = useSelector((state: RootState) => state.auth.auth.avatar_url);
 	const sharedCodeData = useSelector((state: RootState) => state.sharedCode.codeData);
-	const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+	const [isInputFocused] = useState<boolean>(false);
 
 	const [formOptions, setFormOptions] = useState({
 		header: false,

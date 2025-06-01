@@ -2,7 +2,6 @@ import Cookies from 'js-cookie';
 
 import { axiosClassic } from '@/api/axios';
 
-import { authServices } from './auth.services';
 import { EnumTokens } from '@/enums/auth.enums';
 
 class EmailServices {

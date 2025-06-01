@@ -1,6 +1,6 @@
 'use client';
 
-import { CircleUserRound, Code, Contact, MessageCircle, Newspaper, Settings } from 'lucide-react';
+import { CircleUserRound, Code, Contact, Newspaper, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
 

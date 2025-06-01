@@ -1,5 +1,3 @@
-import type { AxiosError } from 'axios';
-
 import { instance } from '@/api/axios';
 import { instanceServer } from '@/api/axios-server';
 
