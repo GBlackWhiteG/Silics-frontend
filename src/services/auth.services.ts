@@ -43,7 +43,7 @@ class AuthServices {
 
 	saveTokenStorage(accessToken: string) {
 		Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
-			domain: 'https://silics-frontend-a1n9.vercel.app/',
+			domain: 'silics-frontend-a1n9.vercel.app',
 			sameSite: 'strict',
 			expires: 1,
 			secure: true,
