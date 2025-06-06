@@ -32,7 +32,7 @@ export function Notification() {
 			broadcaster: 'reverb',
 			key: 'hftflka8arwo3bbhzmjm',
 			wsHost: '82.202.131.212',
-			wsPort: 8080,
+			wsPort: 80,
 			forceTLS: false,
 			disableStats: true,
 			encrypted: false,
