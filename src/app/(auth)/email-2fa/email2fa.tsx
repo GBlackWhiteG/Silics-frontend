@@ -20,8 +20,8 @@ export function Email2fa() {
 		});
 
 		if (response.status === 200) {
-			router.push(publicPage.NEWS);
 			authServices.saveTokenStorage(response.data.token);
+			router.push(publicPage.NEWS);
 		}
 	};
 
