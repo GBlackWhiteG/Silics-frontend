@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+import { Loader } from '@/components/ui/loader';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
@@ -10,5 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-	return <VerifyEmail />;
+	return (
+		<Suspense fallback={<Loader />}>
+			<VerifyEmail />
+		</Suspense>
+	);
 }

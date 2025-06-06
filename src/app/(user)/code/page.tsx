@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 
-import { CodeField } from './codeField';
-import { Drafts } from './drafts';
 import { Sandbox } from './sandbox';
-import { Terminal } from './terminal';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
 	title: 'Песочница',

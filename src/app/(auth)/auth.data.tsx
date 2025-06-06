@@ -96,7 +96,7 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 			if (response.status === 200) {
 				router.push(publicPage.NOT_VERIFIED_EMAIL);
 			}
-		} catch (error: AxiosError) {
+		} catch (error: AxiosError | any) {
 			const errors = JSON.parse(error.response.data);
 			Object.keys(errors).forEach((key: string) => {
 				toast.error(errors[key][0]);

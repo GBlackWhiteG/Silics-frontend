@@ -3,11 +3,9 @@ import Image from 'next/image';
 import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { ProfileButtons } from './profileButtons';
-import { userServices } from '@/services/user.services';
+import type { IFullUser } from '@/types/user.types';
 
-export async function Profile({ id }: { id: number }) {
-	const profileData = (await userServices.getProfileServer({ id })).data;
-
+export async function Profile({ profileData }: { profileData: IFullUser }) {
 	return (
 		<div className='items flex flex-col gap-4'>
 			<div>
@@ -29,7 +27,7 @@ export async function Profile({ id }: { id: number }) {
 							<b className='text-[--primary]'>{profileData.subscriptions_count || 0}</b> подписок
 						</span>
 					</div>
-					<p className='text-gray-500'>{profileData.biography}</p>
+					{profileData.biography && <p className='text-gray-500'>{profileData.biography}</p>}
 				</div>
 				<div>
 					<ProfileButtons

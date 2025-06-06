@@ -1,28 +1,36 @@
 import type { Metadata } from 'next';
 
+import { Notification } from '@/components/ui/notification';
+
 import { Profile } from './profile';
 import { UserPosts } from './userNews';
+import { userServices } from '@/services/user.services';
 
-export const metadata: Metadata = {
-	title: 'Профиль',
-	description: '',
+type Props = {
+	params: Promise<{ id: string }>;
 };
 
-export default async function Page({ params }: { params: { id: number } }) {
-	const id = params.id;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { id } = await params;
+	const profileData = (await userServices.getProfileServer({ id: Number(id) })).data;
+
+	return {
+		title: profileData.name,
+		description: profileData.biography,
+	};
+}
+
+export default async function Page({ params }: Props) {
+	const { id } = await params;
+	const profileData = (await userServices.getProfileServer({ id: Number(id) })).data;
 
 	return (
 		<section className='w-full grid grid-cols-[1fr_250px] gap-4'>
 			<div className='flex flex-col gap-4'>
-				<Profile id={id} />
-				<UserPosts id={id} />
+				<Profile profileData={profileData} />
+				<UserPosts id={Number(id)} />
 			</div>
-			<article className={`sidebar-items`}>
-				<h2>Уведомления</h2>
-				<ul>
-					<li></li>
-				</ul>
-			</article>
+			<Notification />
 		</section>
 	);
 }
