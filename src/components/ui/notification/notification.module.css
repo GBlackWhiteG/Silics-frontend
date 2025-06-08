@@ -1,0 +1,16 @@
+@media (max-width: 1120px) {
+	.notifications {
+		max-width: 80px;
+		overflow: hidden;
+	}
+
+	.notifications a {
+		opacity: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.notifications {
+		display: none;
+	}
+}

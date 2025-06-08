@@ -15,7 +15,7 @@ export async function Profile({ profileData }: { profileData: IFullUser }) {
 					avatarWidth={150}
 				/>
 			</div>
-			<div className='flex justify-between items-end'>
+			<div className='flex justify-between items-stretch gap-2 flex-column flex-col md:items-end md:flex-row'>
 				<div className='flex flex-col gap-1'>
 					<span className='text-2xl'>{profileData.name}</span>
 					<span className='text-gray-500'>@{profileData.nickname}</span>

@@ -18,7 +18,7 @@ export function Terminal() {
 	};
 
 	return (
-		<div className='grid grid-rows-[auto_1fr]'>
+		<div className='h-full grid grid-rows-[auto_1fr] max-h-[200px] xl:max-h-none'>
 			<div className='flex justify-between items-center pl-2 pr-2'>
 				<span>Вывод</span>
 				<Button

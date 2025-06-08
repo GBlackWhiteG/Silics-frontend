@@ -23,6 +23,13 @@ class AuthServices {
 		return response;
 	}
 
+	async changePassword(
+		id: number,
+		data: { old_password: string; new_password: string; new_password_confirmation: string },
+	) {
+		return instance.post(`${this._AUTH}/change-password/${id}`, data);
+	}
+
 	async logout() {
 		const response = await axiosClassic.post<{ message: string }>(`${this._AUTH}/logout`);
 
@@ -43,7 +50,7 @@ class AuthServices {
 
 	saveTokenStorage(accessToken: string) {
 		Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
-			domain: 'silics-frontend-a1n9.vercel.app',
+			domain: 'localhost', //silics-frontend-a1n9.vercel.app
 			sameSite: 'strict',
 			expires: 1,
 			secure: true,

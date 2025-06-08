@@ -130,8 +130,8 @@ export function PostInput(props: Props) {
 			className='flex flex-col gap-7 w-full rounded-lg p-4 bg-foreground'
 			onSubmit={handleSubmit}
 		>
-			<div className='grid grid-cols-[auto_1fr_auto] gap-4'>
-				<div className={styles.wrapperImage}>
+			<div className='grid grid-cols-[1fr] gap-2 md:grid-cols-[auto_1fr_auto] md:gap-4'>
+				<div className={`${styles.wrapperImage} hidden md:block`}>
 					<UserAvatar
 						userAvatarUrl={userAvatar}
 						userName='user-avatar'
@@ -200,7 +200,7 @@ export function PostInput(props: Props) {
 					className='max-h-10'
 				/>
 			</div>
-			<div className='flex gap-4'>
+			<div className='flex gap-4 justify-between sm:justify-start'>
 				<input
 					id='images'
 					type='file'

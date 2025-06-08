@@ -18,6 +18,7 @@ export interface IFullUser extends IUser {
 	subscribers_count: number;
 	subscriptions_count: number;
 	is_subscribed: boolean;
+	is_enabled_two_fa: boolean;
 }
 
 export interface IUsers {

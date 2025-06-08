@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
 	const profileData = (await userServices.getProfileServer({ id: Number(id) })).data;
 
 	return (
-		<section className='w-full grid grid-cols-[1fr_250px] gap-4'>
+		<section className='w-full grid page-grid gap-4'>
 			<div className='flex flex-col gap-4'>
 				<Profile profileData={profileData} />
 				<UserPosts id={Number(id)} />

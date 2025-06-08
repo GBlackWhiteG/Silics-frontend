@@ -11,8 +11,9 @@ import { setAuthAction } from '@/store/authReducer';
 import { authServices } from '@/services/auth.services';
 import { userServices } from '@/services/user.services';
 import type { RootState } from '@/store';
+import type { IFullUser } from '@/types/user.types';
 
-export function Personal() {
+export function Personal({ user }: { user: IFullUser | null }) {
 	const dispatch = useDispatch();
 	const userId = useSelector((state: RootState) => state.auth.auth.id);
 	const [personalData, setPersonalData] = useState({
@@ -25,21 +26,14 @@ export function Personal() {
 	const [avatarUrl, setAvatarUrl] = useState('');
 
 	useEffect(() => {
-		const getProfileData = async () => {
-			const response = await userServices.getProfile({ id: userId });
-			if (response.status === 200) {
-				const data = response.data;
-				setPersonalData(prev => ({ ...prev, ['name']: data.name }));
-				setPersonalData(prev => ({ ...prev, ['nickname']: data.nickname }));
-				setPersonalData(prev => ({ ...prev, ['email']: data.email }));
-				setPersonalData(prev => ({ ...prev, ['biography']: data.biography }));
-				setAvatarUrl(data.avatar_url);
-			}
-			console.log(response);
-		};
-
-		if (userId) getProfileData();
-	}, [userId]);
+		if (user === null) return;
+		const data = user;
+		setPersonalData(prev => ({ ...prev, ['name']: data.name }));
+		setPersonalData(prev => ({ ...prev, ['nickname']: data.nickname }));
+		setPersonalData(prev => ({ ...prev, ['email']: data.email }));
+		setPersonalData(prev => ({ ...prev, ['biography']: data.biography }));
+		setAvatarUrl(data.avatar_url);
+	}, [user]);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -75,14 +69,14 @@ export function Personal() {
 	};
 
 	return (
-		<div>
+		<div className='items'>
 			<h2 className='text-xl mb-4'>Персональные данные</h2>
 			<form
 				action=''
-				className='grid grid-cols-2 gap-10'
+				className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-10'
 				onSubmit={handleSubmit}
 			>
-				<div className='flex flex-col justify-between gap-4'>
+				<div className='contents flex-col justify-between gap-4 md:flex'>
 					<label className='flex flex-col gap-2'>
 						<span>Фото профиля</span>
 						<div className='w-full bg-[--elements-bg] aspect-square rounded-[0.5rem] border-2 border-dashed cursor-pointer relative overflow-hidden'>
@@ -111,7 +105,7 @@ export function Personal() {
 					<Button
 						text={'Сохранить'}
 						type={'submit'}
-						className='w-full'
+						className='w-full order-last md:order-none'
 					/>
 				</div>
 				<div className='w-full flex flex-col gap-4'>

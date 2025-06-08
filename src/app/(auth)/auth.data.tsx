@@ -33,7 +33,12 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 				error: 'Неправильный логин или пароль',
 			});
 			if (response.status === 200) {
-				router.push(publicPage.EMAIL_2FA);
+				if (response.data.token !== undefined) {
+					authServices.saveTokenStorage(response.data.token);
+					router.push(publicPage.NEWS);
+				} else {
+					router.push(publicPage.EMAIL_2FA);
+				}
 			}
 		} catch {
 			toast.error('Неправильный логин или пароль');
@@ -43,10 +48,7 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 	return (
 		<div className={`${styles.login} ${isActive ? styles.activeForm : ''}`}>
 			<h2>Вход</h2>
-			<form
-				action=''
-				className={styles.loginForm}
-			>
+			<form className={styles.loginForm}>
 				<AnimateInput
 					inputText='Эл.почта/номер тел.'
 					name='email'
@@ -107,10 +109,7 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 	return (
 		<div className={`${styles.signup} ${isActive ? styles.activeForm : ''}`}>
 			<h2>Регистрация</h2>
-			<form
-				action=''
-				className={styles.signupForm}
-			>
+			<form className={styles.signupForm}>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
 						inputText='Эл.почта/номер тел.'

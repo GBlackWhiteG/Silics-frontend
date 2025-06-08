@@ -11,6 +11,7 @@ import { publicPage } from '@/config/public-page.config';
 
 import { UserAvatar } from '../userAvatar';
 
+import styles from './notification.module.css';
 import { EnumTokens } from '@/enums/auth.enums';
 import { notificationService } from '@/services/notification.service';
 import type { RootState } from '@/store';
@@ -32,11 +33,11 @@ export function Notification() {
 			broadcaster: 'reverb',
 			key: 'hftflka8arwo3bbhzmjm',
 			wsHost: '82.202.131.212',
-			wsPort: 80,
+			wsPort: 8080,
 			forceTLS: false,
 			disableStats: true,
 			encrypted: false,
-			authEndpoint: '/api/broadcasting/auth',
+			authEndpoint: 'http://82.202.131.212:8876/api/broadcasting/auth',
 			auth: {
 				headers: {
 					Authorization: 'Bearer ' + Cookies.get(EnumTokens.ACCESS_TOKEN),
@@ -91,7 +92,7 @@ export function Notification() {
 	}, [echo, userId]);
 
 	return (
-		<article className={`sidebar-items`}>
+		<article className={`sidebar-items sticky top-4 ${styles.notifications}`}>
 			<h2 className='mx-2'>Уведомления</h2>
 			<ul className='flex flex-col gap-2 mt-2'>
 				{notifications.length > 0 ? (

@@ -12,7 +12,7 @@ export function Sandbox() {
 
 	return (
 		<>
-			<div className='grid grid-cols-2 mb-2'>
+			<div className='flex flex-col gap-4 mb-2 xl:grid xl:grid-cols-2 xl:gap-0'>
 				<CodeField
 					drafts={drafts}
 					setDrafts={setDrafts}

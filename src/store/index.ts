@@ -1,6 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 
 import { authReducer } from './authReducer';
+import { changedCommentReducer } from './changedCommentReducer';
 import { changedPostReducer } from './changedPostReducer';
 import { codeDraftReducer } from './codeDraftReducer';
 import { codeReducer } from './codeRunReducer';
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
 	newComment: newCommentReducer,
 	changedPost: changedPostReducer,
 	draftedCode: codeDraftReducer,
+	changedComment: changedCommentReducer,
 });
 
 export const store = createStore(rootReducer);

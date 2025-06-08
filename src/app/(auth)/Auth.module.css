@@ -122,3 +122,26 @@
 	text-decoration: underline;
 	padding: 0;
 }
+
+@media (max-width: 686px) {
+	.auth {
+		width: auto;
+		min-height: 350px;
+		overflow: auto;
+		justify-content: center;
+		padding: 2rem;
+	}
+
+	.decorationBlock {
+		display: none;
+	}
+
+	.login,
+	.signup {
+		display: none;
+	}
+
+	.activeForm {
+		display: block;
+	}
+}

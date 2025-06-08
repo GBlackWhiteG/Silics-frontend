@@ -55,8 +55,10 @@ export function Sidebar() {
 
 	return (
 		<article className={`${styles.sidebar} ${pathname == publicPage.CODE && styles.miniSidebar}`}>
-			<Profile />
-			<Navigation menu={SIDEBAR_NAVIGATION_DATA} />
+			<div className={`w-full sticky top-4`}>
+				<Profile />
+				<Navigation menu={SIDEBAR_NAVIGATION_DATA} />
+			</div>
 		</article>
 	);
 }

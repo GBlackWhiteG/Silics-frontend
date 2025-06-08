@@ -10,3 +10,13 @@
 	height: 100%;
 	background-color: gray;
 }
+
+@media (max-width: 1120px) {
+	.profileBlock {
+		justify-content: center;
+	}
+
+	.profileBlock > div:last-child {
+		display: none;
+	}
+}

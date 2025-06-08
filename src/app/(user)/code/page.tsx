@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import styles from './Code.module.css';
 import { Sandbox } from './sandbox';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Code() {
 	return (
-		<section className='w-full grid grid-cols-[1fr_120px] gap-4'>
+		<section className={`${styles.draftGrid} w-full gap-4`}>
 			<Sandbox />
 		</section>
 	);

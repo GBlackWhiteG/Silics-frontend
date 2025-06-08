@@ -23,6 +23,12 @@ class UserServices {
 
 		return response;
 	}
+
+	async toggleTwoFA(id: number) {
+		const response = instance.post(`${this._USERS}/${id}/toggle-twofa`);
+
+		return response;
+	}
 }
 
 export const userServices = new UserServices();

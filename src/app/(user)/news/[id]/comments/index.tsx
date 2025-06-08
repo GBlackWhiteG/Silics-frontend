@@ -21,7 +21,6 @@ import type { RootState } from '@/store';
 import type { IComment } from '@/types/comment.types';
 
 export function Comments({ postId }: { postId: number }) {
-	const userId = useSelector((state: RootState) => state.auth.auth.id);
 	const [comments, setComments] = useState<IComment[]>([]);
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
@@ -29,6 +28,7 @@ export function Comments({ postId }: { postId: number }) {
 	const ids = useRef(new Set<number>());
 
 	const newComment = useSelector((state: RootState) => state.newComment.comment);
+	const changedComment = useSelector((state: RootState) => state.changedComment.comment);
 	const deletedCommentId = useSelector((state: RootState) => state.deletedCommentId.id);
 
 	const loadMoreComments = async () => {
@@ -51,6 +51,14 @@ export function Comments({ postId }: { postId: number }) {
 			ids.current.add(newComment.id);
 		}
 	}, [newComment]);
+
+	useEffect(() => {
+		if (changedComment) {
+			setComments(prev =>
+				prev.map(comment => (comment.id === changedComment.id ? changedComment : comment)),
+			);
+		}
+	}, [changedComment]);
 
 	useEffect(() => {
 		if (deletedCommentId) {
@@ -90,6 +98,7 @@ export function Comments({ postId }: { postId: number }) {
 							<CommentFunctions
 								user_id={comment.user.id}
 								item_id={comment.id}
+								comment={comment}
 							/>
 						</div>
 						<div className='flex flex-col gap-2'>

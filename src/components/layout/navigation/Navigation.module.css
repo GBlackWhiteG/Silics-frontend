@@ -19,10 +19,26 @@
 	box-sizing: border-box;
 	background-color: var(--elements-bg);
 	position: relative;
+	margin-right: 1rem;
+}
+
+@media (max-width: 768px) {
+	.navigationContentWrapper {
+		padding-top: 1.5rem;
+	}
+
+	.navigationContentWrapper > .searchInput {
+		display: none;
+	}
+
+	.navigationContentWrapper > .searchInput > input {
+		display: none;
+	}
 }
 
 .wrapperLogo {
 	position: relative;
+	margin-right: 2rem;
 }
 
 .wrapperLogo::after {

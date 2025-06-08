@@ -1,6 +1,9 @@
 .sidebar {
 	max-width: 250px;
 	width: 100%;
+}
+
+.sidebar > div {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -10,6 +13,47 @@
 	max-width: 80px;
 }
 
-.miniSidebar span {
+.miniSidebar > div > ul > li > a > span {
 	display: none;
+}
+
+.miniSidebar > div > a > div > div:last-child {
+	display: none;
+}
+
+.miniSidebar > div > a > div {
+	justify-content: center;
+}
+
+@media (max-width: 1120px) {
+	.sidebar {
+		max-width: 80px;
+	}
+
+	.sidebar > div > ul > li > a > span {
+		display: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.sidebar > div > a {
+		display: none;
+	}
+
+	.sidebar {
+		max-width: none;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 999;
+	}
+
+	.sidebar > div > ul {
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.sidebar > div > ul > li > span {
+		display: none;
+	}
 }

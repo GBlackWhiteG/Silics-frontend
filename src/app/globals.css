@@ -70,3 +70,21 @@ textarea {
 	background-color: #ffffff;
 	padding: 1.5rem;
 }
+
+.page-grid {
+	display: grid;
+	grid-template-columns: 1fr 250px;
+	gap: 1rem;
+}
+
+@media (max-width: 1120px) {
+	.page-grid {
+		grid-template-columns: 1fr 80px;
+	}
+}
+
+@media (max-width: 768px) {
+	.page-grid {
+		grid-template-columns: 1fr;
+	}
+}

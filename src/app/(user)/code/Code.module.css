@@ -1,0 +1,10 @@
+.draftGrid {
+	display: grid;
+	grid-template-columns: 1fr 120px;
+}
+
+@media (max-width: 768px) {
+	.draftGrid {
+		grid-template-columns: 1fr;
+	}
+}

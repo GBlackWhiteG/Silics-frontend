@@ -12,20 +12,18 @@ export function Navigation({ menu }: Props) {
 	const pathname = usePathname();
 
 	return (
-		<div>
-			<ul className={`${styles.items} sidebar-items`}>
-				{menu.map(item => {
-					const isMatch = new RegExp(`^${item.link}(/\\d+)?$`).test(pathname);
+		<ul className={`${styles.items} sidebar-items`}>
+			{menu.map(item => {
+				const isMatch = new RegExp(`^${item.link}(/\\d+)?$`).test(pathname);
 
-					return (
-						<NavigationItem
-							key={item.link}
-							item={item}
-							isActive={isMatch}
-						/>
-					);
-				})}
-			</ul>
-		</div>
+				return (
+					<NavigationItem
+						key={item.link}
+						item={item}
+						isActive={isMatch}
+					/>
+				);
+			})}
+		</ul>
 	);
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
-import { Personal } from './personal';
+import { Notification } from '@/components/ui/notification';
+
+import { SettingsList } from './settingsList';
 
 export const metadata: Metadata = {
 	title: 'Настройки',
@@ -9,8 +11,9 @@ export const metadata: Metadata = {
 
 export default function Settings() {
 	return (
-		<section className='items'>
-			<Personal />
+		<section className='w-full page-grid'>
+			<SettingsList />
+			<Notification />
 		</section>
 	);
 }

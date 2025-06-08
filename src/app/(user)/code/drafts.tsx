@@ -1,7 +1,7 @@
 'use client';
 
-import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { ArrowBigLeft, ArrowLeft, ChevronLeft, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setCodeDraftAction } from '@/store/codeDraftReducer';
@@ -16,6 +16,7 @@ export function Drafts({
 	setDrafts: React.Dispatch<React.SetStateAction<IDraft[]>>;
 }) {
 	const dispatch = useDispatch();
+	const [isDraftsOpen, setIsDraftsOpen] = useState(false);
 
 	useEffect(() => {
 		setDrafts(JSON.parse(localStorage.getItem('drafts') || '[]'));
@@ -33,8 +34,19 @@ export function Drafts({
 	};
 
 	return (
-		<div>
-			<div className='items !p-4'>
+		<div
+			className={`h-[75%] flex items-center transition absolute right-4 ${!isDraftsOpen && 'translate-x-[80%]'} md:relative md:top-0 md:right-0 md:translate-x-[0%] md:h-auto md:items-start`}
+		>
+			<div className='block md:hidden'>
+				<ChevronLeft
+					size={40}
+					className={`opacity-10 transition ${isDraftsOpen && 'rotate-180'}`}
+					onClick={() => setIsDraftsOpen(prev => !prev)}
+				/>
+			</div>
+			<div
+				className={`items h-full !p-4 transition opacity-0 md:h-auto md:opacity-100 ${isDraftsOpen && 'opacity-100'}`}
+			>
 				<span className='block mb-2'>Черновики</span>
 				<ul className='flex flex-col gap-2'>
 					{drafts.length > 0 ? (

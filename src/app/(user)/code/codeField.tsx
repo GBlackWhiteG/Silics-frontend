@@ -183,7 +183,7 @@ export function CodeField({
 					closeModal={() => setIsModalOpen(false)}
 				/>
 			)}
-			<div className='grid grid-rows-[auto_1fr]'>
+			<div className='h-full grid grid-rows-[auto_1fr]'>
 				<div className='flex gap-2 mb-2'>
 					<Button
 						text={'Запуск'}
@@ -267,7 +267,7 @@ export function CodeField({
 								getCaretLine();
 								handleKeyDown(e);
 							}}
-							className='w-full h-full border-solid border-r border-black border-right rounded-none focus:outline-none resize-none absolute top-0 left-0 text-transparent caret-black'
+							className='w-full h-full border-solid border-r border-transparent border-right rounded-none focus:outline-none resize-none absolute top-0 left-0 text-transparent caret-black xl:border-black'
 						></textarea>
 					</div>
 				</div>
