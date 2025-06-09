@@ -69,18 +69,18 @@ export const Post = (post: Props) => {
 						/>
 					)}
 					{post.files && post.files?.length > 0 && (
-						// <ImageSlider images={post.files} />
-						<div className='flex flex-wrap'>
-							{post.files.map(file => (
-								<Image
-									key={file.id}
-									src={file.file_url}
-									width={250}
-									height={250}
-									alt={file.file_url}
-								/>
-							))}
-						</div>
+						<ImageSlider images={post.files} />
+						// <div className='flex flex-wrap'>
+						// 	{post.files.map(file => (
+						// 		<Image
+						// 			key={file.id}
+						// 			src={file.file_url}
+						// 			width={250}
+						// 			height={250}
+						// 			alt={file.file_url}
+						// 		/>
+						// 	))}
+						// </div>
 					)}
 					{post.attachments && post.attachments?.length > 0 && (
 						<div>
