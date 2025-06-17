@@ -31,7 +31,7 @@ export function DraftsModal({ drafts, setDrafts, saveCode, saveLang, closeModal 
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		const newDraft = { id: crypto.randomUUID(), name, code, lang: language };
+		const newDraft = { id: Math.random().toString(36).substring(2, 10), name, code, lang: language };
 		const updatedDrafts = [...drafts, newDraft];
 		localStorage.setItem('drafts', JSON.stringify(updatedDrafts));
 		setDrafts(updatedDrafts);
