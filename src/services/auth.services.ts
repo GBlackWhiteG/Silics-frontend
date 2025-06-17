@@ -52,10 +52,8 @@ class AuthServices {
 
 	saveTokenStorage(accessToken: string) {
 		Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
-			domain: 'localhost', //silics-frontend-a1n9.vercel.app
-			sameSite: 'strict',
+			sameSite: 'lax',
 			expires: 1,
-			secure: true,
 		});
 	}
 

@@ -37,7 +37,7 @@ export function Notification() {
 			forceTLS: false,
 			disableStats: true,
 			encrypted: false,
-			authEndpoint: 'http://82.202.131.212:8876/api/broadcasting/auth',
+			authEndpoint: 'http://82.202.131.212:80/api/broadcasting/auth',
 			auth: {
 				headers: {
 					Authorization: 'Bearer ' + Cookies.get(EnumTokens.ACCESS_TOKEN),
