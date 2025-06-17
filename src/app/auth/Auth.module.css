@@ -17,6 +17,16 @@
 	position: relative;
 }
 
+.mobileDecorationBlock,
+.mobileFormsWrapper {
+	display: contents;
+}
+
+.mobileWrapperLogo,
+.mobileItemWrapper {
+	display: none;
+}
+
 .login,
 .signup {
 	opacity: 0;
@@ -125,23 +135,52 @@
 
 @media (max-width: 686px) {
 	.auth {
-		width: auto;
-		min-height: 350px;
+		width: 100%;
+		flex-direction: column;
 		overflow: auto;
 		justify-content: center;
-		padding: 2rem;
+		padding: 0;
 	}
 
 	.decorationBlock {
 		display: none;
 	}
 
+	.mobileDecorationBlock,
+	.mobileWrapperLogo,
+	.mobileFormsWrapper,
+	.mobileItemWrapper {
+		display: block;
+	}
+
+	.mobileDecorationBlock {
+		width: 100%;
+		padding: 1.5rem;
+	}
+
+	.mobileWrapperLogo {
+		display: flex;
+		justify-content: center;
+	}
+
+	.mobileFormsWrapper {
+		display: flex;
+		position: relative;
+	}
+
 	.login,
 	.signup {
 		display: none;
+		width: 100%;
+		background-color: #ffffff;
+		padding: 1rem;
+		/* position: absolute;
+		top: 0;
+		left: 0; */
 	}
 
 	.activeForm {
 		display: block;
+		padding: 2rem 0;
 	}
 }

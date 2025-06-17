@@ -13,3 +13,8 @@
 	top: 9px;
 	right: 10px;
 }
+
+.contentInputWrapper:has(textarea:focus) .textareaEl {
+	opacity: 0;
+	pointer-events: none;
+}

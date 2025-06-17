@@ -1,6 +1,7 @@
 'use client';
 
 import type { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import { Code, Heading, ImagePlus, Paperclip } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -14,6 +15,7 @@ import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
 import { UserAvatar } from '../userAvatar';
 
 import styles from './PostInput.module.css';
+import { EnumTokens } from '@/enums/auth.enums';
 import { postsService } from '@/services/post.services';
 import type { RootState } from '@/store';
 import type { IPostFull } from '@/types/post.types';
@@ -26,7 +28,6 @@ export function PostInput(props: Props) {
 	const dispatch = useDispatch();
 	const userAvatar = useSelector((state: RootState) => state.auth.auth.avatar_url);
 	const sharedCodeData = useSelector((state: RootState) => state.sharedCode.codeData);
-	const [isInputFocused] = useState<boolean>(false);
 
 	const [formOptions, setFormOptions] = useState({
 		header: false,
@@ -35,6 +36,7 @@ export function PostInput(props: Props) {
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
+	const [isAuth, setIsAuth] = useState(false);
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
@@ -43,6 +45,10 @@ export function PostInput(props: Props) {
 		files: null as FileList | null,
 		attachments: null as FileList | null,
 	});
+
+	useEffect(() => {
+		setIsAuth(!!Cookies.get(EnumTokens.ACCESS_TOKEN));
+	}, []);
 
 	useEffect(() => {
 		if (sharedCodeData.code) {
@@ -148,17 +154,15 @@ export function PostInput(props: Props) {
 							onChange={handleChange}
 						/>
 					)}
-					<div className='relative'>
+					<div className={`relative ${styles.contentInputWrapper}`}>
 						<AutoResizeTextArea
 							inputName={'description'}
 							inputPlaceholder={'Как у вас дела?'}
 							value={formData.description}
 							inputState={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
-							// onFocus={() => setIsInputFocused(true)}
-							// onBlur={() => setIsInputFocused(false)}
 						/>
 						<div
-							className={`flex gap-2 absolute top-2 right-2 transition-opacity duration-100 ${isInputFocused ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+							className={`flex gap-2 absolute top-2 right-2 transition-opacity duration-100 ${styles.textareaEl}`}
 						>
 							<Heading
 								className='cursor-pointer text-gray-400'
@@ -173,7 +177,7 @@ export function PostInput(props: Props) {
 						</div>
 					</div>
 					{formOptions.code && (
-						<div className='relative'>
+						<div className={`relative ${styles.contentInputWrapper}`}>
 							<AutoResizeTextArea
 								inputName={'code'}
 								inputPlaceholder={'Код'}
@@ -183,7 +187,7 @@ export function PostInput(props: Props) {
 							<select
 								name='prog_language'
 								id='code_language_select'
-								className={styles.select}
+								className={`${styles.select} ${styles.textareaEl}`}
 								value={formData.prog_language}
 								onChange={handleChange}
 							>
@@ -198,6 +202,7 @@ export function PostInput(props: Props) {
 					text='Отправить'
 					isSubmit={true}
 					className='max-h-10'
+					disabled={!isAuth}
 				/>
 			</div>
 			<div className='flex gap-4 justify-between sm:justify-start'>

@@ -28,4 +28,4 @@ export const authReducer = (state: AuthState = defaultState, action: AuthAction)
 };
 
 export const setAuthAction = (payload: IUser) => ({ type: SET_AUTH, payload });
-export const removeAuthAction = (payload: IUser) => ({ type: REMOVE_AUTH, payload });
+export const removeAuthAction = () => ({ type: REMOVE_AUTH });

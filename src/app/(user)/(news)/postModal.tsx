@@ -136,7 +136,7 @@ export function PostModal({
 				/>
 				<textarea
 					name='description'
-					className={`${styles.description} w-full px-3 py-2 rounded-md resize-none overflow-y-scroll !text-black`}
+					className={`${styles.description} w-full px-3 py-2 rounded-md resize-none !overflow-scroll !text-black`}
 					rows={5}
 					placeholder='Описание'
 					onChange={handleChange}
@@ -145,7 +145,7 @@ export function PostModal({
 				<div className='relative'>
 					<textarea
 						name='code'
-						className={`${styles.description} w-full px-3 py-2 rounded-md resize-none overflow-y-scroll !text-black relative`}
+						className={`${styles.description} w-full px-3 py-2 rounded-md resize-none !overflow-scroll !text-black relative`}
 						rows={5}
 						placeholder='Код'
 						onChange={handleChange}

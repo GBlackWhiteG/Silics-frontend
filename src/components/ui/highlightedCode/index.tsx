@@ -6,6 +6,7 @@ import php from 'highlight.js/lib/languages/php';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/xcode.css';
 import { Check, Copy, Play } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -24,7 +25,10 @@ interface Props {
 }
 
 export function HighlightedCode({ code, language }: Props) {
+	const containerRef = useRef<HTMLDivElement | null>(null);
 	const codeRef = useRef<HTMLElement | null>(null);
+	const [isLongCode, setIsLongCode] = useState(false);
+	const [isFullCode, setIsFullCode] = useState(false);
 	const [isCopied, setIsCopied] = useState(false);
 	const router = useRouter();
 	const dispatch = useDispatch();
@@ -41,6 +45,11 @@ export function HighlightedCode({ code, language }: Props) {
 		router.push(publicPage.CODE);
 	};
 
+	const showFullCode = () => {
+		setIsFullCode(prev => !prev);
+		setIsLongCode(prev => !prev);
+	};
+
 	useEffect(() => {
 		if (codeRef.current) {
 			try {
@@ -50,11 +59,20 @@ export function HighlightedCode({ code, language }: Props) {
 				console.error(`Ошибка подсветки кода для языка ${language}:`, error);
 			}
 		}
+		if (containerRef.current) {
+			const el = containerRef.current;
+			if (el.scrollHeight > el.clientHeight) {
+				setIsLongCode(true);
+			}
+		}
 	}, [language, code]);
 
 	return (
 		<>
-			<div className='relative group'>
+			<div
+				className={`${!isFullCode && 'max-h-[150px]'} overflow-hidden relative group`}
+				ref={containerRef}
+			>
 				<pre className='whitespace-pre-wrap break-words bg-[#F5F5F5] p-2'>
 					<code
 						ref={codeRef}
@@ -82,6 +100,16 @@ export function HighlightedCode({ code, language }: Props) {
 						className='cursor-pointer text-gray-400'
 					/>
 				</div>
+				{isLongCode && (
+					<div className='h-[70px] w-full flex justify-center items-end bg-gradient-to-t from-[#f5f5f5] to-transparent absolute bottom-0 left-0'>
+						<span
+							className='cursor-pointer py-1 px-2 text-gray-500'
+							onClick={showFullCode}
+						>
+							Смотреть полностью
+						</span>
+					</div>
+				)}
 			</div>
 		</>
 	);

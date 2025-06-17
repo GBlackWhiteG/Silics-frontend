@@ -62,7 +62,6 @@ export function CodeField({
 			setCode(code);
 			setLanguage(language);
 			setCodeRowsLenght(code.split('\n').length);
-			dispatch(clearCodeRunAction());
 		} else if (savedCode.code) {
 			const { code, language } = savedCode;
 			setCode(code);
@@ -85,9 +84,12 @@ export function CodeField({
 
 	useEffect(() => {
 		let langCode = '';
-		if (savedLang === language) {
+		if (copiedCode.code && copiedCode.language === language) {
+			langCode = copiedCode.code;
+			dispatch(clearCodeRunAction());
+		} else if (savedLang === language) {
 			langCode = savedCode.code;
-		} else if (!copiedCode.code && laguagesInitalCodeData[language]) {
+		} else if (!copiedCode.code && draftCode.code !== '' && laguagesInitalCodeData[language]) {
 			langCode = laguagesInitalCodeData[language];
 		}
 		setCode(langCode);

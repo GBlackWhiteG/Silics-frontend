@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { PostInput } from '@/components/ui/postInput';
 
-import { Posts } from '../../news/posts';
+import { Posts } from '../../(news)/posts';
 
 import { postsService } from '@/services/post.services';
 import type { RootState } from '@/store';

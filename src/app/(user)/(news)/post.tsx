@@ -68,20 +68,7 @@ export const Post = (post: Props) => {
 							language={post.prog_language}
 						/>
 					)}
-					{post.files && post.files?.length > 0 && (
-						<ImageSlider images={post.files} />
-						// <div className='flex flex-wrap'>
-						// 	{post.files.map(file => (
-						// 		<Image
-						// 			key={file.id}
-						// 			src={file.file_url}
-						// 			width={250}
-						// 			height={250}
-						// 			alt={file.file_url}
-						// 		/>
-						// 	))}
-						// </div>
-					)}
+					{post.files && post.files?.length > 0 && <ImageSlider images={post.files} />}
 					{post.attachments && post.attachments?.length > 0 && (
 						<div>
 							{post.attachments.map(attachment => (
@@ -104,7 +91,7 @@ export const Post = (post: Props) => {
 					initialIsActive={post.liked_by_user}
 					initialLikesCount={post.likes}
 				/>
-				<Link href={`${publicPage.NEWS}/${post.id}`}>
+				<Link href={`/${post.id}`}>
 					<div className='flex gap-2'>
 						<MessageSquare />
 						<span>{post.comments_count}</span>

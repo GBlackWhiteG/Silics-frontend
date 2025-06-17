@@ -84,7 +84,15 @@ textarea {
 }
 
 @media (max-width: 768px) {
+	.container {
+		padding: 0 0.5rem;
+	}
+
 	.page-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.items {
+		padding: 1rem;
 	}
 }

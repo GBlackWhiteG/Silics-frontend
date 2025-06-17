@@ -101,12 +101,14 @@ export function Notification() {
 							key={item.id}
 							className='grid grid-cols-[30px_auto] gap-2 items-center text-xs text-gray-500 p-2 cursor-pointer rounded-md transition hover:shadow-[0_4px_20px_0_rgb(0,0,0,0.1)]'
 						>
-							<UserAvatar
-								userAvatarUrl={item.likedUserAvatar}
-								userName={'avatar'}
-								avatarWidth={30}
-							/>
-							<Link href={`${publicPage.PROFILE}/${item.likedUserId}`}>{item.message}</Link>
+							<Link href={`${publicPage.PROFILE}/${item.likedUserId}`}>
+								<UserAvatar
+									userAvatarUrl={item.likedUserAvatar}
+									userName={'avatar'}
+									avatarWidth={30}
+								/>
+							</Link>
+							<Link href={`${publicPage.NEWS}/${item.postId}`}>{item.message}</Link>
 						</li>
 					))
 				) : (

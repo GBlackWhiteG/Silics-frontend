@@ -29,9 +29,13 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(
 	response => response,
 	async error => {
-		if (error.response && error.response.status === 401) {
+		const originalRequest = error.config;
+
+		const isRefreshRequest = originalRequest.url?.includes('/refresh');
+
+		if (error.response && error.response.status === 401 && !isRefreshRequest) {
 			try {
-				const response = await authServices.refresh().then(res => res);
+				const response = await authServices.refresh();
 				authServices.saveTokenStorage(response.data.accessToken);
 
 				await fetch('/api/set-token', {
@@ -41,14 +45,11 @@ instance.interceptors.response.use(
 					},
 					body: JSON.stringify({ token: response.data.accessToken }),
 				});
-
 				return instance(error.response.request);
 			} catch (error) {
-				if (typeof window !== undefined) {
+				if (typeof window !== 'undefined') {
 					authServices.removeFromStorage();
-					import('next/router').then(router => {
-						router.default.push(publicPage.AUTH);
-					});
+					window.location.href = publicPage.AUTH;
 				} else {
 					throw new Error(`Redirect:${publicPage.AUTH}`);
 				}

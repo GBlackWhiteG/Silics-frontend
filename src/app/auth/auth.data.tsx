@@ -1,7 +1,8 @@
 'use client';
 
-import type { Axios, AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -157,8 +158,36 @@ export function Forms() {
 
 	return (
 		<section className={styles.auth}>
-			<Login isActive={isLoginPage} />
-			<Signup isActive={!isLoginPage} />
+			<div className={styles.mobileDecorationBlock}>
+				<div className={styles.mobileWrapperLogo}>
+					<Link href={publicPage.NEWS}>
+						<Image
+							src='/logo.svg'
+							alt='logo'
+							width={120}
+							height={26}
+						/>
+					</Link>
+				</div>
+				<div className={styles.mobileFormsWrapper}>
+					<Login isActive={isLoginPage} />
+					<Signup isActive={!isLoginPage} />
+				</div>
+				<div className={styles.mobileItemWrapper}>
+					<p>Нет аккаунта? -</p>
+					<Button
+						text='Зарегистрироваться'
+						click={() => setLoginPage(!isLoginPage)}
+					/>
+				</div>
+				<div className={styles.mobileItemWrapper}>
+					<p>Есть аккаунта? -</p>
+					<Button
+						text='Войти'
+						click={() => setLoginPage(!isLoginPage)}
+					/>
+				</div>
+			</div>
 			<div
 				className={`${styles.decorationBlock} ${isLoginPage ? '' : styles.decorationBlockActive}`}
 			>
@@ -167,12 +196,14 @@ export function Forms() {
 						className={`${styles.loginContent} ${isLoginPage ? '' : styles.activeDecorationContent} ${isLoginPage ? styles.activeContent : ''}`}
 					>
 						<div className={styles.wrapperLogo}>
-							<Image
-								src='/logo.svg'
-								alt='logo'
-								width={65}
-								height={26}
-							/>
+							<Link href={publicPage.NEWS}>
+								<Image
+									src='/logo.svg'
+									alt='logo'
+									width={65}
+									height={26}
+								/>
+							</Link>
 						</div>
 						<div className={styles.itemWrapper}>
 							<h2>С возвращением!</h2>
@@ -190,12 +221,14 @@ export function Forms() {
 						className={`${styles.signupContent} ${isLoginPage ? '' : styles.activeDecorationContent} ${isLoginPage ? '' : styles.activeContent}`}
 					>
 						<div className={styles.wrapperLogo}>
-							<Image
-								src='/logo.svg'
-								alt='logo'
-								width={65}
-								height={26}
-							/>
+							<Link href={publicPage.NEWS}>
+								<Image
+									src='/logo.svg'
+									alt='logo'
+									width={65}
+									height={26}
+								/>
+							</Link>
 						</div>
 						<div className={styles.itemWrapper}>
 							<h2>Добро пожаловать!</h2>

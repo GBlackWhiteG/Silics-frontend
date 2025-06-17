@@ -24,11 +24,10 @@ export function Profile() {
 		const fetchUserData = async () => {
 			try {
 				const response = await authServices.getMe();
-				dispatch(setAuthAction(response.data));
+				if (response && response.data) dispatch(setAuthAction(response.data));
 			} catch (error) {
+				console.log(error);
 				setIsError(true);
-			} finally {
-				setIsLoading(false);
 			}
 		};
 

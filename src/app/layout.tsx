@@ -8,6 +8,12 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='ru'>
+			<head>
+				<link
+					rel='shortcut icon'
+					href='/favicon.svg'
+				/>
+			</head>
 			<body>
 				<Providers>{children}</Providers>
 			</body>

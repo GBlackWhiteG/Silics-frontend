@@ -18,9 +18,11 @@ class AuthServices {
 	}
 
 	async getMe() {
-		const response = instance.post<IUser>(`${this._AUTH}/me`);
-
-		return response;
+		try {
+			return await instance.post<IUser>(`${this._AUTH}/me`);
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	async changePassword(

@@ -15,6 +15,12 @@
 	padding: 1.5rem;
 }
 
+@media (max-width: 768px) {
+	.post {
+		padding: 1rem;
+	}
+}
+
 .userInfo {
 	display: flex;
 	flex-direction: row;

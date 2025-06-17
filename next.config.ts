@@ -4,11 +4,8 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'https',
-				hostname: 'silics.ru',
-				port: '8876',
-				pathname: '/storage/images/*',
-				search: '',
+				protocol: 'http',
+				hostname: '**',
 			},
 		],
 	},

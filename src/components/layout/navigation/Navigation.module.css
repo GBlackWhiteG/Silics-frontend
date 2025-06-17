@@ -4,7 +4,7 @@
 }
 
 .navigationContentWrapper {
-	@apply flex flex-row justify-between items-center;
+	@apply h-[76px] flex flex-row justify-between items-center;
 	padding: 0.75rem 1.5rem;
 }
 
@@ -17,7 +17,7 @@
 	width: 100%;
 	border-radius: 0.5rem;
 	box-sizing: border-box;
-	background-color: var(--elements-bg);
+	background-color: #f5f5f5;
 	position: relative;
 	margin-right: 1rem;
 }
@@ -28,11 +28,15 @@
 	}
 
 	.navigationContentWrapper > .searchInput {
-		display: none;
+		max-width: 300px;
 	}
 
-	.navigationContentWrapper > .searchInput > input {
-		display: none;
+	.searchInput:has(input:focus) {
+		max-width: none;
+		width: 90%;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 }
 
@@ -42,7 +46,7 @@
 }
 
 .wrapperLogo::after {
-	content: 'v0.5';
+	content: 'v1.0';
 	display: block;
 	color: #ffffff;
 	font-size: 10px;

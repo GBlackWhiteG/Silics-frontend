@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { ProfileButtons } from './profileButtons';

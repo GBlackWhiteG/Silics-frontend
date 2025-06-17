@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 
 import { publicPage } from '@/config/public-page.config';
 
+import { removeAuthAction } from '@/store/authReducer';
 import { setSearchResultsAction } from '@/store/searchResultsReducer';
 
 import styles from './Navigation.module.css';
@@ -33,6 +34,7 @@ export function Navigation() {
 	const logoutHandle = () => {
 		Cookies.remove(EnumTokens.ACCESS_TOKEN, { path: '/' });
 		setIsAuthenticated(false);
+		dispatch(removeAuthAction());
 		setTimeout(() => {
 			router.push(publicPage.AUTH);
 		}, 100);
@@ -46,7 +48,7 @@ export function Navigation() {
 		}
 		const response = await searchService.search(searchQuery);
 		dispatch(setSearchResultsAction(response.data));
-		router.push(`${publicPage.NEWS}/search`);
+		router.push('/search');
 	};
 
 	const handlerSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -66,6 +68,7 @@ export function Navigation() {
 								alt='logo'
 								width={80}
 								height={32}
+								className='min-w-[80px]'
 							/>
 						</Link>
 					</div>
@@ -90,7 +93,7 @@ export function Navigation() {
 							className='cursor-pointer'
 						/>
 					) : (
-						<Link href='/'>
+						<Link href={publicPage.AUTH}>
 							<LogIn />
 						</Link>
 					)}

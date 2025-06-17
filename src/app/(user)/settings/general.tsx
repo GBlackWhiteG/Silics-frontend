@@ -1,11 +1,12 @@
 'use client';
 
 import type { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
+import { ToggleSwitch } from '@/components/ui/toggleSwitch';
 
 import { parseError } from '@/utils/get-parse-error';
 
@@ -16,6 +17,7 @@ import type { IFullUser } from '@/types/user.types';
 
 export function General({ user }: { user: IFullUser | null }) {
 	const userId = useSelector((state: RootState) => state.auth.auth.id);
+	const [isOnTwoFA, setIsOnTwoFA] = useState(user?.is_enabled_two_fa);
 
 	const [formData, setFormData] = useState({
 		old_password: '',
@@ -46,11 +48,16 @@ export function General({ user }: { user: IFullUser | null }) {
 
 	const handleChange = async () => {
 		const response = await userServices.toggleTwoFA(userId);
+		setIsOnTwoFA(prev => !prev);
 
 		if (response.status === 200) {
 			toast.success(response.data.message);
 		}
 	};
+
+	useEffect(() => {
+		setIsOnTwoFA(user?.is_enabled_two_fa);
+	}, [user]);
 
 	return (
 		<div className='items'>
@@ -60,7 +67,7 @@ export function General({ user }: { user: IFullUser | null }) {
 				onSubmit={handleSubmit}
 			>
 				<h4 className='text-md'>Изменить пароль</h4>
-				<div className='flex gap-2 mb-2 mt-2'>
+				<div className='flex flex-col gap-2 mb-2 mt-2 md:flex-row'>
 					<label className='flex flex-col gap-1'>
 						<span>Старый пароль</span>
 						<input
@@ -97,13 +104,11 @@ export function General({ user }: { user: IFullUser | null }) {
 					isInverted={true}
 				/>
 			</form>
-			<label>
+			<label className='flex justify-between'>
 				<span>Включить двухфакторную аутентификацию</span>
-				<input
-					type='checkbox'
-					onChange={handleChange}
-					disabled={user === null}
-					checked={user?.is_enabled_two_fa || false}
+				<ToggleSwitch
+					isOn={isOnTwoFA}
+					onClick={handleChange}
 				/>
 			</label>
 		</div>
