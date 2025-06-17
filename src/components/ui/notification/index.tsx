@@ -108,7 +108,7 @@ export function Notification() {
 									avatarWidth={30}
 								/>
 							</Link>
-							<Link href={`${publicPage.NEWS}/${item.postId}`}>{item.message}</Link>
+							<Link href={`/${item.postId}`}>{item.message}</Link>
 						</li>
 					))
 				) : (

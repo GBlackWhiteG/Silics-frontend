@@ -3,12 +3,12 @@ import { instance } from '@/api/axios';
 import type { IUsers } from '@/types/user.types';
 
 class FriendsService {
-	async getSubscriptions() {
-		return instance.get<IUsers>(`subscriptions`);
+	async getSubscriptions(page: number) {
+		return instance.get<IUsers>(`subscriptions?page=${page}`);
 	}
 
-	async getSubscribers() {
-		return instance.get<IUsers>(`subscribers`);
+	async getSubscribers(page: number) {
+		return instance.get<IUsers>(`subscribers?page=${page}`);
 	}
 
 	async subscribe(id: number) {

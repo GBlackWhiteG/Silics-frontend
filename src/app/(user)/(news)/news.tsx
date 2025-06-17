@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 

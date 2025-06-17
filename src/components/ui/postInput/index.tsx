@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/buttons';
 
 import { clearCodeShareAction } from '@/store/codeShareReducer';
 
+import { parseError } from '@/utils/get-parse-error';
+
 import { AutoResizeTextArea } from '../autoResizeTextarea/autoResizeTextarea';
 import { UserAvatar } from '../userAvatar';
 
@@ -114,19 +116,7 @@ export function PostInput(props: Props) {
 				}
 			}
 		} catch (err: AxiosError | any) {
-			const errorMessage = err?.response.data?.errors || err?.message;
-
-			let message = '';
-			if (errorMessage) {
-				for (const [key, value] of Object.entries(errorMessage)) {
-					if (value instanceof Array) {
-						message += `${key}: ${value[0]}\n`;
-					} else {
-						message += `${key}: ${value}\n`;
-					}
-				}
-			}
-
+			const message = parseError(err);
 			toast.error(message);
 		}
 	};
