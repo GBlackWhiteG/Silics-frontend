@@ -75,7 +75,7 @@ export function Comments({ postId }: { postId: number }) {
 
 	return (
 		<div className={styles.comments}>
-			{comments.length > 0 &&
+			{comments.length > 0 ? (
 				comments.map(comment => (
 					<div
 						key={comment.id}
@@ -138,7 +138,10 @@ export function Comments({ postId }: { postId: number }) {
 							)}
 						</div>
 					</div>
-				))}
+				))
+			) : (
+				<div className='text-center'>Нет комментариев</div>
+			)}
 			<div ref={ref}></div>
 		</div>
 	);

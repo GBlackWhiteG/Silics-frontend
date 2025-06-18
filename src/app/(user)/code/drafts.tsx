@@ -57,7 +57,7 @@ export function Drafts({
 								onClick={() => sendCodeData(draft.code, draft.lang)}
 							>
 								<span className='py-2'>{draft.lang}</span>
-								<span className='absolute bottom-[-100%] right-[-10px] opacity-0 transition group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'>
+								<span className='max-w-[150px] text-sm bg-gray-200 p-2 rounded-md absolute bottom-[-100%] right-0 opacity-0 transition group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'>
 									{draft.name}
 								</span>
 								<div

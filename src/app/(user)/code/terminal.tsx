@@ -34,7 +34,7 @@ export function Terminal() {
 				className='w-full p-2 resize-none font-mono'
 				value={
 					executedCode
-						? `${executedCode.code_result}\n\n${executedCode.execution_time ? `Время исполнения: ${executedCode.execution_time}` : ''}`
+						? `${executedCode.code_result}\n\n${executedCode.execution_time ? `Время исполнения: ${executedCode.execution_time} сек.` : ''}`
 						: ''
 				}
 				readOnly
