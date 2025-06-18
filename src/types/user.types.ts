@@ -8,6 +8,7 @@ export interface IUser {
 	avatar_url: string;
 	role: string;
 	is_blocked: boolean;
+	is_deleted: boolean;
 	email_verified_at: string;
 	created_at: string;
 	updated_at: string;

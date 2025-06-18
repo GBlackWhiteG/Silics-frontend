@@ -1,16 +1,10 @@
 @media (max-width: 1120px) {
 	.notifications {
-		max-width: 80px;
-		overflow: hidden;
-	}
-
-	.notifications a {
-		opacity: 0;
-	}
-}
-
-@media (max-width: 768px) {
-	.notifications {
-		display: none;
+		max-width: 250px;
+		position: fixed;
+		top: 50%;
+		right: 2rem;
+		transform: translateY(-50%);
+		z-index: 999;
 	}
 }

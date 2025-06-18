@@ -1,4 +1,8 @@
+import { Bell } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+
+import { toggleNotificationShow } from '@/store/notificationBarReducer';
 
 import styles from './Navigation.module.css';
 import { NavigationItem } from './NavigationItem';
@@ -10,6 +14,7 @@ interface Props {
 
 export function Navigation({ menu }: Props) {
 	const pathname = usePathname();
+	const dispatch = useDispatch();
 
 	return (
 		<ul className={`${styles.items} sidebar-items`}>
@@ -24,6 +29,14 @@ export function Navigation({ menu }: Props) {
 					/>
 				);
 			})}
+			<li className={`${styles.item} justify-center flex xl:hidden`}>
+				<div className={styles.link}>
+					<Bell
+						className='text-[#c4c5cc;]'
+						onClick={() => dispatch(toggleNotificationShow())}
+					/>
+				</div>
+			</li>
 		</ul>
 	);
 }

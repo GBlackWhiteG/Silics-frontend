@@ -173,20 +173,26 @@ export function Forms() {
 					<Login isActive={isLoginPage} />
 					<Signup isActive={!isLoginPage} />
 				</div>
-				<div className={styles.mobileItemWrapper}>
-					<p>Нет аккаунта? -</p>
-					<Button
-						text='Зарегистрироваться'
-						click={() => setLoginPage(!isLoginPage)}
-					/>
-				</div>
-				<div className={styles.mobileItemWrapper}>
-					<p>Есть аккаунта? -</p>
-					<Button
-						text='Войти'
-						click={() => setLoginPage(!isLoginPage)}
-					/>
-				</div>
+				{isLoginPage && (
+					<div className={`${styles.mobileItemWrapper} text-center`}>
+						<p>Нет аккаунта? -</p>
+						<Button
+							text='Зарегистрироваться'
+							click={() => setLoginPage(!isLoginPage)}
+							className='mx-auto'
+						/>
+					</div>
+				)}
+				{!isLoginPage && (
+					<div className={`${styles.mobileItemWrapper} text-center`}>
+						<p>Есть аккаунта? -</p>
+						<Button
+							text='Войти'
+							click={() => setLoginPage(!isLoginPage)}
+							className='mx-auto'
+						/>
+					</div>
+				)}
 			</div>
 			<div
 				className={`${styles.decorationBlock} ${isLoginPage ? '' : styles.decorationBlockActive}`}

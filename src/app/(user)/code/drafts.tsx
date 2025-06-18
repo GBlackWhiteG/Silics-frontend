@@ -35,7 +35,7 @@ export function Drafts({
 
 	return (
 		<div
-			className={`h-[75%] flex items-center transition absolute right-4 ${!isDraftsOpen && 'translate-x-[80%]'} md:relative md:top-0 md:right-0 md:translate-x-[0%] md:h-auto md:items-start`}
+			className={`h-[75%] flex items-center absolute right-8 ${!isDraftsOpen && 'translate-x-[80%]'} md:relative md:top-0 md:right-0 md:translate-x-[0%] md:h-auto md:items-start`}
 		>
 			<div className='block md:hidden'>
 				<ChevronLeft
@@ -45,7 +45,7 @@ export function Drafts({
 				/>
 			</div>
 			<div
-				className={`items h-full !p-4 transition opacity-0 md:h-auto md:opacity-100 ${isDraftsOpen && 'opacity-100'}`}
+				className={`items h-full !p-4 transition hidden md:h-auto md:block ${isDraftsOpen && '!block'}`}
 			>
 				<span className='block mb-2'>Черновики</span>
 				<ul className='flex flex-col gap-2'>

@@ -29,7 +29,7 @@ export function SubCard({ user }: { user: IFullUser }) {
 	};
 
 	return (
-		<li className='w-full flex justify-between rounded-[0.5rem] p-2 hover:bg-gray-100'>
+		<li className='w-full grid grid-cols-[140px_auto] sm:grid-cols-[140px_auto_auto] justify-between rounded-[0.5rem] p-2 hover:bg-gray-100'>
 			<Link
 				href={`${publicPage.PROFILE}/${user.id}`}
 				className='flex gap-2'
@@ -44,7 +44,7 @@ export function SubCard({ user }: { user: IFullUser }) {
 					<span className='text-gray-500 text-sm'>@{user.nickname}</span>
 				</div>
 			</Link>
-			<div className='flex flex-col'>
+			<div className='flex-col hidden sm:flex'>
 				<span className='text-gray-500'>Подписчиков: {user.subscribers_count}</span>
 				<span className='text-gray-500'>Подписок: {user.subscriptions_count}</span>
 			</div>

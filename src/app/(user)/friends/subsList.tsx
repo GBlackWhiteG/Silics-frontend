@@ -12,7 +12,7 @@ export function SubsList() {
 
 	return (
 		<div className='items flex flex-col gap-6'>
-			<div className='flex gap-2'>
+			<div className='flex flex-col gap-2 sm:flex-row'>
 				<Button
 					text={'Подписки'}
 					className='w-full'

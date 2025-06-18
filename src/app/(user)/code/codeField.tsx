@@ -129,10 +129,6 @@ export function CodeField({
 		setActiveLine(activeRow);
 	};
 
-	useEffect(() => {
-		console.log(pastedDraft);
-	}, [pastedDraft]);
-
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const textarea = textareaRef.current;
 		if (!textarea) return;

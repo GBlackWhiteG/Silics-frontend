@@ -26,6 +26,7 @@ declare global {
 
 export function Notification() {
 	const [echo, setEcho] = useState<Echo<any> | null>(null);
+	const isShowNotification = useSelector((state: RootState) => state.showNotificaton.notification);
 
 	useEffect(() => {
 		window.Pusher = Pusher;
@@ -92,7 +93,9 @@ export function Notification() {
 	}, [echo, userId]);
 
 	return (
-		<article className={`sidebar-items sticky top-4 ${styles.notifications}`}>
+		<article
+			className={`sidebar-items sticky top-4 ${styles.notifications} ${isShowNotification ? 'block' : 'hidden'} xl:block`}
+		>
 			<h2 className='mx-2'>Уведомления</h2>
 			<ul className='flex flex-col gap-2 mt-2'>
 				{notifications.length > 0 ? (
@@ -108,7 +111,12 @@ export function Notification() {
 									avatarWidth={30}
 								/>
 							</Link>
-							<Link href={`/${item.postId}`}>{item.message}</Link>
+							<Link
+								href={`/${item.postId}`}
+								className={styles.description}
+							>
+								{item.message}
+							</Link>
 						</li>
 					))
 				) : (

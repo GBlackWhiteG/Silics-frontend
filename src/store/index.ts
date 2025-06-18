@@ -10,6 +10,7 @@ import { deletedCommentIdReducer } from './deletedCommentIdReducer';
 import { deletedPostIdReducer } from './deletedPostIdReducer';
 import { executorReducer } from './executerReducer';
 import { newCommentReducer } from './newCommentReducer';
+import { notificationBarReducer } from './notificationBarReducer';
 import { searchRecucer } from './searchResultsReducer';
 
 const rootReducer = combineReducers({
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
 	changedPost: changedPostReducer,
 	draftedCode: codeDraftReducer,
 	changedComment: changedCommentReducer,
+	showNotificaton: notificationBarReducer,
 });
 
 export const store = createStore(rootReducer);

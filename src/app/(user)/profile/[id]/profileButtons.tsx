@@ -15,15 +15,18 @@ export function ProfileButtons({
 	id,
 	isSubscribed,
 	isBlocked,
+	isDeleted,
 }: {
 	id: number;
 	isSubscribed: boolean;
 	isBlocked: boolean;
+	isDeleted: boolean;
 }) {
 	const [isSub, setIsSub] = useState(isSubscribed);
 	const userId = useSelector((state: RootState) => state.auth.auth.id);
 	const userRole = useSelector((state: RootState) => state.auth.auth.role);
 	const [isBlock, setIsBlock] = useState(isBlocked);
+	const [isDelete, setIsDeleted] = useState(isDeleted);
 
 	const subscribeHandler = async () => {
 		const response = await friendsService.subscribe(id);
@@ -49,7 +52,7 @@ export function ProfileButtons({
 	const deleteUser = async () => {
 		const response = await adminService.deleteUser(id);
 		if (response.status === 200) {
-			window.location.href = publicPage.PROFILE;
+			setIsDeleted(prev => !prev);
 		}
 	};
 
@@ -81,12 +84,10 @@ export function ProfileButtons({
 						isInverted={true}
 						onClick={blockedToggleHandler}
 					/>
-					{isBlock && (
-						<Button
-							text={'Удалить'}
-							onClick={deleteUser}
-						/>
-					)}
+					<Button
+						text={isDelete ? 'Восстановить' : 'Удалить'}
+						onClick={deleteUser}
+					/>
 				</>
 			)}
 		</div>
