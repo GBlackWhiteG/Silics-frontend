@@ -78,11 +78,12 @@ export function CodeField({
 
 	useEffect(() => {
 		if (draftCode.code !== '' && draftCode.language !== '') {
-			const { code, language } = draftCode;
-			setCode(code);
-			setLanguage(language);
-			setCodeRowsLenght(code.split('\n').length);
-			setPastedDraft(true);
+			const dCode = draftCode.code;
+			const dLang = draftCode.language;
+			setCode(dCode);
+			setPastedDraft(!(dLang === language));
+			setLanguage(dLang);
+			setCodeRowsLenght(dCode.split('\n').length);
 		}
 	}, [draftCode]);
 
@@ -99,9 +100,8 @@ export function CodeField({
 			}
 			setCode(langCode);
 			setCodeRowsLenght(langCode.split('\n').length);
-		} else {
-			setPastedDraft(false);
 		}
+		setPastedDraft(false);
 	}, [language]);
 
 	useEffect(() => {
@@ -128,6 +128,10 @@ export function CodeField({
 		const activeRow = textarea.value.slice(0, textarea.selectionStart).split('\n').length;
 		setActiveLine(activeRow);
 	};
+
+	useEffect(() => {
+		console.log(pastedDraft);
+	}, [pastedDraft]);
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const textarea = textareaRef.current;

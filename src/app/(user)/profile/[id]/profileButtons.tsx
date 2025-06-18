@@ -46,6 +46,13 @@ export function ProfileButtons({
 		}
 	};
 
+	const deleteUser = async () => {
+		const response = await adminService.deleteUser(id);
+		if (response.status === 200) {
+			window.location.href = publicPage.PROFILE;
+		}
+	};
+
 	return (
 		<div className='flex flex-col gap-2'>
 			{userId === undefined ? (
@@ -68,11 +75,19 @@ export function ProfileButtons({
 			)}
 
 			{userRole === 'admin' && userId !== id && (
-				<Button
-					text={isBlock ? 'Разблокировать' : 'Заблокировать'}
-					isInverted={true}
-					onClick={blockedToggleHandler}
-				/>
+				<>
+					<Button
+						text={isBlock ? 'Разблокировать' : 'Заблокировать'}
+						isInverted={true}
+						onClick={blockedToggleHandler}
+					/>
+					{isBlock && (
+						<Button
+							text={'Удалить'}
+							onClick={deleteUser}
+						/>
+					)}
+				</>
 			)}
 		</div>
 	);

@@ -6,6 +6,10 @@ class AdminService {
 
 		return response;
 	}
+
+	async deleteUser(id: number) {
+		return instance.delete(`/users/${id}`);
+	}
 }
 
 export const adminService = new AdminService();

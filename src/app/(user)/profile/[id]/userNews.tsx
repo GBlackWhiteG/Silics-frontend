@@ -72,7 +72,7 @@ export function UserPosts({ id }: { id: number }) {
 	return (
 		<>
 			{authId == id && <PostInput stateNewPost={(post: IPostFull) => setNewPost(post)} />}
-			<Posts posts={posts} />
+			{posts.length > 0 ? <Posts posts={posts} /> : <span className='text-center'>Нет постов</span>}
 			<div ref={ref}></div>
 		</>
 	);

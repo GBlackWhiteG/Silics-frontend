@@ -1,0 +1,10 @@
+.inpput {
+	opacity: 1;
+	transition: 0.3s;
+	pointer-events: all;
+}
+
+.inputWrapper:has(textarea:focus) .input {
+	opacity: 0;
+	pointer-events: none;
+}

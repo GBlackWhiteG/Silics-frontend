@@ -13,12 +13,8 @@ class CommentServices {
 		return (await instance.post<IComment>(this._COMMENTS, data)).data;
 	}
 
-	async changePost(data: FormData, id: number) {
-		try {
-			return instance.post<IComment>(`${this._COMMENTS}/${id}`, data);
-		} catch (err) {
-			throw err;
-		}
+	async changeComment(data: FormData, id: number) {
+		return instance.post<IComment>(`${this._COMMENTS}/${id}`, data);
 	}
 
 	async deleteComment(id: number) {

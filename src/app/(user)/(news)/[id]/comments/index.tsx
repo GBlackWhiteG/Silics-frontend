@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import { FileIcon } from '@/components/ui/FileIcon';
 import { HighlightedCode } from '@/components/ui/highlightedCode';
+import { ImageSlider } from '@/components/ui/imageSlider';
 import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { publicPage } from '@/config/public-page.config';
@@ -111,15 +112,7 @@ export function Comments({ postId }: { postId: number }) {
 							)}
 							{comment.files && comment.files?.length > 0 && (
 								<div className='flex flex-wrap'>
-									{comment.files.map(file => (
-										<Image
-											key={file.id}
-											src={file.file_url}
-											width={250}
-											height={250}
-											alt={file.file_url}
-										/>
-									))}
+									<ImageSlider images={comment.files} />
 								</div>
 							)}
 							{comment.attachments && comment.attachments?.length > 0 && (

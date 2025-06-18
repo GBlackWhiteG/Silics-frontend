@@ -1,7 +1,6 @@
 'use client';
 
 import { Code, ImagePlus, Paperclip } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +10,7 @@ import { UserAvatar } from '@/components/ui/userAvatar';
 
 import { addNewCommentAction } from '@/store/newCommentReducer';
 
+import styles from './CommentInput.module.css';
 import { commentServices } from '@/services/comment.services';
 import type { RootState } from '@/store';
 
@@ -75,7 +75,7 @@ export function CommentInput({ postId }: { postId: number }) {
 				avatarWidth={40}
 			/>
 			<div>
-				<div className='relative'>
+				<div className={`relative ${styles.inputWrapper}`}>
 					<AutoResizeTextArea
 						inputName='content'
 						inputPlaceholder='Ваш комментарий'
@@ -83,12 +83,12 @@ export function CommentInput({ postId }: { postId: number }) {
 						inputState={(value: string) => setFormData(prev => ({ ...prev, content: value }))}
 					/>
 					<Code
-						className='absolute top-2 right-2 cursor-pointer text-gray-400'
+						className={`${styles.input} absolute top-2 right-2 cursor-pointer text-gray-400`}
 						onClick={() => setCodeOpen(prev => !prev)}
 					/>
 				</div>
 				{isCodeOpen && (
-					<div className='relative'>
+					<div className={`relative ${styles.inputWrapper}`}>
 						<AutoResizeTextArea
 							inputName={'code'}
 							inputPlaceholder={'Код'}
@@ -98,7 +98,7 @@ export function CommentInput({ postId }: { postId: number }) {
 						<select
 							name='prog_language'
 							id='code_language_select'
-							className='absolute top-2 right-2'
+							className={`${styles.input} absolute top-2 right-2`}
 							value={formData.language}
 							onChange={e => setFormData(prev => ({ ...prev, language: e.target.value }))}
 						>

@@ -12,9 +12,9 @@ import { Button } from '@/components/ui/buttons';
 
 import { setChangedCommentAction } from '@/store/changedCommentReducer';
 
+import { parseError } from '@/utils/get-parse-error';
 import { getTransformedWord } from '@/utils/transform-words';
 
-import styles from './Comments.module.css';
 import { commentServices } from '@/services/comment.services';
 import type { IComment } from '@/types/comment.types';
 
@@ -79,24 +79,11 @@ export function CommentModal({
 		}
 
 		try {
-			const response = await commentServices.changePost(formDataToSend, comment.id);
+			const response = await commentServices.changeComment(formDataToSend, comment.id);
 			dispatch(setChangedCommentAction(response.data));
 			closeModal();
 		} catch (err: AxiosError | any) {
-			const errorMessage = err?.response.data?.errors || err?.response.data.error;
-
-			let message = '';
-			if (errorMessage && typeof errorMessage === 'object') {
-				for (const [key, value] of Object.entries(errorMessage)) {
-					if (value instanceof Array) {
-						message += `${key}: ${value[0]}\n`;
-					} else {
-						message += `${key}: ${value}\n`;
-					}
-				}
-			} else {
-				message = errorMessage;
-			}
+			const message = parseError(err);
 
 			toast.error(message);
 		}

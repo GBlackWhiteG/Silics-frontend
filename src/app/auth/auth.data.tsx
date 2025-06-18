@@ -53,7 +53,7 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 			<h2>Вход</h2>
 			<form className={styles.loginForm}>
 				<AnimateInput
-					inputText='Эл.почта/номер тел.'
+					inputText='Эл.почта'
 					name='email'
 					type='text'
 					inputState={setEmail}
@@ -113,7 +113,7 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 			<form className={styles.signupForm}>
 				<div className={styles.inputWrapper}>
 					<AnimateInput
-						inputText='Эл.почта/номер тел.'
+						inputText='Эл.почта'
 						name='email'
 						type='text'
 						inputState={setEmail}
