@@ -90,11 +90,11 @@ export function Navigation() {
 					{isAuthenticated ? (
 						<LogOut
 							onClick={logoutHandle}
-							className='cursor-pointer'
+							className='cursor-pointer min-w-[24px] md:min-w-none'
 						/>
 					) : (
 						<Link href={publicPage.AUTH}>
-							<LogIn />
+							<LogIn className='min-w-[24px] md:min-w-none' />
 						</Link>
 					)}
 				</section>

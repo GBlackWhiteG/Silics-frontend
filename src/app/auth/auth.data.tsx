@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/buttons';
 
 import { publicPage } from '@/config/public-page.config';
 
+import { parseError } from '@/utils/get-parse-error';
+
 import styles from './Auth.module.css';
 import { AnimateInput } from './animatedInput/animatedInput';
 import { authServices } from '@/services/auth.services';
@@ -31,7 +33,6 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 			const response = await toast.promise(authServices.login({ email, password }), {
 				loading: 'Пожалуйста подождите',
 				success: 'Успешно',
-				error: 'Неправильный логин или пароль',
 			});
 			if (response.status === 200) {
 				if (response.data.token !== undefined) {
@@ -41,8 +42,9 @@ export const Login: React.FC<FormProps> = ({ isActive }) => {
 					router.push(publicPage.EMAIL_2FA);
 				}
 			}
-		} catch {
-			toast.error('Неправильный логин или пароль');
+		} catch (err: AxiosError | any) {
+			const message = parseError(err);
+			toast.error(message);
 		}
 	};
 
@@ -100,10 +102,8 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 				router.push(publicPage.NOT_VERIFIED_EMAIL);
 			}
 		} catch (error: AxiosError | any) {
-			const errors = JSON.parse(error.response.data);
-			Object.keys(errors).forEach((key: string) => {
-				toast.error(errors[key][0]);
-			});
+			const message = parseError(error);
+			toast.error(message);
 		}
 	};
 

@@ -67,7 +67,7 @@ export function CommentInput({ postId }: { postId: number }) {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className='grid grid-cols-[auto_1fr_auto_auto] gap-4'
+			className='grid grid-cols-[auto_1fr_auto] gap-4 md:grid-cols-[auto_1fr_auto_auto]'
 		>
 			<UserAvatar
 				userAvatarUrl={userAvatar}
@@ -138,7 +138,7 @@ export function CommentInput({ postId }: { postId: number }) {
 			<Button
 				text='Отправить'
 				isSubmit={true}
-				className='max-h-10'
+				className='max-h-10 col-span-full md:col-span-1'
 			/>
 		</form>
 	);

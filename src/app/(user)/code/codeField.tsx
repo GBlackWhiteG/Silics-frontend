@@ -9,6 +9,7 @@ import 'highlight.js/styles/xcode.css';
 import { BookMarked, Check, CopyIcon, Share } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '@/components/ui/buttons';
@@ -49,6 +50,7 @@ export function CodeField({
 	const [isCopied, setIsCopied] = useState(false);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [pastedDraft, setPastedDraft] = useState(false);
 	const draftCode = useSelector((state: RootState) => state.draftedCode.codeData);
 
 	const [language, setLanguage] = useState<string>('php');
@@ -79,21 +81,27 @@ export function CodeField({
 			const { code, language } = draftCode;
 			setCode(code);
 			setLanguage(language);
+			setCodeRowsLenght(code.split('\n').length);
+			setPastedDraft(true);
 		}
 	}, [draftCode]);
 
 	useEffect(() => {
-		let langCode = '';
-		if (copiedCode.code && copiedCode.language === language) {
-			langCode = copiedCode.code;
-			dispatch(clearCodeRunAction());
-		} else if (savedLang === language) {
-			langCode = savedCode.code;
-		} else if (!copiedCode.code && draftCode.code !== '' && laguagesInitalCodeData[language]) {
-			langCode = laguagesInitalCodeData[language];
+		if (!pastedDraft) {
+			let langCode = '';
+			if (copiedCode.code && copiedCode.language === language) {
+				langCode = copiedCode.code;
+				dispatch(clearCodeRunAction());
+			} else if (savedLang === language) {
+				langCode = savedCode.code;
+			} else if (laguagesInitalCodeData[language]) {
+				langCode = laguagesInitalCodeData[language];
+			}
+			setCode(langCode);
+			setCodeRowsLenght(langCode.split('\n').length);
+		} else {
+			setPastedDraft(false);
 		}
-		setCode(langCode);
-		setCodeRowsLenght(langCode.split('\n').length);
 	}, [language]);
 
 	useEffect(() => {
@@ -138,6 +146,7 @@ export function CodeField({
 		if ((e.ctrlKey || e.metaKey) && e.key === 's') {
 			e.preventDefault();
 			localStorage.setItem('saved_code', JSON.stringify({ language, code }));
+			toast.success('Данные сохранены');
 		}
 	};
 
@@ -196,6 +205,7 @@ export function CodeField({
 					<div
 						className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer ml-auto'
 						onClick={shareButtonHandler}
+						title='Поделиться'
 					>
 						<Share
 							size={16}
@@ -205,6 +215,7 @@ export function CodeField({
 					<div
 						className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer'
 						onClick={copyToClipboard}
+						title='Скопировать'
 					>
 						{isCopied ? (
 							<Check
@@ -221,6 +232,7 @@ export function CodeField({
 					<div
 						className='bg-[--primary] rounded-md p-2 justify-self-end cursor-pointer'
 						onClick={() => setIsModalOpen(true)}
+						title='Сохранить черновики'
 					>
 						<BookMarked
 							size={16}

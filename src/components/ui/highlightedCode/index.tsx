@@ -103,7 +103,7 @@ export function HighlightedCode({ code, language }: Props) {
 				{isLongCode && (
 					<div className='h-[70px] w-full flex justify-center items-end bg-gradient-to-t from-[#f5f5f5] to-transparent absolute bottom-0 left-0'>
 						<span
-							className='cursor-pointer py-1 px-2 text-gray-500'
+							className='cursor-pointer py-1 px-2 text-[--primary]'
 							onClick={showFullCode}
 						>
 							Смотреть полностью

@@ -9,6 +9,16 @@
 	padding: 0.3rem 1rem;
 }
 
+@media (max-width: 768px) {
+	.button {
+		padding: 0.5rem 1rem;
+	}
+}
+
+.button:disabled {
+	opacity: 0.5;
+}
+
 .invertedButton {
 	@apply text-sm;
 	display: flex;
