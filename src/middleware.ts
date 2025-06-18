@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
 	if (request.nextUrl.pathname === publicPage.AUTH) {
 		if (token) {
-			return NextResponse.redirect(new URL(publicPage.NEWS, request.url));
+			return NextResponse.redirect(new URL('/', request.url));
 		}
 	}
 
@@ -27,5 +27,12 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', publicPage.PROFILE],
+	matcher: [
+		'/',
+		publicPage.PROFILE,
+		publicPage.CODE,
+		publicPage.SETTINGS,
+		publicPage.FRIENDS,
+		publicPage.AUTH,
+	],
 };
