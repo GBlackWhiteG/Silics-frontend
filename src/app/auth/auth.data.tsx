@@ -79,6 +79,7 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordConfirmation, setPasswordConfirmation] = useState('');
+	const [agreement, setAgreement] = useState(false);
 
 	const router = useRouter();
 
@@ -91,6 +92,7 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 					name,
 					password,
 					password_confirmation: passwordConfirmation,
+					agreement,
 				}),
 				{
 					loading: 'Пожалуйста подождите',
@@ -143,6 +145,15 @@ export const Signup: React.FC<FormProps> = ({ isActive }) => {
 						inputState={setPasswordConfirmation}
 					/>
 				</div>
+				<label className='max-w-[200px]'>
+					<input
+						type='checkbox'
+						className='mr-1'
+						name='agreement'
+						onChange={() => setAgreement(!agreement)}
+					/>
+					<span className='text-xs'>Я несу ответственность за публикуемый контент</span>
+				</label>
 				<Button
 					text='Зарегистрироваться'
 					isSubmit={true}

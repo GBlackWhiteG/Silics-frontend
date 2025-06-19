@@ -6,4 +6,5 @@ export interface IAuth {
 export interface IRegister extends IAuth {
 	name: string;
 	password_confirmation: string;
+	agreement: boolean;
 }

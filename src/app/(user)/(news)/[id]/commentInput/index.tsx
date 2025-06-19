@@ -1,7 +1,8 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import { Code, ImagePlus, Paperclip } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AutoResizeTextArea } from '@/components/ui/autoResizeTextarea/autoResizeTextarea';
@@ -11,6 +12,7 @@ import { UserAvatar } from '@/components/ui/userAvatar';
 import { addNewCommentAction } from '@/store/newCommentReducer';
 
 import styles from './CommentInput.module.css';
+import { EnumTokens } from '@/enums/auth.enums';
 import { commentServices } from '@/services/comment.services';
 import type { RootState } from '@/store';
 
@@ -18,6 +20,11 @@ export function CommentInput({ postId }: { postId: number }) {
 	const dispatch = useDispatch();
 	const userAvatar = useSelector((state: RootState) => state.auth.auth.avatar_url);
 	const [isCodeOpen, setCodeOpen] = useState(false);
+	const [isAuth, setIsAuth] = useState(false);
+
+	useEffect(() => {
+		setIsAuth(!!Cookies.get(EnumTokens.ACCESS_TOKEN));
+	}, []);
 
 	const [formData, setFormData] = useState({
 		content: '',
@@ -139,6 +146,7 @@ export function CommentInput({ postId }: { postId: number }) {
 				text='Отправить'
 				isSubmit={true}
 				className='max-h-10 col-span-full md:col-span-1'
+				disabled={!isAuth}
 			/>
 		</form>
 	);
